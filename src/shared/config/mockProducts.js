@@ -1,6 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
-
-const initialProducts = [
+export const mockProducts = [
   {
     id: 'cashmere-robe',
     name: 'Cashmere Robe',
@@ -26,27 +24,3 @@ const initialProducts = [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuAeBZoAVJ_r-swMxH4JUjBbd-tps-Qf0IKGDwJSLkKrrQXRvNBe9H-5nQp07b2y2YrJ0vEF5y9v7Pae7shc-iMdsQC8jfx5Vi0dtaJtJOHHLV91QBPiWnJP2RFre1yQW0BDaW0pIyf6MGs_e2zOLvGWuRIqQBmatlNxNP5uRRp7yom7TCofD6q2mpKQQL63fULiAtUtvhvChp_XTdeUD453FxFerpSEPa2J4rlp5Grqb__121WFJKDNwfvGqXGQt_19ZykPLOPH9ATl',
   },
 ]
-
-const productsSlice = createSlice({
-  name: 'products',
-  initialState: {
-    items: initialProducts,
-    favoriteIds: [],
-  },
-  reducers: {
-    toggleFavorite(state, action) {
-      const productId = action.payload
-      const index = state.favoriteIds.indexOf(productId)
-
-      if (index >= 0) {
-        state.favoriteIds.splice(index, 1)
-        return
-      }
-
-      state.favoriteIds.push(productId)
-    },
-  },
-})
-
-export const { toggleFavorite } = productsSlice.actions
-export default productsSlice.reducer

@@ -1,10 +1,10 @@
-import '../../widgets/home/home-sections.css'
+import '../../features/components/ui/home-sections.css'
 
-import { FeaturesSection } from '../../widgets/home/FeaturesSection.jsx'
-import { HeroSection } from '../../widgets/home/HeroSection.jsx'
-import { NewArrivalsSection } from '../../widgets/home/NewArrivalsSection.jsx'
-import { NewsletterSection } from '../../widgets/home/NewsletterSection.jsx'
-import { AppLayout } from '../../widgets/layout/AppLayout.jsx'
+import { FeaturesSection } from '../../features/components/ui/FeaturesSection.jsx'
+import { HeroSection } from '../../features/components/ui/HeroSection.jsx'
+import { NewArrivalsSection } from '../../features/components/ui/NewArrivalsSection.jsx'
+import { NewsletterSection } from '../../features/components/ui/NewsletterSection.jsx'
+import { AppLayout } from '../../features/components/ux/AppLayout.jsx'
 
 export function HomePage() {
   return (

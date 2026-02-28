@@ -15,50 +15,53 @@
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgb(28 25 23 / 0.6), transparent 60%);
+  background: linear-gradient(to top, rgb(28 25 23 / 0.62), transparent 64%);
 }
 
 .hero-content {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: min(100%, 780px);
+  width: min(100%, 770px);
   padding: clamp(1.5rem, 5vw, 4rem);
   color: #ffffff;
 }
 
 .hero-content h1 {
-  font-size: clamp(2.25rem, 5.8vw, 4rem);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 800;
   line-height: 1.05;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .hero-content p {
   margin-top: 1rem;
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
   max-width: 60ch;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 500;
 }
 
 .hero-content button {
-  margin-top: 1.75rem;
-  height: 3rem;
+  margin-top: 1.8rem;
+  min-height: 3rem;
   border: 0;
   border-radius: 999px;
   padding: 0 2rem;
+  font-size: 1rem;
   font-weight: 800;
-  background: var(--color-primary);
   color: #1c1917;
-  cursor: pointer;
+  background: var(--color-primary);
   box-shadow: 0 10px 30px rgb(110 230 25 / 0.25);
   transition: transform 0.2s ease;
+  cursor: pointer;
 }
 
 .hero-content button:hover {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 .new-arrivals-section {
-  padding: 1.5rem 0 3.5rem;
+  padding: 1rem 0 3.25rem;
 }
 
 .section-heading {
@@ -70,17 +73,19 @@
 }
 
 .section-heading h2 {
-  font-size: clamp(1.75rem, 3vw, 2rem);
+  font-size: clamp(1.75rem, 2.8vw, 2rem);
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
-.section-heading a {
-  color: var(--color-muted);
+.view-all-link {
+  display: none;
   font-size: 0.9rem;
   font-weight: 700;
+  color: var(--color-muted);
 }
 
-.section-heading a:hover {
+.view-all-link:hover {
   color: var(--color-primary);
 }
 
@@ -90,14 +95,56 @@
   gap: 2.25rem 1.5rem;
 }
 
-.features-section {
-  padding: 1.25rem 0;
+.product-skeleton {
+  min-height: 28rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    110deg,
+    color-mix(in srgb, var(--color-border) 70%, transparent) 8%,
+    color-mix(in srgb, var(--color-surface) 92%, transparent) 18%,
+    color-mix(in srgb, var(--color-border) 70%, transparent) 33%
+  );
+  background-size: 200% 100%;
+  animation: product-skeleton-shimmer 1.2s linear infinite;
 }
 
-.features-section .container {
-  padding: clamp(1.5rem, 3.5vw, 3rem);
+.products-state-card {
+  min-height: 10rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-border);
+  display: grid;
+  place-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.products-state-card button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1c1917;
+  background: var(--color-primary);
+  cursor: pointer;
+}
+
+.features-section {
+  padding: 0.5rem 0 1rem;
+}
+
+.features-surface {
+  margin: 2rem auto;
+  width: min(1224px, calc(100% - 2rem));
   border-radius: 1.5rem;
-  background: color-mix(in srgb, var(--color-surface) 84%, #e7e5e4);
+  padding: clamp(1.25rem, 3vw, 2.5rem) 0;
+  background: #fafaf9;
+}
+
+.dark .features-surface {
+  background: #1c1917;
 }
 
 .features-copy {
@@ -105,12 +152,14 @@
 }
 
 .features-copy h2 {
-  font-size: clamp(1.85rem, 4vw, 2.4rem);
+  font-size: clamp(1.9rem, 4vw, 2.35rem);
+  font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .features-copy p {
-  margin-top: 0.75rem;
+  margin-top: 0.85rem;
+  font-size: 1.05rem;
   color: var(--color-muted);
 }
 
@@ -124,11 +173,17 @@
 .feature-card {
   border: 1px solid var(--color-border);
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 1.75rem;
   background: var(--color-surface);
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-shadow: 0 1px 3px rgb(28 25 23 / 0.06);
+  transition: box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  box-shadow: 0 10px 20px rgb(28 25 23 / 0.08);
 }
 
 .feature-icon {
@@ -137,24 +192,32 @@
   border-radius: 0.75rem;
   display: grid;
   place-items: center;
-  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+  color: color-mix(in srgb, var(--color-primary) 35%, #1c1917);
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
 }
 
 .feature-icon .material-symbols-outlined {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
 }
 
 .feature-card h3 {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
 }
 
 .feature-card p {
-  margin-top: 0.5rem;
+  margin-top: 0.45rem;
   color: var(--color-muted);
+  line-height: 1.55;
 }
 
 .newsletter-section {
   padding: 3.75rem 0;
+}
+
+.newsletter-content {
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .newsletter-card {
@@ -163,6 +226,7 @@
 
 .newsletter-card h2 {
   font-size: clamp(1.8rem, 4vw, 2.2rem);
+  letter-spacing: -0.02em;
 }
 
 .newsletter-card p {
@@ -187,14 +251,23 @@
   color: var(--color-text);
 }
 
+.newsletter-form input:focus {
+  outline: 2px solid color-mix(in srgb, var(--color-primary) 70%, transparent);
+  outline-offset: 1px;
+}
+
 .newsletter-form button {
   border: 0;
   border-radius: 0.5rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   font-weight: 700;
   color: #ffffff;
   background: #1c1917;
   cursor: pointer;
+}
+
+.newsletter-form button:hover {
+  background: #44403c;
 }
 
 .dark .newsletter-form button {
@@ -202,9 +275,17 @@
   background: #f5f5f4;
 }
 
+.dark .newsletter-form button:hover {
+  background: #e7e5e4;
+}
+
 @media (width >= 640px) {
   .products-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .view-all-link {
+    display: inline-block;
   }
 
   .newsletter-form {
@@ -216,12 +297,19 @@
   }
 }
 
-@media (width >= 960px) {
+@media (width >= 1024px) {
   .products-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .features-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@keyframes product-skeleton-shimmer {
+  to {
+    background-position-x: -200%;
   }
 }

@@ -1,5 +1,5 @@
-import { footerNavigationLinks } from '../../shared/config/navigation.js'
-import { Logo } from '../../shared/ui/Logo.jsx'
+import { footerNavigationLinks } from '../../../shared/config/navigation.js'
+import { Logo } from '../ui/Logo.jsx'
 
 export function Footer() {
   return (
@@ -13,7 +13,7 @@ export function Footer() {
             </a>
           ))}
         </nav>
-        <p>© 2024 Comfort Inc.</p>
+        <p className="footer-copy">(c) 2024 Comfort Inc.</p>
       </div>
     </footer>
   )

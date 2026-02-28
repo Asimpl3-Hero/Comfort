@@ -15,7 +15,7 @@
   inset: 0;
   background-position: center;
   background-size: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .product-card:hover .product-card-image {
@@ -32,7 +32,7 @@
   place-items: center;
   border-radius: 999px;
   border: 0;
-  background: rgba(255, 255, 255, 0.86);
+  background: rgb(255 255 255 / 0.82);
   color: #1c1917;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -57,16 +57,18 @@
 }
 
 .product-card-meta h3 {
-  font-size: 1.125rem;
-  line-height: 1.25;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .product-card-meta p {
   margin-top: 0.25rem;
-  color: var(--color-muted);
   font-size: 0.9rem;
+  color: var(--color-muted);
 }
 
 .product-card-meta strong {
-  font-size: 1.125rem;
+  font-size: 1.12rem;
+  font-weight: 500;
 }

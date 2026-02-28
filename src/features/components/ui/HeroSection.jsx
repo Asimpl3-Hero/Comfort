@@ -2,7 +2,11 @@ export function HeroSection() {
   return (
     <section className="hero-section">
       <div className="container">
-        <div className="hero-panel">
+        <div
+          className="hero-panel"
+          role="img"
+          aria-label="Woman relaxing in soft linen loungewear"
+        >
           <div className="hero-overlay" />
           <div className="hero-content">
             <h1>Find Your Calm</h1>

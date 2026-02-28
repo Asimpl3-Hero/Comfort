@@ -1,8 +1,8 @@
 import './product-card.css'
 
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks.js'
-import { toggleFavorite } from '../model/productsSlice.js'
-import { selectIsProductFavorite } from '../model/selectors.js'
+import { toggleFavorite } from '../../products/model/productsSlice.js'
+import { selectIsProductFavorite } from '../../products/model/selectors.js'
 
 export function ProductCard({ product }) {
   const dispatch = useAppDispatch()

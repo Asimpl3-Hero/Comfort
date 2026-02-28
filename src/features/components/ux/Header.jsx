@@ -1,5 +1,5 @@
-import { topNavigationLinks } from '../../shared/config/navigation.js'
-import { Logo } from '../../shared/ui/Logo.jsx'
+import { topNavigationLinks } from '../../../shared/config/navigation.js'
+import { Logo } from '../ui/Logo.jsx'
 
 export function Header() {
   return (
