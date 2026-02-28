@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { toggleFavorite } from '../model/productsSlice.js'
 import './product-card.css'
 
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks.js'
+import { toggleFavorite } from '../model/productsSlice.js'
+import { selectIsProductFavorite } from '../model/selectors.js'
+
 export function ProductCard({ product }) {
-  const dispatch = useDispatch()
-  const isFavorite = useSelector((state) =>
-    state.products.favoriteIds.includes(product.id),
-  )
+  const dispatch = useAppDispatch()
+  const isFavorite = useAppSelector(selectIsProductFavorite(product.id))
 
   return (
     <article className="product-card">

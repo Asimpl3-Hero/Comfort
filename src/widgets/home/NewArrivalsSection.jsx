@@ -1,8 +1,9 @@
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '../../app/store/hooks.js'
+import { selectProducts } from '../../entities/product/model/selectors.js'
 import { ProductCard } from '../../entities/product/ui/ProductCard.jsx'
 
 export function NewArrivalsSection() {
-  const products = useSelector((state) => state.products.items)
+  const products = useAppSelector(selectProducts)
 
   return (
     <section className="new-arrivals-section">
