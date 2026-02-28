@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-content">
-        <Logo compact />
+        <Logo />
         <nav className="footer-nav" aria-label="Footer">
           {footerNavigationLinks.map((item) => (
             <a key={item.id} href={item.href}>

@@ -1,0 +1,227 @@
+.hero-section {
+  padding: 1.5rem 0 3rem;
+}
+
+.hero-panel {
+  position: relative;
+  height: min(600px, 72vh);
+  overflow: hidden;
+  border-radius: 1rem;
+  background: #e7e5e4
+    url('https://lh3.googleusercontent.com/aida-public/AB6AXuCLCXAdNI6xMEkrBb3SgF4q6SARBz84nXFvNsAd3Wvq5WGgFyWEqzYjGgwGCeKxzSaRbCeZ4QBuCiF6AoJJXsebQllfZnrDO6AOfZOn-BEp_TMh7cy_-NZJXCXWtPH1ehtFkt4-1nOdHYhu4PgYK7hyVSIdxqHX5apz-GHBM5P-zh73VXkggQDn_-_qWVqvSH5vhHsp0CnR9anYLViXOY7u0l1s8VHvltOOMhW8sSG_tZTNUGQAAYez5s-0w2CIgGIXtj0tUFuO7PYi')
+    center / cover no-repeat;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(28 25 23 / 0.6), transparent 60%);
+}
+
+.hero-content {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(100%, 780px);
+  padding: clamp(1.5rem, 5vw, 4rem);
+  color: #ffffff;
+}
+
+.hero-content h1 {
+  font-size: clamp(2.25rem, 5.8vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.hero-content p {
+  margin-top: 1rem;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  max-width: 60ch;
+}
+
+.hero-content button {
+  margin-top: 1.75rem;
+  height: 3rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 2rem;
+  font-weight: 800;
+  background: var(--color-primary);
+  color: #1c1917;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgb(110 230 25 / 0.25);
+  transition: transform 0.2s ease;
+}
+
+.hero-content button:hover {
+  transform: scale(1.03);
+}
+
+.new-arrivals-section {
+  padding: 1.5rem 0 3.5rem;
+}
+
+.section-heading {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section-heading h2 {
+  font-size: clamp(1.75rem, 3vw, 2rem);
+  letter-spacing: -0.02em;
+}
+
+.section-heading a {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.section-heading a:hover {
+  color: var(--color-primary);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 2.25rem 1.5rem;
+}
+
+.features-section {
+  padding: 1.25rem 0;
+}
+
+.features-section .container {
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+  border-radius: 1.5rem;
+  background: color-mix(in srgb, var(--color-surface) 84%, #e7e5e4);
+}
+
+.features-copy {
+  max-width: 700px;
+}
+
+.features-copy h2 {
+  font-size: clamp(1.85rem, 4vw, 2.4rem);
+  letter-spacing: -0.02em;
+}
+
+.features-copy p {
+  margin-top: 0.75rem;
+  color: var(--color-muted);
+}
+
+.features-grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.feature-card {
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.feature-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+.feature-icon .material-symbols-outlined {
+  font-size: 1.8rem;
+}
+
+.feature-card h3 {
+  font-size: 1.2rem;
+}
+
+.feature-card p {
+  margin-top: 0.5rem;
+  color: var(--color-muted);
+}
+
+.newsletter-section {
+  padding: 3.75rem 0;
+}
+
+.newsletter-card {
+  text-align: center;
+}
+
+.newsletter-card h2 {
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+}
+
+.newsletter-card p {
+  margin: 0.75rem auto 0;
+  max-width: 65ch;
+  color: var(--color-muted);
+}
+
+.newsletter-form {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.newsletter-form input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.newsletter-form button {
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: #1c1917;
+  cursor: pointer;
+}
+
+.dark .newsletter-form button {
+  color: #1c1917;
+  background: #f5f5f4;
+}
+
+@media (width >= 640px) {
+  .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .newsletter-form {
+    flex-direction: row;
+  }
+
+  .newsletter-form button {
+    flex-shrink: 0;
+  }
+}
+
+@media (width >= 960px) {
+  .products-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

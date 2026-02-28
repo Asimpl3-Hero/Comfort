@@ -11,7 +11,7 @@
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 50;
   background: color-mix(in srgb, var(--color-bg) 88%, transparent);
   border-bottom: 1px solid var(--color-border);
   backdrop-filter: blur(10px);
@@ -44,8 +44,9 @@
 
 .top-nav {
   display: none;
-  gap: 1.5rem;
-  font-weight: 600;
+  gap: 2.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   color: var(--color-muted);
 }
 
@@ -75,6 +76,15 @@
   background: color-mix(in srgb, var(--color-border) 45%, transparent);
 }
 
+.profile-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background:
+    center / cover no-repeat
+      url('https://lh3.googleusercontent.com/aida-public/AB6AXuBAb6onLzW68gNE7BqjETtUO8cBy-7ddiG7hOHw2N-hypSRChBV6-QBv72-c9Mb2RqgqV8Slh807oVX3IJd0dRKthZNUA48VomQuk9SZQBc6xuZHShCKBv2ncCR1_TVVsL9lwNqP2DqwEroCIogtb0EIgw3mKHnKpAKCzNMX1C6o7i2BNjfKvFZvS9n6MOlFCtL2A9-dWV3l1eiRiibzDhZ-CPjD5741EpdqEc_egiXr_JjBOeHMwJWoJTCE5l8Iq8O05SbEMm66xpe');
+}
+
 .site-footer {
   border-top: 1px solid var(--color-border);
   padding: 2.5rem 0;
@@ -91,9 +101,13 @@
 
 .footer-nav {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+.footer-nav a:hover {
+  color: var(--color-text);
 }
 
 @media (width >= 768px) {

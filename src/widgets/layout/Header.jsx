@@ -1,11 +1,7 @@
-import { useDispatch } from 'react-redux'
-import { toggleTheme } from '../../features/theme/model/themeSlice.js'
 import { topNavigationLinks } from '../../shared/config/navigation.js'
 import { Logo } from '../../shared/ui/Logo.jsx'
 
 export function Header() {
-  const dispatch = useDispatch()
-
   return (
     <header className="site-header">
       <div className="container header-content">
@@ -28,16 +24,11 @@ export function Header() {
               shopping_bag
             </span>
           </button>
-          <button
-            type="button"
-            className="icon-button"
-            aria-label="Toggle color mode"
-            onClick={() => dispatch(toggleTheme())}
-          >
-            <span className="material-symbols-outlined" aria-hidden="true">
-              contrast
-            </span>
-          </button>
+          <div
+            className="profile-avatar"
+            role="img"
+            aria-label="User profile placeholder"
+          />
         </div>
       </div>
     </header>
