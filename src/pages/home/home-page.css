@@ -1,0 +1,41 @@
+.hero-shell {
+  padding-block: 3rem;
+}
+
+.hero-shell > div {
+  min-height: 24rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(rgba(28, 25, 23, 0.35), rgba(28, 25, 23, 0.35)),
+    url('https://lh3.googleusercontent.com/aida-public/AB6AXuCLCXAdNI6xMEkrBb3SgF4q6SARBz84nXFvNsAd3Wvq5WGgFyWEqzYjGgwGCeKxzSaRbCeZ4QBuCiF6AoJJXsebQllfZnrDO6AOfZOn-BEp_TMh7cy_-NZJXCXWtPH1ehtFkt4-1nOdHYhu4PgYK7hyVSIdxqHX5apz-GHBM5P-zh73VXkggQDn_-_qWVqvSH5vhHsp0CnR9anYLViXOY7u0l1s8VHvltOOMhW8sSG_tZTNUGQAAYez5s-0w2CIgGIXtj0tUFuO7PYi')
+      center / cover no-repeat;
+  color: #f5f5f4;
+  padding: clamp(1.5rem, 4vw, 4rem);
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-shell h1 {
+  font-size: clamp(2rem, 6vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.hero-shell p {
+  max-width: 42ch;
+  margin-top: 0.8rem;
+}
+
+.hero-shell code {
+  margin-inline: 0.25rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, #ffffff 20%, transparent);
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--color-primary);
+}
