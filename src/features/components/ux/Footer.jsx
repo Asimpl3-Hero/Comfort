@@ -1,19 +1,23 @@
-import { footerNavigationLinks } from '../../../shared/config/navigation.js'
 import { Logo } from '../ui/Logo.jsx'
 
-export function Footer() {
+export function Footer({
+  links = [],
+  copy = '(c) 2024 Comfort Inc.',
+  brandName = 'Comfort',
+  brandIcon = 'spa',
+}) {
   return (
     <footer className="site-footer">
       <div className="container footer-content">
-        <Logo />
+        <Logo brandName={brandName} icon={brandIcon} />
         <nav className="footer-nav" aria-label="Footer">
-          {footerNavigationLinks.map((item) => (
+          {links.map((item) => (
             <a key={item.id} href={item.href}>
               {item.label}
             </a>
           ))}
         </nav>
-        <p className="footer-copy">(c) 2024 Comfort Inc.</p>
+        <p className="footer-copy">{copy}</p>
       </div>
     </footer>
   )

@@ -7,9 +7,10 @@
   height: min(600px, 72vh);
   overflow: hidden;
   border-radius: 1rem;
-  background: #e7e5e4
-    url('https://lh3.googleusercontent.com/aida-public/AB6AXuCLCXAdNI6xMEkrBb3SgF4q6SARBz84nXFvNsAd3Wvq5WGgFyWEqzYjGgwGCeKxzSaRbCeZ4QBuCiF6AoJJXsebQllfZnrDO6AOfZOn-BEp_TMh7cy_-NZJXCXWtPH1ehtFkt4-1nOdHYhu4PgYK7hyVSIdxqHX5apz-GHBM5P-zh73VXkggQDn_-_qWVqvSH5vhHsp0CnR9anYLViXOY7u0l1s8VHvltOOMhW8sSG_tZTNUGQAAYez5s-0w2CIgGIXtj0tUFuO7PYi')
-    center / cover no-repeat;
+  background-color: #e7e5e4;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .hero-overlay {

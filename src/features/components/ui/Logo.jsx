@@ -1,10 +1,10 @@
-export function Logo({ compact = false }) {
+export function Logo({ compact = false, brandName = 'Comfort', icon = 'spa' }) {
   return (
     <div className="logo">
       <span className="material-symbols-outlined" aria-hidden="true">
-        spa
+        {icon}
       </span>
-      {!compact && <span>Comfort</span>}
+      {!compact && <span>{brandName}</span>}
     </div>
   )
 }

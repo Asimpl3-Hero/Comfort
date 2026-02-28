@@ -1,12 +1,22 @@
-import './product-card.css'
+import '../styles/ui/product-card.css'
 
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks.js'
-import { toggleFavorite } from '../../products/model/productsSlice.js'
-import { selectIsProductFavorite } from '../../products/model/selectors.js'
+const fallbackProduct = {
+  id: '',
+  name: 'Unnamed product',
+  tone: '',
+  price: 0,
+  imageUrl: '',
+}
 
-export function ProductCard({ product }) {
-  const dispatch = useAppDispatch()
-  const isFavorite = useAppSelector(selectIsProductFavorite(product.id))
+const defaultFormatPrice = (value) => `$${Number(value).toFixed(0)}`
+
+export function ProductCard({
+  product = fallbackProduct,
+  isFavorite = false,
+  onToggleFavorite,
+  formatPrice = defaultFormatPrice,
+}) {
+  const safeProduct = { ...fallbackProduct, ...product }
 
   return (
     <article className="product-card">
@@ -14,15 +24,15 @@ export function ProductCard({ product }) {
         <div
           className="product-card-image"
           role="img"
-          aria-label={product.name}
-          style={{ backgroundImage: `url('${product.imageUrl}')` }}
+          aria-label={safeProduct.name}
+          style={{ backgroundImage: `url('${safeProduct.imageUrl}')` }}
         />
         <button
           type="button"
           className="favorite-button"
-          aria-label={`Toggle favorite for ${product.name}`}
+          aria-label={`Toggle favorite for ${safeProduct.name}`}
           aria-pressed={isFavorite}
-          onClick={() => dispatch(toggleFavorite(product.id))}
+          onClick={() => onToggleFavorite?.(safeProduct.id)}
         >
           <span className="material-symbols-outlined" aria-hidden="true">
             {isFavorite ? 'favorite' : 'favorite_border'}
@@ -31,10 +41,10 @@ export function ProductCard({ product }) {
       </div>
       <div className="product-card-meta">
         <div>
-          <h3>{product.name}</h3>
-          <p>{product.tone}</p>
+          <h3>{safeProduct.name}</h3>
+          <p>{safeProduct.tone}</p>
         </div>
-        <strong>${product.price}</strong>
+        <strong>{formatPrice(safeProduct.price)}</strong>
       </div>
     </article>
   )

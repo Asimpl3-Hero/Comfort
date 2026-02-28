@@ -1,20 +1,18 @@
-import { benefitsData } from '../../../shared/config/benefitsData.js'
-
-export function FeaturesSection() {
+export function FeaturesSection({
+  title = 'Why Choose Comfort?',
+  description = 'We believe in quality over quantity, purposefully crafting essentials using only the finest sustainable materials for your home and body.',
+  items = [],
+}) {
   return (
     <section className="features-section">
       <div className="features-surface">
         <div className="container">
           <div className="features-copy">
-            <h2>Why Choose Comfort?</h2>
-            <p>
-              We believe in quality over quantity, purposefully crafting
-              essentials using only the finest sustainable materials for your
-              home and body.
-            </p>
+            <h2>{title}</h2>
+            <p>{description}</p>
           </div>
           <div className="features-grid">
-            {benefitsData.map((benefit) => (
+            {items.map((benefit) => (
               <article key={benefit.id} className="feature-card">
                 <div className="feature-icon">
                   <span className="material-symbols-outlined" aria-hidden="true">

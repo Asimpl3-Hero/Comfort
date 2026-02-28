@@ -1,8 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap');
 
+@font-face {
+  font-family: 'Pacifico';
+  src: url('/fonts/Pacifico-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('/fonts/JosefinSans-VariableFont_wght.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+}
+
 :root {
-  --font-primary: 'Manrope', sans-serif;
+  --font-primary: 'Josefin Sans', sans-serif;
+  --font-body: 'Josefin Sans', sans-serif;
+  --font-heading: 'Pacifico', cursive;
 
   --color-primary: #6ee619;
   --color-text: #1c1917;

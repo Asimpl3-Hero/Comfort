@@ -1,24 +1,21 @@
-import './layout.css'
+import '../styles/ux/layout.css'
 
-import { useEffect } from 'react'
-
-import { useAppSelector } from '../../../app/store/hooks.js'
-import { selectThemeMode } from '../../theme/model/selectors.js'
 import { Footer } from './Footer.jsx'
-import { Header } from './Header.jsx'
+import { Navbar } from './Navbar.jsx'
 
-export function AppLayout({ children }) {
-  const mode = useAppSelector(selectThemeMode)
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', mode === 'dark')
-  }, [mode])
-
+export function AppLayout({
+  children,
+  navLinks = [],
+  footerLinks = [],
+  footerCopy = '(c) 2024 Comfort Inc.',
+  showSearch = true,
+  showCart = true,
+}) {
   return (
     <div className="app-shell">
-      <Header />
+      <Navbar links={navLinks} showSearch={showSearch} showCart={showCart} />
       <main>{children}</main>
-      <Footer />
+      <Footer links={footerLinks} copy={footerCopy} />
     </div>
   )
 }
