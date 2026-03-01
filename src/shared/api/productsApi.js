@@ -2,12 +2,20 @@ import { mockProducts } from '../config/mockProducts.js'
 import { httpGet } from './httpClient.js'
 
 function normalizeProduct(rawProduct) {
+  const cents = Number(
+    rawProduct.price_in_cents ??
+      rawProduct.priceInCents ??
+      (rawProduct.price != null ? Number(rawProduct.price) * 100 : 0),
+  )
+
   return {
     id: rawProduct.id,
     name: rawProduct.name,
-    tone: rawProduct.tone,
-    price: Number(rawProduct.price),
-    imageUrl: rawProduct.imageUrl,
+    description: rawProduct.description ?? rawProduct.tone ?? '',
+    priceInCents: Number.isFinite(cents) ? cents : 0,
+    stock: Number(rawProduct.stock ?? 0),
+    currency: rawProduct.currency ?? 'COP',
+    imageUrl: rawProduct.imageUrl ?? '',
   }
 }
 

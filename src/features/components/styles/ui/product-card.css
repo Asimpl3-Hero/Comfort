@@ -68,7 +68,37 @@
   color: var(--color-muted);
 }
 
+.product-card-description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+}
+
+.product-card-stock {
+  font-weight: 600;
+}
+
 .product-card-meta strong {
   font-size: 1.12rem;
   font-weight: 500;
+}
+
+.pay-with-card-btn {
+  margin-top: 0.9rem;
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 0.95rem;
+  background: #1c1917;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.pay-with-card-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }

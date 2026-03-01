@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useAppSelector } from '../../../app/store/hooks.js'
+import { useAppSelector } from '../../../app/hooks/index.js'
 import { selectThemeMode } from '../model/selectors.js'
 
 export function ThemeModeSync() {

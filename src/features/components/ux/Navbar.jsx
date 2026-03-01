@@ -3,11 +3,11 @@ import { Logo } from '../ui/Logo.jsx'
 export function Navbar({
   links = [],
   showSearch = true,
-  showCart = true,
+  showThemeToggle = true,
   brandName = 'Comfort',
   brandIcon = 'spa',
   onSearchClick,
-  onCartClick,
+  onThemeToggle,
 }) {
   return (
     <header className="site-navbar">
@@ -35,15 +35,15 @@ export function Navbar({
                   </span>
                 </button>
               )}
-              {showCart && (
+              {showThemeToggle && (
                 <button
                   type="button"
                   className="icon-button"
-                  aria-label="Shopping bag"
-                  onClick={onCartClick}
+                  aria-label="Toggle theme"
+                  onClick={onThemeToggle}
                 >
                   <span className="material-symbols-outlined" aria-hidden="true">
-                    shopping_bag
+                    contrast
                   </span>
                 </button>
               )}

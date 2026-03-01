@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks.js'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks/index.js'
 import { NewArrivalsSection } from '../../components/ui/NewArrivalsSection.jsx'
 import { fetchProducts, toggleFavorite } from '../model/productsSlice.js'
 import {
@@ -10,7 +10,7 @@ import {
   selectProductsStatus,
 } from '../model/selectors.js'
 
-export function NewArrivalsSectionContainer() {
+export function NewArrivalsSectionContainer({ onBuyWithCard }) {
   const dispatch = useAppDispatch()
   const products = useAppSelector(selectProducts)
   const favoriteIds = useAppSelector(selectFavoriteIds)
@@ -31,6 +31,10 @@ export function NewArrivalsSectionContainer() {
     dispatch(toggleFavorite(productId))
   }
 
+  const handleBuyWithCard = (product) => {
+    onBuyWithCard?.(product)
+  }
+
   return (
     <NewArrivalsSection
       products={products}
@@ -39,6 +43,7 @@ export function NewArrivalsSectionContainer() {
       error={error}
       onRetry={handleRetry}
       onToggleFavorite={handleToggleFavorite}
+      onBuyWithCard={handleBuyWithCard}
     />
   )
 }

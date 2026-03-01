@@ -3,17 +3,25 @@ import '../styles/ui/product-card.css'
 const fallbackProduct = {
   id: '',
   name: 'Unnamed product',
-  tone: '',
-  price: 0,
+  description: 'No description available.',
+  priceInCents: 0,
+  stock: 0,
+  currency: 'COP',
   imageUrl: '',
 }
 
-const defaultFormatPrice = (value) => `$${Number(value).toFixed(0)}`
+const defaultFormatPrice = (valueInCents, currency = 'COP') =>
+  new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 0,
+  }).format(Number(valueInCents) / 100)
 
 export function ProductCard({
   product = fallbackProduct,
   isFavorite = false,
   onToggleFavorite,
+  onBuyWithCard,
   formatPrice = defaultFormatPrice,
 }) {
   const safeProduct = { ...fallbackProduct, ...product }
@@ -42,10 +50,19 @@ export function ProductCard({
       <div className="product-card-meta">
         <div>
           <h3>{safeProduct.name}</h3>
-          <p>{safeProduct.tone}</p>
+          <p className="product-card-description">{safeProduct.description}</p>
+          <p className="product-card-stock">Stock: {safeProduct.stock} units</p>
         </div>
-        <strong>{formatPrice(safeProduct.price)}</strong>
+        <strong>{formatPrice(safeProduct.priceInCents, safeProduct.currency)}</strong>
       </div>
+      <button
+        type="button"
+        className="pay-with-card-btn"
+        onClick={() => onBuyWithCard?.(safeProduct)}
+        disabled={safeProduct.stock <= 0}
+      >
+        {safeProduct.stock > 0 ? 'Pay with credit card' : 'Out of stock'}
+      </button>
     </article>
   )
 }

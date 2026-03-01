@@ -57,6 +57,12 @@
   background: color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 
+.site-navbar .logo > span:last-child {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
 .top-nav {
   display: none;
   gap: 2.5rem;
@@ -64,6 +70,7 @@
 }
 
 .top-nav a {
+  position: relative;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-text);
@@ -71,6 +78,24 @@
 
 .top-nav a:hover {
   color: var(--color-primary);
+}
+
+.top-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  width: 100%;
+  height: 2px;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.top-nav a:hover::after,
+.top-nav a:focus-visible::after {
+  transform: scaleX(1);
 }
 
 .navbar-actions {
@@ -95,6 +120,27 @@
   background: color-mix(in srgb, var(--color-border) 45%, transparent);
 }
 
+.store-fab {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 0;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--color-primary);
+  color: #1c1917;
+  box-shadow: 0 12px 24px rgb(28 25 23 / 0.18);
+  cursor: pointer;
+  z-index: 60;
+}
+
+.store-fab:hover {
+  transform: translateY(-1px);
+}
+
 .site-footer {
   border-top: 1px solid var(--color-border);
   padding: 3rem 0;
@@ -108,6 +154,12 @@
 .site-footer .logo > span:first-child {
   width: 2rem;
   height: 2rem;
+}
+
+.site-footer .logo > span:last-child {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 .footer-content {

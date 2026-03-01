@@ -9,16 +9,35 @@ function buildUrl(path) {
 }
 
 export async function httpGet(path, { signal } = {}) {
-  const response = await fetch(buildUrl(path), {
+  return request(path, {
     method: 'GET',
+    signal,
+  })
+}
+
+export async function httpPost(path, body, { signal } = {}) {
+  return request(path, {
+    method: 'POST',
+    body: JSON.stringify(body),
+    signal,
+  })
+}
+
+async function request(path, init) {
+  const response = await fetch(buildUrl(path), {
+    method: init.method,
     headers: {
+      'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-    signal,
+    body: init.body,
+    signal: init.signal,
   })
 
   if (!response.ok) {
-    throw new Error(`Request failed (${response.status})`)
+    const payload = await response.json().catch(() => null)
+    const message = payload?.message ?? `Request failed (${response.status})`
+    throw new Error(message)
   }
 
   return response.json()

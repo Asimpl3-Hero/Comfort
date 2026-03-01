@@ -1,0 +1,126 @@
+.stepper-progress {
+  width: 100%;
+  padding-block: 0.2rem;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.stepper-progress-row {
+  --step-node-size: 1.55rem;
+  display: grid;
+  align-items: start;
+  column-gap: 0.6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stepper-progress-item {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  row-gap: 0.45rem;
+  text-align: center;
+  color: var(--color-muted);
+  transition: color 220ms ease;
+}
+
+.stepper-progress-node {
+  width: var(--step-node-size);
+  height: var(--step-node-size);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  color: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.stepper-progress-node .material-symbols-outlined {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.stepper-progress-label {
+  max-width: 10ch;
+  font-size: 0.88rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.stepper-progress-item.is-completed {
+  color: color-mix(in srgb, var(--color-primary) 72%, #1c1917);
+}
+
+.stepper-progress-item.is-completed .stepper-progress-node {
+  border-color: color-mix(in srgb, var(--color-primary) 88%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 82%, white);
+  color: color-mix(in srgb, var(--color-surface) 94%, #ffffff);
+}
+
+.stepper-progress-item.is-active {
+  color: color-mix(in srgb, var(--color-primary) 72%, #1c1917);
+}
+
+.stepper-progress-item.is-active .stepper-progress-node {
+  border-color: color-mix(in srgb, var(--color-primary) 88%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 95%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+.stepper-progress-item.is-pending {
+  color: color-mix(in srgb, var(--color-muted) 85%, transparent);
+}
+
+.stepper-progress-connector {
+  height: var(--step-node-size);
+  display: flex;
+  align-items: center;
+}
+
+.stepper-progress-connector-base {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-border) 80%, transparent);
+  overflow: hidden;
+}
+
+.stepper-progress-connector-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: color-mix(in srgb, var(--color-primary) 88%, transparent);
+  transition: width 280ms ease;
+}
+
+.stepper-progress-connector-fill.is-filled {
+  width: 100%;
+}
+
+@media (width <= 680px) {
+  .stepper-progress-item {
+    row-gap: 0.36rem;
+  }
+
+  .stepper-progress-node {
+    width: 1.35rem;
+    height: 1.35rem;
+    font-size: 0.72rem;
+  }
+
+  .stepper-progress-label {
+    font-size: 0.78rem;
+    max-width: 8ch;
+  }
+}
