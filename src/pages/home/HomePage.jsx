@@ -68,7 +68,7 @@ export function HomePage() {
     closeCheckout()
   }
 
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = async (checkoutData) => {
     if (!selectedProduct) {
       setSubmitError('No product selected.')
       return
@@ -82,6 +82,8 @@ export function HomePage() {
 
       const createdOrder = await createOrder({
         productId: selectedProduct.id,
+        paymentMethodType: checkoutData?.paymentMethodType ?? 'CARD',
+        paymentMethodData: checkoutData?.paymentMethodData,
       })
 
       setSubmitPhase('opening-checkout')
