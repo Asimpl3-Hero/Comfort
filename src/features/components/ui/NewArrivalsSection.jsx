@@ -12,6 +12,7 @@ export function NewArrivalsSection({
   viewAllHref = '#',
   onRetry,
   onToggleFavorite,
+  onOpenDetails,
   onAddToCart,
   retryLabel,
   emptyMessage,
@@ -71,6 +72,7 @@ export function NewArrivalsSection({
                 product={product}
                 isFavorite={favoriteIds.includes(product.id)}
                 onToggleFavorite={onToggleFavorite}
+                onOpenDetails={onOpenDetails}
                 onAddToCart={onAddToCart}
               />
             ))}

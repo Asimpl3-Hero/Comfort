@@ -1,7 +1,4 @@
-import { useTranslation } from 'react-i18next'
-
-import i18n, { toggleLanguage } from '../../i18n/index.js'
-import { Logo } from '../ui/Logo.jsx'
+import { Logo } from './Logo.jsx'
 
 export function Navbar({
   links = [],
@@ -9,11 +6,18 @@ export function Navbar({
   showThemeToggle = true,
   brandName = 'Comfort',
   brandIcon = 'spa',
+  currentLanguage = 'ES',
+  labels = {},
   onSearchClick,
   onThemeToggle,
+  onLanguageToggle,
 }) {
-  const { t } = useTranslation()
-  const currentLanguage = (i18n.resolvedLanguage ?? 'es').toUpperCase()
+  const resolvedLabels = {
+    primaryNav: labels.primaryNav ?? 'Primary navigation',
+    search: labels.search ?? 'Search',
+    toggleTheme: labels.toggleTheme ?? 'Toggle theme',
+    toggleLanguage: labels.toggleLanguage ?? 'Toggle language',
+  }
 
   return (
     <header className="site-navbar">
@@ -21,7 +25,7 @@ export function Navbar({
         <div className="navbar-shell">
           <div className="navbar-content">
             <Logo brandName={brandName} icon={brandIcon} />
-            <nav className="top-nav" aria-label={t('navbar.primaryNav')}>
+            <nav className="top-nav" aria-label={resolvedLabels.primaryNav}>
               {links.map((item) => (
                 <a key={item.id} href={item.href}>
                   {item.label}
@@ -33,7 +37,7 @@ export function Navbar({
                 <button
                   type="button"
                   className="icon-button"
-                  aria-label={t('navbar.search')}
+                  aria-label={resolvedLabels.search}
                   onClick={onSearchClick}
                 >
                   <span className="material-symbols-outlined" aria-hidden="true">
@@ -45,7 +49,7 @@ export function Navbar({
                 <button
                   type="button"
                   className="icon-button"
-                  aria-label={t('navbar.toggleTheme')}
+                  aria-label={resolvedLabels.toggleTheme}
                   onClick={onThemeToggle}
                 >
                   <span className="material-symbols-outlined" aria-hidden="true">
@@ -56,8 +60,8 @@ export function Navbar({
               <button
                 type="button"
                 className="icon-button"
-                aria-label={t('navbar.toggleLanguage')}
-                onClick={toggleLanguage}
+                aria-label={resolvedLabels.toggleLanguage}
+                onClick={onLanguageToggle}
               >
                 <span aria-hidden="true">{currentLanguage}</span>
               </button>

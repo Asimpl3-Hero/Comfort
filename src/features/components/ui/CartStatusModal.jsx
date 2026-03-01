@@ -3,15 +3,7 @@ import '../styles/ui/cart-status-modal.css'
 import { useTranslation } from 'react-i18next'
 
 import { useEscapeKey } from '../../../app/hooks/index.js'
-
-function formatMoney(amountInCents, currency = 'COP', language = 'es') {
-  const locale = language === 'es' ? 'es-CO' : 'en-US'
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency,
-    maximumFractionDigits: 0,
-  }).format(Number(amountInCents) / 100)
-}
+import { formatCurrencyFromCents } from '../../../shared/utils/currency.js'
 
 export function CartStatusModal({
   isOpen = false,
@@ -71,7 +63,7 @@ export function CartStatusModal({
                       </p>
                     </div>
                     <p className="cart-modal-item-total">
-                      {formatMoney(item.totalInCents, item.product.currency, language)}
+                      {formatCurrencyFromCents(item.totalInCents, item.product.currency, language)}
                     </p>
                   </li>
                 ))}
@@ -80,7 +72,7 @@ export function CartStatusModal({
                 <p>{t('cart.items', { count: totalQuantity })}</p>
                 <p>
                   {t('cart.total', {
-                    total: formatMoney(totalInCents, currency, language),
+                    total: formatCurrencyFromCents(totalInCents, currency, language),
                   })}
                 </p>
               </div>

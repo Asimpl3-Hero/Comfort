@@ -42,9 +42,15 @@ export const es = {
     unnamed: 'Producto sin nombre',
     noDescription: 'No hay descripcion disponible.',
     toggleFavorite: 'Alternar favorito para {{name}}',
+    viewDetails: 'Ver detalle de {{name}}',
     stock: 'Stock: {{count}} unidades',
     addToCart: 'Agregar al carrito',
     outOfStock: 'Sin stock',
+  },
+  productModal: {
+    ariaLabel: 'Detalle del producto',
+    title: 'Detalle del producto',
+    close: 'Cerrar',
   },
   features: {
     title: 'Por que elegir Comfort?',

@@ -17,7 +17,13 @@ export function AppLayout({
   onStoreFabClick,
   storeFabCount = 0,
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const currentLanguage = (i18n.resolvedLanguage ?? 'es').toUpperCase()
+
+  const handleLanguageToggle = () => {
+    const nextLanguage = (i18n.resolvedLanguage ?? 'es') === 'es' ? 'en' : 'es'
+    i18n.changeLanguage(nextLanguage)
+  }
 
   return (
     <div className="app-shell">
@@ -25,7 +31,15 @@ export function AppLayout({
         links={navLinks}
         showSearch={showSearch}
         showThemeToggle={showThemeToggle}
+        currentLanguage={currentLanguage}
+        labels={{
+          primaryNav: t('navbar.primaryNav'),
+          search: t('navbar.search'),
+          toggleTheme: t('navbar.toggleTheme'),
+          toggleLanguage: t('navbar.toggleLanguage'),
+        }}
         onThemeToggle={onThemeToggle}
+        onLanguageToggle={handleLanguageToggle}
       />
       <main>{children}</main>
       <Footer links={footerLinks} copy={footerCopy} />

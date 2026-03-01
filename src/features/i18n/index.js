@@ -1,12 +1,13 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
+import {
+  DEFAULT_LANGUAGE,
+  LANGUAGE_STORAGE_KEY,
+  SUPPORTED_LANGUAGES,
+} from '../../app/const/i18n.const.js'
 import { en } from './resources/en.js'
 import { es } from './resources/es.js'
-
-const LANGUAGE_STORAGE_KEY = 'comfort_lang'
-const SUPPORTED_LANGUAGES = ['en', 'es']
-const DEFAULT_LANGUAGE = 'es'
 
 function resolveInitialLanguage() {
   if (typeof window === 'undefined') {

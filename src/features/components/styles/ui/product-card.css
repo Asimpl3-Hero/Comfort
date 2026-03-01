@@ -5,6 +5,10 @@
   flex-direction: column;
 }
 
+.product-card.is-clickable {
+  cursor: pointer;
+}
+
 .product-card-media {
   position: relative;
   aspect-ratio: 3 / 4;

@@ -42,9 +42,15 @@ export const en = {
     unnamed: 'Unnamed product',
     noDescription: 'No description available.',
     toggleFavorite: 'Toggle favorite for {{name}}',
+    viewDetails: 'View details for {{name}}',
     stock: 'Stock: {{count}} units',
     addToCart: 'Add to cart',
     outOfStock: 'Out of stock',
+  },
+  productModal: {
+    ariaLabel: 'Product details',
+    title: 'Product details',
+    close: 'Close',
   },
   features: {
     title: 'Why Choose Comfort?',

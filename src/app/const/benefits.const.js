@@ -1,4 +1,4 @@
-export const benefitsData = [
+export const BENEFITS_DATA = [
   {
     id: 'sustainable-materials',
     icon: 'eco',

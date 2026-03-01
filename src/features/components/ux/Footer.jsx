@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-import { Logo } from '../ui/Logo.jsx'
+import { Logo } from './Logo.jsx'
 
 export function Footer({
   links = [],

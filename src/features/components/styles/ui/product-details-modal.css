@@ -1,0 +1,134 @@
+.product-details-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.product-details-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(15 23 42 / 0.46);
+}
+
+.product-details-panel {
+  position: relative;
+  width: min(760px, 100%);
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  background: var(--color-surface);
+  box-shadow: 0 24px 60px rgb(17 24 39 / 0.24);
+  overflow: hidden;
+}
+
+.product-details-header,
+.product-details-footer {
+  padding: 1rem 1.25rem;
+}
+
+.product-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.product-details-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.product-details-close {
+  border: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.product-details-close:hover {
+  background: color-mix(in srgb, var(--color-border) 45%, transparent);
+}
+
+.product-details-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.product-details-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.85rem;
+  background-color: #f5f5f4;
+  background-size: cover;
+  background-position: center;
+}
+
+.product-details-copy h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.product-details-copy p {
+  margin-top: 0.7rem;
+  color: var(--color-muted);
+}
+
+.product-details-price {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.product-details-stock {
+  font-weight: 600;
+}
+
+.product-details-footer {
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.product-details-secondary,
+.product-details-primary {
+  min-height: 2.5rem;
+  border-radius: 999px;
+  padding: 0 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.product-details-secondary {
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+}
+
+.product-details-primary {
+  border: 0;
+  background: var(--color-primary);
+  color: #1c1917;
+}
+
+.product-details-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (width >= 768px) {
+  .product-details-body {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+  }
+}

@@ -1,14 +1,20 @@
 import '../../features/components/styles/ui/home-sections.css'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import {
+  BENEFITS_DATA,
+  FOOTER_NAVIGATION_LINKS,
+  TOP_NAVIGATION_LINKS,
+} from '../../app/const/index.js'
 import { useAppDispatch, useAppSelector } from '../../app/hooks/index.js'
 import { CartStatusModal } from '../../features/components/ui/CartStatusModal.jsx'
 import { CheckoutStepperModal } from '../../features/components/ui/CheckoutStepperModal.jsx'
 import { FeaturesSection } from '../../features/components/ui/FeaturesSection.jsx'
 import { HeroSection } from '../../features/components/ui/HeroSection.jsx'
 import { NewsletterSection } from '../../features/components/ui/NewsletterSection.jsx'
+import { ProductDetailsModal } from '../../features/components/ui/ProductDetailsModal.jsx'
 import { AppLayout } from '../../features/components/ux/AppLayout.jsx'
 import {
   addItemToCart,
@@ -38,12 +44,11 @@ import {
 import { NewArrivalsSectionContainer } from '../../features/shop/products/containers/NewArrivalsSectionContainer.jsx'
 import { selectProducts } from '../../features/shop/products/state/index.js'
 import { toggleTheme } from '../../features/theme/state/index.js'
-import { benefitsData } from '../../shared/config/benefitsData.js'
-import { footerNavigationLinks, topNavigationLinks } from '../../shared/config/navigation.js'
 
 export function HomePage() {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const [selectedDetailsProduct, setSelectedDetailsProduct] = useState(null)
 
   const products = useAppSelector(selectProducts)
   const cartItems = useAppSelector(selectCartProducts)
@@ -62,7 +67,7 @@ export function HomePage() {
 
   const localizedTopNavigationLinks = useMemo(
     () =>
-      topNavigationLinks.map((item) => ({
+      TOP_NAVIGATION_LINKS.map((item) => ({
         ...item,
         label: t(`navigation.top.${item.id}`),
       })),
@@ -71,7 +76,7 @@ export function HomePage() {
 
   const localizedFooterNavigationLinks = useMemo(
     () =>
-      footerNavigationLinks.map((item) => ({
+      FOOTER_NAVIGATION_LINKS.map((item) => ({
         ...item,
         label: t(`navigation.footer.${item.id}`),
       })),
@@ -80,7 +85,7 @@ export function HomePage() {
 
   const localizedBenefits = useMemo(
     () =>
-      benefitsData.map((item) => ({
+      BENEFITS_DATA.map((item) => ({
         ...item,
         title: t(`features.items.${item.id}.title`),
         description: t(`features.items.${item.id}.description`),
@@ -124,6 +129,14 @@ export function HomePage() {
     await dispatch(submitOrder(checkoutData))
   }
 
+  const handleOpenProductDetails = (product) => {
+    setSelectedDetailsProduct(product)
+  }
+
+  const handleCloseProductDetails = () => {
+    setSelectedDetailsProduct(null)
+  }
+
   return (
     <AppLayout
       navLinks={localizedTopNavigationLinks}
@@ -135,9 +148,22 @@ export function HomePage() {
       storeFabCount={cartTotalQuantity}
     >
       <HeroSection />
-      <NewArrivalsSectionContainer onAddToCart={handleAddToCart} />
+      <NewArrivalsSectionContainer
+        onAddToCart={handleAddToCart}
+        onOpenDetails={handleOpenProductDetails}
+      />
       <FeaturesSection items={localizedBenefits} />
       <NewsletterSection />
+
+      <ProductDetailsModal
+        isOpen={Boolean(selectedDetailsProduct)}
+        product={selectedDetailsProduct}
+        onClose={handleCloseProductDetails}
+        onAddToCart={(product) => {
+          handleAddToCart(product)
+          handleCloseProductDetails()
+        }}
+      />
 
       {transactionMessage && (
         <section className="container" style={{ marginBottom: '1.5rem' }}>

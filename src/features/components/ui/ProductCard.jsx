@@ -2,24 +2,22 @@ import '../styles/ui/product-card.css'
 
 import { useTranslation } from 'react-i18next'
 
+import { formatCurrencyFromCents } from '../../../shared/utils/currency.js'
+
 export function ProductCard({
   product = {},
   isFavorite = false,
   onToggleFavorite,
+  onOpenDetails,
   onAddToCart,
   formatPrice,
 }) {
   const { t, i18n } = useTranslation()
   const language = i18n.resolvedLanguage ?? 'es'
-  const locale = language === 'es' ? 'es-CO' : 'en-US'
   const resolvedFormatPrice =
     formatPrice ??
     ((valueInCents, currency = 'COP') =>
-      new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency,
-        maximumFractionDigits: 0,
-      }).format(Number(valueInCents) / 100))
+      formatCurrencyFromCents(valueInCents, currency, language))
   const fallbackProduct = {
     id: '',
     name: t('product.unnamed'),
@@ -31,9 +29,30 @@ export function ProductCard({
   }
 
   const safeProduct = { ...fallbackProduct, ...product }
+  const isDetailsEnabled = typeof onOpenDetails === 'function'
+
+  const handleOpenDetails = () => {
+    onOpenDetails?.(safeProduct)
+  }
 
   return (
-    <article className="product-card">
+    <article
+      className={`product-card${isDetailsEnabled ? ' is-clickable' : ''}`}
+      role={isDetailsEnabled ? 'button' : undefined}
+      tabIndex={isDetailsEnabled ? 0 : undefined}
+      aria-label={isDetailsEnabled ? t('product.viewDetails', { name: safeProduct.name }) : undefined}
+      onClick={isDetailsEnabled ? handleOpenDetails : undefined}
+      onKeyDown={
+        isDetailsEnabled
+          ? (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                handleOpenDetails()
+              }
+            }
+          : undefined
+      }
+    >
       <div className="product-card-media">
         <div
           className="product-card-image"
@@ -46,7 +65,10 @@ export function ProductCard({
           className="favorite-button"
           aria-label={t('product.toggleFavorite', { name: safeProduct.name })}
           aria-pressed={isFavorite}
-          onClick={() => onToggleFavorite?.(safeProduct.id)}
+          onClick={(event) => {
+            event.stopPropagation()
+            onToggleFavorite?.(safeProduct.id)
+          }}
         >
           <span className="material-symbols-outlined" aria-hidden="true">
             {isFavorite ? 'favorite' : 'favorite_border'}
@@ -64,7 +86,10 @@ export function ProductCard({
       <button
         type="button"
         className="pay-with-card-btn"
-        onClick={() => onAddToCart?.(safeProduct)}
+        onClick={(event) => {
+          event.stopPropagation()
+          onAddToCart?.(safeProduct)
+        }}
         disabled={safeProduct.stock <= 0}
       >
         {safeProduct.stock > 0 ? t('product.addToCart') : t('product.outOfStock')}
