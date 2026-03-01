@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 56" role="img" aria-label="Amex">
+  <rect width="96" height="56" rx="8" fill="#016FD0" />
+  <rect x="10" y="12" width="76" height="32" rx="4" fill="#FFFFFF" fill-opacity="0.9" />
+  <text
+    x="48"
+    y="32"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="16"
+    text-anchor="middle"
+    fill="#016FD0"
+    font-weight="700"
+  >
+    AMEX
+  </text>
+</svg>

@@ -3,6 +3,9 @@ import '../styles/ui/checkout-stepper-modal.css'
 import { useMemo, useState } from 'react'
 
 import { useEscapeKey } from '../../../app/hooks/index.js'
+import amexLogo from '../../../shared/assets/cards/amex.svg'
+import mastercardLogo from '../../../shared/assets/cards/mastercard.svg'
+import visaLogo from '../../../shared/assets/cards/visa.svg'
 import { StepperProgress } from './StepperProgress.jsx'
 
 const defaultSteps = [
@@ -53,6 +56,24 @@ function formatMoney(amountInCents, currency = 'COP') {
   }).format(Number(amountInCents) / 100)
 }
 
+const CARD_BRANDS = {
+  VISA: {
+    key: 'VISA',
+    label: 'Visa',
+    logo: visaLogo,
+  },
+  MASTERCARD: {
+    key: 'MASTERCARD',
+    label: 'Mastercard',
+    logo: mastercardLogo,
+  },
+  AMEX: {
+    key: 'AMEX',
+    label: 'Amex',
+    logo: amexLogo,
+  },
+}
+
 export function CheckoutStepperModal({
   isOpen = false,
   onClose,
@@ -82,6 +103,8 @@ export function CheckoutStepperModal({
 
   const productAmountInCents = Number(product?.priceInCents ?? 0)
   const currency = product?.currency ?? 'COP'
+  const detectedBrand = getCardBrand(paymentForm.cardNumber)
+  const detectedBrandMeta = CARD_BRANDS[detectedBrand] ?? null
   const totalInCents = useMemo(
     () => productAmountInCents + baseFeeInCents + deliveryFeeInCents,
     [baseFeeInCents, deliveryFeeInCents, productAmountInCents],
@@ -303,14 +326,23 @@ export function CheckoutStepperModal({
                   </label>
                   <label className="checkout-field checkout-field-full">
                     <span>Card number</span>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={19}
-                      value={paymentForm.cardNumber}
-                      disabled={isSubmitting}
-                      onChange={handlePaymentChange('cardNumber')}
-                    />
+                    <div className="card-input-shell">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={19}
+                        value={paymentForm.cardNumber}
+                        disabled={isSubmitting}
+                        onChange={handlePaymentChange('cardNumber')}
+                      />
+                      {detectedBrandMeta ? (
+                        <img
+                          className="card-brand-input-logo"
+                          src={detectedBrandMeta.logo}
+                          alt={`${detectedBrandMeta.label} logo`}
+                        />
+                      ) : null}
+                    </div>
                     {paymentErrors.cardNumber && (
                       <small className="checkout-error">{paymentErrors.cardNumber}</small>
                     )}
@@ -373,7 +405,14 @@ export function CheckoutStepperModal({
                     Payment
                   </h3>
                   <p className="checkout-strong">
-                    {getCardBrand(paymentForm.cardNumber)} {getMaskedCard(paymentForm.cardNumber)}
+                    {detectedBrandMeta ? (
+                      <img
+                        src={detectedBrandMeta.logo}
+                        alt={`${detectedBrandMeta.label} logo`}
+                        className="card-brand-inline-logo"
+                      />
+                    ) : null}
+                    {detectedBrand} {getMaskedCard(paymentForm.cardNumber)}
                   </p>
                   <p>Exp: {paymentForm.expiry}</p>
                 </article>

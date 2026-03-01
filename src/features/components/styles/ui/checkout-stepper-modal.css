@@ -177,10 +177,35 @@
   outline-offset: 1px;
 }
 
+.card-input-shell {
+  position: relative;
+}
+
+.card-input-shell input {
+  padding-right: 3.1rem;
+}
+
+.card-brand-input-logo {
+  position: absolute;
+  right: 0.45rem;
+  top: 50%;
+  width: 2.2rem;
+  border-radius: 0.25rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
 .checkout-error {
   color: #dc2626;
   font-size: 0.74rem;
   font-weight: 600;
+}
+
+.card-brand-inline-logo {
+  width: 2.3rem;
+  border-radius: 0.25rem;
+  margin-right: 0.35rem;
+  vertical-align: middle;
 }
 
 .checkout-cart-list {
