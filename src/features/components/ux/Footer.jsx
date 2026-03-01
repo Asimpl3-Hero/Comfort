@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { Logo } from '../ui/Logo.jsx'
 
 export function Footer({
@@ -6,11 +8,13 @@ export function Footer({
   brandName = 'Comfort',
   brandIcon = 'spa',
 }) {
+  const { t } = useTranslation()
+
   return (
     <footer className="site-footer">
       <div className="container footer-content">
         <Logo brandName={brandName} icon={brandIcon} />
-        <nav className="footer-nav" aria-label="Footer">
+        <nav className="footer-nav" aria-label={t('navbar.footerNav')}>
           {links.map((item) => (
             <a key={item.id} href={item.href}>
               {item.label}

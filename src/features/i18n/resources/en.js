@@ -1,0 +1,200 @@
+export const en = {
+  app: {
+    footerCopy: '(c) 2024 Comfort Inc.',
+  },
+  navbar: {
+    primaryNav: 'Primary',
+    footerNav: 'Footer',
+    search: 'Search',
+    toggleTheme: 'Toggle theme',
+    toggleLanguage: 'Switch language',
+  },
+  layout: {
+    openCartWithItems: 'Open cart with {{count}} items',
+  },
+  navigation: {
+    top: {
+      shop: 'Shop',
+      about: 'About',
+      journal: 'Journal',
+    },
+    footer: {
+      terms: 'Terms',
+      privacy: 'Privacy',
+      contact: 'Contact',
+    },
+  },
+  hero: {
+    title: 'Find Your Calm',
+    description:
+      'Experience the ultimate in soft, sustainable loungewear designed specifically for your quietest moments.',
+    ctaLabel: 'Shop Collection',
+    imageAlt: 'Woman relaxing in soft linen loungewear',
+  },
+  newArrivals: {
+    title: 'New Arrivals',
+    viewAll: 'View all products ->',
+    retry: 'Retry',
+    empty: 'No products available yet.',
+    errorDefault: 'Could not load products from backend',
+  },
+  product: {
+    unnamed: 'Unnamed product',
+    noDescription: 'No description available.',
+    toggleFavorite: 'Toggle favorite for {{name}}',
+    stock: 'Stock: {{count}} units',
+    addToCart: 'Add to cart',
+    outOfStock: 'Out of stock',
+  },
+  features: {
+    title: 'Why Choose Comfort?',
+    description:
+      'We believe in quality over quantity, purposefully crafting essentials using only the finest sustainable materials for your home and body.',
+    items: {
+      'sustainable-materials': {
+        title: 'Sustainable Materials',
+        description:
+          'Crafted with 100% organic cotton and recycled wool blends that are kind to the planet.',
+      },
+      'ethically-made': {
+        title: 'Ethically Made',
+        description:
+          'We partner with factories that ensure fair wages and safe working conditions for all.',
+      },
+      'softest-touch': {
+        title: 'Softest Touch',
+        description:
+          'Our signature fabrics are treated with natural softeners to feel like a gentle hug.',
+      },
+    },
+  },
+  newsletter: {
+    title: 'Join the Comfort Club',
+    description:
+      'Sign up for our newsletter to receive 15% off your first order and exclusive access to new launches.',
+    placeholder: 'Enter your email',
+    buttonLabel: 'Subscribe',
+  },
+  cart: {
+    ariaLabel: 'Shopping cart',
+    title: 'Cart status',
+    empty: 'Your cart is empty.',
+    qtyStock: 'Qty: {{quantity}} | Stock: {{stock}}',
+    items: 'Items: {{count}}',
+    total: 'Total: {{total}}',
+    clear: 'Empty cart',
+    proceed: 'Proceed to payment',
+  },
+  home: {
+    maxStockReached: 'You already added the maximum stock for {{name}}.',
+    productAdded: '{{name}} added to cart.',
+    loading: {
+      creatingOrder: 'Creating your order...',
+      openingCheckout: 'Opening secure checkout...',
+      confirmingPayment: 'Confirming payment status...',
+      processingPayment: 'Processing payment...',
+    },
+    dismiss: 'Dismiss',
+  },
+  checkout: {
+    title: 'Checkout',
+    progressAria: 'Checkout progress',
+    steps: {
+      shipping: 'Shipping',
+      payment: 'Payment',
+      review: 'Review',
+    },
+    sections: {
+      shippingDetails: 'Shipping Details',
+      paymentMethod: 'Payment Method',
+      shipping: 'Shipping',
+      payment: 'Payment',
+      paymentSummary: 'Payment Summary',
+    },
+    fields: {
+      fullName: 'Full name',
+      address1: 'Address line 1',
+      address2: 'Address line 2',
+      city: 'City',
+      state: 'State',
+      zip: 'ZIP code',
+      paymentType: 'Payment type',
+      cardholderName: 'Cardholder name',
+      cardNumber: 'Card number',
+      expiry: 'Expiry (MM/YY)',
+      cvv: 'CVV',
+      nequiPhoneNumber: 'Nequi phone number',
+      userType: 'User type',
+      documentType: 'Document type',
+      documentNumber: 'Document number',
+      sandboxBank: 'Sandbox bank',
+      paymentDescription: 'Payment description',
+      sandboxResult: 'Sandbox result',
+    },
+    placeholders: {
+      expiry: '12/25',
+    },
+    paymentMethods: {
+      creditCard: 'Credit Card',
+      nequi: 'Nequi',
+      pse: 'PSE',
+      bancolombiaTransfer: 'Bancolombia Transfer',
+      creditCardsLogoAlt: 'Credit cards logo',
+      nequiLogoAlt: 'Nequi logo',
+      pseLogoAlt: 'PSE logo',
+      bancolombiaLogoAlt: 'Bancolombia logo',
+    },
+    options: {
+      naturalPerson: 'Natural person',
+      legalEntity: 'Legal entity',
+      approvedBank: 'Bank that approves',
+      declinedBank: 'Bank that declines',
+      approved: 'Approved',
+      declined: 'Declined',
+    },
+    summary: {
+      baseFee: 'Base fee',
+      deliveryFee: 'Delivery fee',
+      totalToPay: 'Total to pay',
+      exp: 'Exp: {{value}}',
+    },
+    secureTransaction: 'Secure encrypted transaction',
+    buttons: {
+      back: 'Back',
+      continue: 'Continue',
+      payWithCreditCard: 'Pay with credit card',
+      processingPayment: 'Processing payment...',
+    },
+    loading: {
+      pendingNote: 'Payment is still pending. We will keep checking for confirmation.',
+    },
+    validation: {
+      fullNameRequired: 'Full name is required',
+      addressRequired: 'Address is required',
+      cityRequired: 'City is required',
+      stateRequired: 'State is required',
+      zipRequired: 'ZIP code is required',
+      cardholderRequired: 'Cardholder name is required',
+      cardNumberInvalid: 'Card number is invalid',
+      expiryFormat: 'Use MM/YY format',
+      cvvInvalid: 'CVV is invalid',
+      nequiPhoneInvalid: 'Nequi number must be 10 digits',
+      documentRequired: 'Document number is required',
+      descriptionRequired: 'Description is required',
+      descriptionMax30: 'Description max length is 30',
+      descriptionMax64: 'Description max length is 64',
+    },
+    paymentDescription: {
+      bancolombiaTransfer: 'BANCOLOMBIA_TRANSFER',
+    },
+    async: {
+      emptyCart: 'Your cart is empty.',
+      noProductSelected: 'No product selected.',
+      productUnavailable: 'Selected product is not available.',
+      orderStillPending: 'Order {{orderId}} is still pending. Check status in a moment.',
+      paymentApproved: 'Payment approved. Order {{orderId}} confirmed.',
+      paymentDeclined: 'Payment declined for order {{orderId}}.',
+      couldNotCreateOrder: 'Could not create the order.',
+    },
+  },
+}

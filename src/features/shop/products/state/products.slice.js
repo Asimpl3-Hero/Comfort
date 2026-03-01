@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { getProducts } from '../../../../shared/api/productsApi.js'
+import i18n from '../../../i18n/index.js'
 
 const initialState = {
   items: [],
@@ -48,7 +49,7 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.payload ?? 'Could not load products'
+        state.error = action.payload ?? i18n.t('newArrivals.errorDefault')
       })
   },
 })

@@ -1,5 +1,8 @@
 import '../../features/components/styles/ui/home-sections.css'
 
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { useAppDispatch, useAppSelector } from '../../app/hooks/index.js'
 import { CartStatusModal } from '../../features/components/ui/CartStatusModal.jsx'
 import { CheckoutStepperModal } from '../../features/components/ui/CheckoutStepperModal.jsx'
@@ -38,14 +41,10 @@ import { toggleTheme } from '../../features/theme/state/index.js'
 import { benefitsData } from '../../shared/config/benefitsData.js'
 import { footerNavigationLinks, topNavigationLinks } from '../../shared/config/navigation.js'
 
-const loadingMessageByPhase = {
-  'creating-order': 'Creating your order...',
-  'opening-checkout': 'Opening secure checkout...',
-  'confirming-payment': 'Confirming payment status...',
-}
-
 export function HomePage() {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
   const products = useAppSelector(selectProducts)
   const cartItems = useAppSelector(selectCartProducts)
   const cartItemsByProductId = useAppSelector(selectCartItemsByProductId)
@@ -61,6 +60,40 @@ export function HomePage() {
   const isLongPending = useAppSelector(selectIsLongPending)
   const transactionMessage = useAppSelector(selectTransactionMessage)
 
+  const localizedTopNavigationLinks = useMemo(
+    () =>
+      topNavigationLinks.map((item) => ({
+        ...item,
+        label: t(`navigation.top.${item.id}`),
+      })),
+    [t],
+  )
+
+  const localizedFooterNavigationLinks = useMemo(
+    () =>
+      footerNavigationLinks.map((item) => ({
+        ...item,
+        label: t(`navigation.footer.${item.id}`),
+      })),
+    [t],
+  )
+
+  const localizedBenefits = useMemo(
+    () =>
+      benefitsData.map((item) => ({
+        ...item,
+        title: t(`features.items.${item.id}.title`),
+        description: t(`features.items.${item.id}.description`),
+      })),
+    [t],
+  )
+
+  const loadingMessageByPhase = {
+    'creating-order': t('home.loading.creatingOrder'),
+    'opening-checkout': t('home.loading.openingCheckout'),
+    'confirming-payment': t('home.loading.confirmingPayment'),
+  }
+
   const selectedProduct = products.find((item) => item.id === selectedProductId) ?? null
 
   const handleAddToCart = (product) => {
@@ -71,12 +104,12 @@ export function HomePage() {
     const selectedQty = Number(cartItemsByProductId[product.id] ?? 0)
     const availableStock = Number(product.stock ?? 0)
     if (selectedQty >= availableStock) {
-      dispatch(setTransactionMessage(`You already added the maximum stock for ${product.name}.`))
+      dispatch(setTransactionMessage(t('home.maxStockReached', { name: product.name })))
       return
     }
 
     dispatch(addItemToCart({ productId: product.id }))
-    dispatch(setTransactionMessage(`${product.name} added to cart.`))
+    dispatch(setTransactionMessage(t('home.productAdded', { name: product.name })))
   }
 
   const handleCloseCheckout = () => {
@@ -93,9 +126,9 @@ export function HomePage() {
 
   return (
     <AppLayout
-      navLinks={topNavigationLinks}
-      footerLinks={footerNavigationLinks}
-      footerCopy="(c) 2024 Comfort Inc."
+      navLinks={localizedTopNavigationLinks}
+      footerLinks={localizedFooterNavigationLinks}
+      footerCopy={t('app.footerCopy')}
       onThemeToggle={() => dispatch(toggleTheme())}
       showStoreFab
       onStoreFabClick={() => dispatch(openCartModal())}
@@ -103,7 +136,7 @@ export function HomePage() {
     >
       <HeroSection />
       <NewArrivalsSectionContainer onAddToCart={handleAddToCart} />
-      <FeaturesSection items={benefitsData} />
+      <FeaturesSection items={localizedBenefits} />
       <NewsletterSection />
 
       {transactionMessage && (
@@ -111,7 +144,7 @@ export function HomePage() {
           <div className="products-state-card" role="status" aria-live="polite">
             <p>{transactionMessage}</p>
             <button type="button" onClick={() => dispatch(dismissTransactionMessage())}>
-              Dismiss
+              {t('home.dismiss')}
             </button>
           </div>
         </section>
@@ -138,7 +171,9 @@ export function HomePage() {
           onPlaceOrder={handlePlaceOrder}
           isSubmitting={isSubmittingOrder}
           submitError={submitError}
-          loadingMessage={loadingMessageByPhase[submitPhase] ?? 'Processing payment...'}
+          loadingMessage={
+            loadingMessageByPhase[submitPhase] ?? t('home.loading.processingPayment')
+          }
           isPendingProlonged={isLongPending}
         />
       )}

@@ -1,29 +1,35 @@
 import '../styles/ui/product-card.css'
 
-const fallbackProduct = {
-  id: '',
-  name: 'Unnamed product',
-  description: 'No description available.',
-  priceInCents: 0,
-  stock: 0,
-  currency: 'COP',
-  imageUrl: '',
-}
-
-const defaultFormatPrice = (valueInCents, currency = 'COP') =>
-  new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency,
-    maximumFractionDigits: 0,
-  }).format(Number(valueInCents) / 100)
+import { useTranslation } from 'react-i18next'
 
 export function ProductCard({
-  product = fallbackProduct,
+  product = {},
   isFavorite = false,
   onToggleFavorite,
   onAddToCart,
-  formatPrice = defaultFormatPrice,
+  formatPrice,
 }) {
+  const { t, i18n } = useTranslation()
+  const language = i18n.resolvedLanguage ?? 'es'
+  const locale = language === 'es' ? 'es-CO' : 'en-US'
+  const resolvedFormatPrice =
+    formatPrice ??
+    ((valueInCents, currency = 'COP') =>
+      new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency,
+        maximumFractionDigits: 0,
+      }).format(Number(valueInCents) / 100))
+  const fallbackProduct = {
+    id: '',
+    name: t('product.unnamed'),
+    description: t('product.noDescription'),
+    priceInCents: 0,
+    stock: 0,
+    currency: 'COP',
+    imageUrl: '',
+  }
+
   const safeProduct = { ...fallbackProduct, ...product }
 
   return (
@@ -38,7 +44,7 @@ export function ProductCard({
         <button
           type="button"
           className="favorite-button"
-          aria-label={`Toggle favorite for ${safeProduct.name}`}
+          aria-label={t('product.toggleFavorite', { name: safeProduct.name })}
           aria-pressed={isFavorite}
           onClick={() => onToggleFavorite?.(safeProduct.id)}
         >
@@ -51,9 +57,9 @@ export function ProductCard({
         <div className="product-card-copy">
           <h3 className="product-card-title">{safeProduct.name}</h3>
           <p className="product-card-description">{safeProduct.description}</p>
-          <p className="product-card-stock">Stock: {safeProduct.stock} units</p>
+          <p className="product-card-stock">{t('product.stock', { count: safeProduct.stock })}</p>
         </div>
-        <strong>{formatPrice(safeProduct.priceInCents, safeProduct.currency)}</strong>
+        <strong>{resolvedFormatPrice(safeProduct.priceInCents, safeProduct.currency)}</strong>
       </div>
       <button
         type="button"
@@ -61,7 +67,7 @@ export function ProductCard({
         onClick={() => onAddToCart?.(safeProduct)}
         disabled={safeProduct.stock <= 0}
       >
-        {safeProduct.stock > 0 ? 'Add to cart' : 'Out of stock'}
+        {safeProduct.stock > 0 ? t('product.addToCart') : t('product.outOfStock')}
       </button>
     </article>
   )

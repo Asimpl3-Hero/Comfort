@@ -1,3 +1,6 @@
+import { useTranslation } from 'react-i18next'
+
+import i18n, { toggleLanguage } from '../../i18n/index.js'
 import { Logo } from '../ui/Logo.jsx'
 
 export function Navbar({
@@ -9,13 +12,16 @@ export function Navbar({
   onSearchClick,
   onThemeToggle,
 }) {
+  const { t } = useTranslation()
+  const currentLanguage = (i18n.resolvedLanguage ?? 'es').toUpperCase()
+
   return (
     <header className="site-navbar">
       <div className="container">
         <div className="navbar-shell">
           <div className="navbar-content">
             <Logo brandName={brandName} icon={brandIcon} />
-            <nav className="top-nav" aria-label="Primary">
+            <nav className="top-nav" aria-label={t('navbar.primaryNav')}>
               {links.map((item) => (
                 <a key={item.id} href={item.href}>
                   {item.label}
@@ -27,7 +33,7 @@ export function Navbar({
                 <button
                   type="button"
                   className="icon-button"
-                  aria-label="Search"
+                  aria-label={t('navbar.search')}
                   onClick={onSearchClick}
                 >
                   <span className="material-symbols-outlined" aria-hidden="true">
@@ -39,7 +45,7 @@ export function Navbar({
                 <button
                   type="button"
                   className="icon-button"
-                  aria-label="Toggle theme"
+                  aria-label={t('navbar.toggleTheme')}
                   onClick={onThemeToggle}
                 >
                   <span className="material-symbols-outlined" aria-hidden="true">
@@ -47,6 +53,14 @@ export function Navbar({
                   </span>
                 </button>
               )}
+              <button
+                type="button"
+                className="icon-button"
+                aria-label={t('navbar.toggleLanguage')}
+                onClick={toggleLanguage}
+              >
+                <span aria-hidden="true">{currentLanguage}</span>
+              </button>
             </div>
           </div>
         </div>

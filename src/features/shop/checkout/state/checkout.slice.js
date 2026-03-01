@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { createOrder, getOrderById } from '../../../../shared/api/ordersApi.js'
+import i18n from '../../../i18n/index.js'
 import { decrementItemFromCart } from '../../cart/state/index.js'
 import { fetchProducts } from '../../products/state/index.js'
 
@@ -27,7 +28,7 @@ export const proceedToCheckoutFromCart = createAsyncThunk(
     const state = getState()
     const cartEntries = Object.entries(state.cart.itemsByProductId)
     if (cartEntries.length === 0) {
-      return rejectWithValue('Your cart is empty.')
+      return rejectWithValue(i18n.t('checkout.async.emptyCart'))
     }
 
     const [firstProductId] = cartEntries[0]
@@ -42,12 +43,12 @@ export const submitOrder = createAsyncThunk(
     const productId = state.checkout.selectedProductId
 
     if (!productId) {
-      return rejectWithValue('No product selected.')
+      return rejectWithValue(i18n.t('checkout.async.noProductSelected'))
     }
 
     const product = state.products.items.find((item) => item.id === productId)
     if (!product) {
-      return rejectWithValue('Selected product is not available.')
+      return rejectWithValue(i18n.t('checkout.async.productUnavailable'))
     }
 
     try {
@@ -92,20 +93,34 @@ export const submitOrder = createAsyncThunk(
       if (!finalOrder) {
         dispatch(
           setTransactionMessage(
-            `Order ${createdOrder.orderId} is still pending. Check status in a moment.`,
+            i18n.t('checkout.async.orderStillPending', {
+              orderId: createdOrder.orderId,
+            }),
           ),
         )
       } else if (finalOrder.status === 'APPROVED') {
-        dispatch(setTransactionMessage(`Payment approved. Order ${createdOrder.orderId} confirmed.`))
+        dispatch(
+          setTransactionMessage(
+            i18n.t('checkout.async.paymentApproved', {
+              orderId: createdOrder.orderId,
+            }),
+          ),
+        )
         dispatch(decrementItemFromCart({ productId }))
       } else {
-        dispatch(setTransactionMessage(`Payment declined for order ${createdOrder.orderId}.`))
+        dispatch(
+          setTransactionMessage(
+            i18n.t('checkout.async.paymentDeclined', {
+              orderId: createdOrder.orderId,
+            }),
+          ),
+        )
       }
 
       await dispatch(fetchProducts())
       return { orderId: createdOrder.orderId, status: finalOrder?.status ?? 'PENDING' }
     } catch (error) {
-      return rejectWithValue(error.message ?? 'Could not create the order.')
+      return rejectWithValue(error.message ?? i18n.t('checkout.async.couldNotCreateOrder'))
     }
   },
 )
@@ -167,7 +182,7 @@ const checkoutSlice = createSlice({
         state.isSubmittingOrder = false
         state.submitPhase = ''
         state.isLongPending = false
-        state.submitError = action.payload ?? 'Could not create the order.'
+        state.submitError = action.payload ?? i18n.t('checkout.async.couldNotCreateOrder')
       })
   },
 })

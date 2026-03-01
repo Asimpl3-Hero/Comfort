@@ -1,4 +1,5 @@
 import './index.css'
+import './features/i18n/index.js'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'

@@ -1,0 +1,200 @@
+export const es = {
+  app: {
+    footerCopy: '(c) 2024 Comfort Inc.',
+  },
+  navbar: {
+    primaryNav: 'Principal',
+    footerNav: 'Pie de pagina',
+    search: 'Buscar',
+    toggleTheme: 'Cambiar tema',
+    toggleLanguage: 'Cambiar idioma',
+  },
+  layout: {
+    openCartWithItems: 'Abrir carrito con {{count}} articulos',
+  },
+  navigation: {
+    top: {
+      shop: 'Tienda',
+      about: 'Nosotros',
+      journal: 'Blog',
+    },
+    footer: {
+      terms: 'Terminos',
+      privacy: 'Privacidad',
+      contact: 'Contacto',
+    },
+  },
+  hero: {
+    title: 'Encuentra Tu Calma',
+    description:
+      'Descubre lo mejor en ropa de descanso suave y sostenible, disenada para tus momentos mas tranquilos.',
+    ctaLabel: 'Ver Coleccion',
+    imageAlt: 'Mujer relajandose con ropa comoda de lino',
+  },
+  newArrivals: {
+    title: 'Nuevos Productos',
+    viewAll: 'Ver todos los productos ->',
+    retry: 'Reintentar',
+    empty: 'Aun no hay productos disponibles.',
+    errorDefault: 'No se pudieron cargar los productos del backend',
+  },
+  product: {
+    unnamed: 'Producto sin nombre',
+    noDescription: 'No hay descripcion disponible.',
+    toggleFavorite: 'Alternar favorito para {{name}}',
+    stock: 'Stock: {{count}} unidades',
+    addToCart: 'Agregar al carrito',
+    outOfStock: 'Sin stock',
+  },
+  features: {
+    title: 'Por que elegir Comfort?',
+    description:
+      'Creemos en la calidad sobre la cantidad, creando esenciales con materiales sostenibles para tu hogar y tu bienestar.',
+    items: {
+      'sustainable-materials': {
+        title: 'Materiales Sostenibles',
+        description:
+          'Elaborado con algodon organico 100% y mezclas de lana reciclada que cuidan el planeta.',
+      },
+      'ethically-made': {
+        title: 'Hecho Eticamente',
+        description:
+          'Trabajamos con fabricas que garantizan salarios justos y condiciones seguras para todos.',
+      },
+      'softest-touch': {
+        title: 'Suavidad Superior',
+        description:
+          'Nuestras telas distintivas usan suavizantes naturales para una sensacion de abrazo.',
+      },
+    },
+  },
+  newsletter: {
+    title: 'Unete al Club Comfort',
+    description:
+      'Suscribete a nuestro boletin para recibir 15% de descuento en tu primera compra y acceso exclusivo a nuevos lanzamientos.',
+    placeholder: 'Ingresa tu correo',
+    buttonLabel: 'Suscribirme',
+  },
+  cart: {
+    ariaLabel: 'Carrito de compras',
+    title: 'Estado del carrito',
+    empty: 'Tu carrito esta vacio.',
+    qtyStock: 'Cant: {{quantity}} | Stock: {{stock}}',
+    items: 'Articulos: {{count}}',
+    total: 'Total: {{total}}',
+    clear: 'Vaciar carrito',
+    proceed: 'Proceder al pago',
+  },
+  home: {
+    maxStockReached: 'Ya agregaste el stock maximo para {{name}}.',
+    productAdded: '{{name}} agregado al carrito.',
+    loading: {
+      creatingOrder: 'Creando tu orden...',
+      openingCheckout: 'Abriendo checkout seguro...',
+      confirmingPayment: 'Confirmando estado del pago...',
+      processingPayment: 'Procesando pago...',
+    },
+    dismiss: 'Cerrar',
+  },
+  checkout: {
+    title: 'Pago',
+    progressAria: 'Progreso del pago',
+    steps: {
+      shipping: 'Envio',
+      payment: 'Pago',
+      review: 'Resumen',
+    },
+    sections: {
+      shippingDetails: 'Datos de Envio',
+      paymentMethod: 'Metodo de Pago',
+      shipping: 'Envio',
+      payment: 'Pago',
+      paymentSummary: 'Resumen de Pago',
+    },
+    fields: {
+      fullName: 'Nombre completo',
+      address1: 'Direccion linea 1',
+      address2: 'Direccion linea 2',
+      city: 'Ciudad',
+      state: 'Departamento',
+      zip: 'Codigo postal',
+      paymentType: 'Tipo de pago',
+      cardholderName: 'Nombre del titular',
+      cardNumber: 'Numero de tarjeta',
+      expiry: 'Vencimiento (MM/YY)',
+      cvv: 'CVV',
+      nequiPhoneNumber: 'Numero de Nequi',
+      userType: 'Tipo de usuario',
+      documentType: 'Tipo de documento',
+      documentNumber: 'Numero de documento',
+      sandboxBank: 'Banco sandbox',
+      paymentDescription: 'Descripcion del pago',
+      sandboxResult: 'Resultado sandbox',
+    },
+    placeholders: {
+      expiry: '12/25',
+    },
+    paymentMethods: {
+      creditCard: 'Tarjeta de Credito',
+      nequi: 'Nequi',
+      pse: 'PSE',
+      bancolombiaTransfer: 'Transferencia Bancolombia',
+      creditCardsLogoAlt: 'Logo de tarjetas',
+      nequiLogoAlt: 'Logo de Nequi',
+      pseLogoAlt: 'Logo de PSE',
+      bancolombiaLogoAlt: 'Logo de Bancolombia',
+    },
+    options: {
+      naturalPerson: 'Persona natural',
+      legalEntity: 'Persona juridica',
+      approvedBank: 'Banco que aprueba',
+      declinedBank: 'Banco que rechaza',
+      approved: 'Aprobado',
+      declined: 'Rechazado',
+    },
+    summary: {
+      baseFee: 'Tarifa base',
+      deliveryFee: 'Costo de envio',
+      totalToPay: 'Total a pagar',
+      exp: 'Vence: {{value}}',
+    },
+    secureTransaction: 'Transaccion segura cifrada',
+    buttons: {
+      back: 'Atras',
+      continue: 'Continuar',
+      payWithCreditCard: 'Pagar con tarjeta',
+      processingPayment: 'Procesando pago...',
+    },
+    loading: {
+      pendingNote: 'El pago sigue pendiente. Continuaremos verificando la confirmacion.',
+    },
+    validation: {
+      fullNameRequired: 'El nombre completo es obligatorio',
+      addressRequired: 'La direccion es obligatoria',
+      cityRequired: 'La ciudad es obligatoria',
+      stateRequired: 'El departamento es obligatorio',
+      zipRequired: 'El codigo postal es obligatorio',
+      cardholderRequired: 'El nombre del titular es obligatorio',
+      cardNumberInvalid: 'El numero de tarjeta no es valido',
+      expiryFormat: 'Usa formato MM/YY',
+      cvvInvalid: 'El CVV no es valido',
+      nequiPhoneInvalid: 'El numero de Nequi debe tener 10 digitos',
+      documentRequired: 'El numero de documento es obligatorio',
+      descriptionRequired: 'La descripcion es obligatoria',
+      descriptionMax30: 'La descripcion tiene maximo 30 caracteres',
+      descriptionMax64: 'La descripcion tiene maximo 64 caracteres',
+    },
+    paymentDescription: {
+      bancolombiaTransfer: 'BANCOLOMBIA_TRANSFER',
+    },
+    async: {
+      emptyCart: 'Tu carrito esta vacio.',
+      noProductSelected: 'No hay producto seleccionado.',
+      productUnavailable: 'El producto seleccionado no esta disponible.',
+      orderStillPending: 'La orden {{orderId}} sigue pendiente. Consulta el estado en un momento.',
+      paymentApproved: 'Pago aprobado. Orden {{orderId}} confirmada.',
+      paymentDeclined: 'Pago rechazado para la orden {{orderId}}.',
+      couldNotCreateOrder: 'No se pudo crear la orden.',
+    },
+  },
+}

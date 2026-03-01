@@ -1,15 +1,21 @@
+import { useTranslation } from 'react-i18next'
+
 export function FeaturesSection({
-  title = 'Why Choose Comfort?',
-  description = 'We believe in quality over quantity, purposefully crafting essentials using only the finest sustainable materials for your home and body.',
+  title,
+  description,
   items = [],
 }) {
+  const { t } = useTranslation()
+  const resolvedTitle = title ?? t('features.title')
+  const resolvedDescription = description ?? t('features.description')
+
   return (
     <section className="features-section">
       <div className="features-surface">
         <div className="container">
           <div className="features-copy">
-            <h2>{title}</h2>
-            <p>{description}</p>
+            <h2>{resolvedTitle}</h2>
+            <p>{resolvedDescription}</p>
           </div>
           <div className="features-grid">
             {items.map((benefit) => (

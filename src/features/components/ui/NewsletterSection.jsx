@@ -1,10 +1,18 @@
+import { useTranslation } from 'react-i18next'
+
 export function NewsletterSection({
-  title = 'Join the Comfort Club',
-  description = 'Sign up for our newsletter to receive 15% off your first order and exclusive access to new launches.',
-  placeholder = 'Enter your email',
-  buttonLabel = 'Subscribe',
+  title,
+  description,
+  placeholder,
+  buttonLabel,
   onSubmit,
 }) {
+  const { t } = useTranslation()
+  const resolvedTitle = title ?? t('newsletter.title')
+  const resolvedDescription = description ?? t('newsletter.description')
+  const resolvedPlaceholder = placeholder ?? t('newsletter.placeholder')
+  const resolvedButtonLabel = buttonLabel ?? t('newsletter.buttonLabel')
+
   const handleSubmit = (event) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
@@ -15,11 +23,11 @@ export function NewsletterSection({
     <section className="newsletter-section">
       <div className="container">
         <div className="newsletter-card newsletter-content">
-          <h2>{title}</h2>
-          <p>{description}</p>
+          <h2>{resolvedTitle}</h2>
+          <p>{resolvedDescription}</p>
           <form className="newsletter-form" onSubmit={handleSubmit}>
-            <input name="email" type="email" placeholder={placeholder} required />
-            <button type="submit">{buttonLabel}</button>
+            <input name="email" type="email" placeholder={resolvedPlaceholder} required />
+            <button type="submit">{resolvedButtonLabel}</button>
           </form>
         </div>
       </div>

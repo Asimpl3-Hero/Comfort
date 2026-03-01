@@ -1,15 +1,10 @@
 import '../styles/ui/checkout-stepper-modal.css'
 
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useEscapeKey } from '../../../app/hooks/index.js'
 import { StepperProgress } from './StepperProgress.jsx'
-
-const defaultSteps = [
-  { id: 'shipping', label: 'Shipping' },
-  { id: 'payment', label: 'Payment' },
-  { id: 'review', label: 'Review' },
-]
 
 const defaultShipping = {
   fullName: 'John Doe',
@@ -56,8 +51,9 @@ function getMaskedCard(cardNumber) {
   return `**** ${last4}`
 }
 
-function formatMoney(amountInCents, currency = 'COP') {
-  return new Intl.NumberFormat('es-CO', {
+function formatMoney(amountInCents, currency = 'COP', language = 'es') {
+  const locale = language === 'es' ? 'es-CO' : 'en-US'
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
     maximumFractionDigits: 0,
@@ -91,7 +87,7 @@ function mapPaymentMethodData(paymentMethodType, data) {
   }
 }
 
-function describePaymentMethod(paymentMethodType, cardData, data, detectedBrand) {
+function describePaymentMethod(paymentMethodType, cardData, data, detectedBrand, t) {
   if (paymentMethodType === 'CARD') {
     return `${detectedBrand} ${getMaskedCard(cardData.cardNumber)}`
   }
@@ -104,7 +100,7 @@ function describePaymentMethod(paymentMethodType, cardData, data, detectedBrand)
     return `PSE ${data.pseUserLegalIdType} ${data.pseUserLegalId}`
   }
 
-  return 'BANCOLOMBIA_TRANSFER'
+  return t('checkout.paymentDescription.bancolombiaTransfer')
 }
 
 const CARD_BRANDS = {
@@ -128,39 +124,39 @@ const CARD_BRANDS = {
 const PAYMENT_METHOD_OPTIONS = [
   {
     value: 'CARD',
-    label: 'Credit Card',
     badge: 'CARD',
     logoSrc: '/images/logos/Credit%20cards.jpg',
-    logoAlt: 'Credit cards logo',
+    labelKey: 'checkout.paymentMethods.creditCard',
+    logoAltKey: 'checkout.paymentMethods.creditCardsLogoAlt',
   },
   {
     value: 'NEQUI',
-    label: 'Nequi',
     badge: 'NEQUI',
     logoSrc: '/images/logos/Nequi-removebg-preview.png',
-    logoAlt: 'Nequi logo',
+    labelKey: 'checkout.paymentMethods.nequi',
+    logoAltKey: 'checkout.paymentMethods.nequiLogoAlt',
   },
   {
     value: 'PSE',
-    label: 'PSE',
     badge: 'PSE',
     logoSrc: '/images/logos/PSE-removebg-preview.png',
-    logoAlt: 'PSE logo',
+    labelKey: 'checkout.paymentMethods.pse',
+    logoAltKey: 'checkout.paymentMethods.pseLogoAlt',
   },
   {
     value: 'BANCOLOMBIA_TRANSFER',
-    label: 'Bancolombia Transfer',
     badge: 'BANCO',
     logoSrc: '/images/logos/Bancolombia-removebg-preview.png',
-    logoAlt: 'Bancolombia logo',
+    labelKey: 'checkout.paymentMethods.bancolombiaTransfer',
+    logoAltKey: 'checkout.paymentMethods.bancolombiaLogoAlt',
   },
 ]
 
 export function CheckoutStepperModal({
   isOpen = false,
   onClose,
-  title = 'Checkout',
-  steps = defaultSteps,
+  title,
+  steps,
   shipping = defaultShipping,
   payment = defaultPayment,
   product = null,
@@ -168,21 +164,32 @@ export function CheckoutStepperModal({
   deliveryFeeInCents = 3500,
   isSubmitting = false,
   submitError = '',
-  loadingMessage = 'Processing payment...',
+  loadingMessage,
   isPendingProlonged = false,
   onPlaceOrder,
 }) {
+  const { t, i18n } = useTranslation()
+  const language = i18n.resolvedLanguage ?? 'es'
+
+  const resolvedTitle = title ?? t('checkout.title')
+  const resolvedSteps =
+    steps ??
+    [
+      { id: 'shipping', label: t('checkout.steps.shipping') },
+      { id: 'payment', label: t('checkout.steps.payment') },
+      { id: 'review', label: t('checkout.steps.review') },
+    ]
+  const resolvedLoadingMessage = loadingMessage ?? t('home.loading.processingPayment')
+
   const [activeStepIndex, setActiveStepIndex] = useState(0)
   const [shippingForm, setShippingForm] = useState({ ...defaultShipping, ...shipping })
   const [paymentForm, setPaymentForm] = useState({ ...defaultPayment, ...payment })
   const [shippingErrors, setShippingErrors] = useState({})
   const [paymentErrors, setPaymentErrors] = useState({})
   const [paymentMethodType, setPaymentMethodType] = useState('CARD')
-  const [paymentMethodDataForm, setPaymentMethodDataForm] = useState(
-    defaultPaymentMethodData,
-  )
+  const [paymentMethodDataForm, setPaymentMethodDataForm] = useState(defaultPaymentMethodData)
 
-  const maxStep = steps.length - 1
+  const maxStep = resolvedSteps.length - 1
   const isLastStep = activeStepIndex === maxStep
 
   useEscapeKey(onClose, isOpen)
@@ -202,11 +209,11 @@ export function CheckoutStepperModal({
 
   const validateShipping = () => {
     const errors = {}
-    if (!shippingForm.fullName.trim()) errors.fullName = 'Full name is required'
-    if (!shippingForm.address1.trim()) errors.address1 = 'Address is required'
-    if (!shippingForm.city.trim()) errors.city = 'City is required'
-    if (!shippingForm.state.trim()) errors.state = 'State is required'
-    if (!shippingForm.zip.trim()) errors.zip = 'ZIP code is required'
+    if (!shippingForm.fullName.trim()) errors.fullName = t('checkout.validation.fullNameRequired')
+    if (!shippingForm.address1.trim()) errors.address1 = t('checkout.validation.addressRequired')
+    if (!shippingForm.city.trim()) errors.city = t('checkout.validation.cityRequired')
+    if (!shippingForm.state.trim()) errors.state = t('checkout.validation.stateRequired')
+    if (!shippingForm.zip.trim()) errors.zip = t('checkout.validation.zipRequired')
     setShippingErrors(errors)
     return Object.keys(errors).length === 0
   }
@@ -216,38 +223,42 @@ export function CheckoutStepperModal({
 
     if (paymentMethodType === 'CARD') {
       const digits = getCardDigits(paymentForm.cardNumber)
-      if (!paymentForm.cardholder.trim()) errors.cardholder = 'Cardholder name is required'
-      if (digits.length < 13) errors.cardNumber = 'Card number is invalid'
-      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(paymentForm.expiry)) {
-        errors.expiry = 'Use MM/YY format'
+      if (!paymentForm.cardholder.trim()) {
+        errors.cardholder = t('checkout.validation.cardholderRequired')
       }
-      if (!/^\d{3,4}$/.test(paymentForm.cvv)) errors.cvv = 'CVV is invalid'
+      if (digits.length < 13) {
+        errors.cardNumber = t('checkout.validation.cardNumberInvalid')
+      }
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(paymentForm.expiry)) {
+        errors.expiry = t('checkout.validation.expiryFormat')
+      }
+      if (!/^\d{3,4}$/.test(paymentForm.cvv)) {
+        errors.cvv = t('checkout.validation.cvvInvalid')
+      }
     }
 
     if (paymentMethodType === 'NEQUI') {
       if (!/^\d{10}$/.test(paymentMethodDataForm.nequiPhoneNumber)) {
-        errors.nequiPhoneNumber = 'Nequi number must be 10 digits'
+        errors.nequiPhoneNumber = t('checkout.validation.nequiPhoneInvalid')
       }
     }
 
     if (paymentMethodType === 'PSE') {
       if (!paymentMethodDataForm.pseUserLegalId.trim()) {
-        errors.pseUserLegalId = 'Document number is required'
+        errors.pseUserLegalId = t('checkout.validation.documentRequired')
       }
       if (!paymentMethodDataForm.psePaymentDescription.trim()) {
-        errors.psePaymentDescription = 'Description is required'
+        errors.psePaymentDescription = t('checkout.validation.descriptionRequired')
       } else if (paymentMethodDataForm.psePaymentDescription.trim().length > 30) {
-        errors.psePaymentDescription = 'Description max length is 30'
+        errors.psePaymentDescription = t('checkout.validation.descriptionMax30')
       }
     }
 
     if (paymentMethodType === 'BANCOLOMBIA_TRANSFER') {
       if (!paymentMethodDataForm.bancolombiaPaymentDescription.trim()) {
-        errors.bancolombiaPaymentDescription = 'Description is required'
-      } else if (
-        paymentMethodDataForm.bancolombiaPaymentDescription.trim().length > 64
-      ) {
-        errors.bancolombiaPaymentDescription = 'Description max length is 64'
+        errors.bancolombiaPaymentDescription = t('checkout.validation.descriptionRequired')
+      } else if (paymentMethodDataForm.bancolombiaPaymentDescription.trim().length > 64) {
+        errors.bancolombiaPaymentDescription = t('checkout.validation.descriptionMax64')
       }
     }
 
@@ -323,14 +334,18 @@ export function CheckoutStepperModal({
       className="checkout-modal"
       role="dialog"
       aria-modal="true"
-      aria-label={title}
+      aria-label={resolvedTitle}
       onClick={isSubmitting ? undefined : onClose}
     >
       <div className="checkout-modal-backdrop" />
-      <div className="checkout-modal-panel" aria-busy={isSubmitting} onClick={(event) => event.stopPropagation()}>
+      <div
+        className="checkout-modal-panel"
+        aria-busy={isSubmitting}
+        onClick={(event) => event.stopPropagation()}
+      >
         <header className="checkout-modal-header">
           <div className="checkout-modal-headline">
-            <h2>{title}</h2>
+            <h2>{resolvedTitle}</h2>
             <button
               type="button"
               className="checkout-modal-close"
@@ -342,7 +357,11 @@ export function CheckoutStepperModal({
               </span>
             </button>
           </div>
-          <StepperProgress steps={steps} currentStep={activeStepIndex} ariaLabel="Checkout progress" />
+          <StepperProgress
+            steps={resolvedSteps}
+            currentStep={activeStepIndex}
+            ariaLabel={t('checkout.progressAria')}
+          />
         </header>
 
         <div className="checkout-modal-body">
@@ -353,11 +372,11 @@ export function CheckoutStepperModal({
                   <span className="material-symbols-outlined" aria-hidden="true">
                     local_shipping
                   </span>
-                  Shipping Details
+                  {t('checkout.sections.shippingDetails')}
                 </h3>
                 <div className="checkout-form-grid">
                   <label className="checkout-field checkout-field-full">
-                    <span>Full name</span>
+                    <span>{t('checkout.fields.fullName')}</span>
                     <input
                       type="text"
                       value={shippingForm.fullName}
@@ -369,7 +388,7 @@ export function CheckoutStepperModal({
                     )}
                   </label>
                   <label className="checkout-field checkout-field-full">
-                    <span>Address line 1</span>
+                    <span>{t('checkout.fields.address1')}</span>
                     <input
                       type="text"
                       value={shippingForm.address1}
@@ -381,7 +400,7 @@ export function CheckoutStepperModal({
                     )}
                   </label>
                   <label className="checkout-field checkout-field-full">
-                    <span>Address line 2</span>
+                    <span>{t('checkout.fields.address2')}</span>
                     <input
                       type="text"
                       value={shippingForm.address2}
@@ -390,7 +409,7 @@ export function CheckoutStepperModal({
                     />
                   </label>
                   <label className="checkout-field">
-                    <span>City</span>
+                    <span>{t('checkout.fields.city')}</span>
                     <input
                       type="text"
                       value={shippingForm.city}
@@ -402,7 +421,7 @@ export function CheckoutStepperModal({
                     )}
                   </label>
                   <label className="checkout-field">
-                    <span>State</span>
+                    <span>{t('checkout.fields.state')}</span>
                     <input
                       type="text"
                       value={shippingForm.state}
@@ -414,7 +433,7 @@ export function CheckoutStepperModal({
                     )}
                   </label>
                   <label className="checkout-field checkout-field-full">
-                    <span>ZIP code</span>
+                    <span>{t('checkout.fields.zip')}</span>
                     <input
                       type="text"
                       value={shippingForm.zip}
@@ -437,15 +456,15 @@ export function CheckoutStepperModal({
                   <span className="material-symbols-outlined" aria-hidden="true">
                     credit_card
                   </span>
-                  Payment Method
+                  {t('checkout.sections.paymentMethod')}
                 </h3>
                 <div className="checkout-form-grid">
                   <fieldset className="checkout-field checkout-field-full payment-method-fieldset">
-                    <legend>Payment type</legend>
+                    <legend>{t('checkout.fields.paymentType')}</legend>
                     <div
                       className="payment-method-options"
                       role="radiogroup"
-                      aria-label="Payment type"
+                      aria-label={t('checkout.fields.paymentType')}
                     >
                       {PAYMENT_METHOD_OPTIONS.map((option) => (
                         <label
@@ -465,12 +484,12 @@ export function CheckoutStepperModal({
                           <span className="payment-method-main">
                             <span className="payment-method-badge" aria-hidden="true">
                               {option.logoSrc ? (
-                                <img src={option.logoSrc} alt="" />
+                                <img src={option.logoSrc} alt={t(option.logoAltKey)} />
                               ) : (
                                 option.badge
                               )}
                             </span>
-                            <span className="payment-method-label">{option.label}</span>
+                            <span className="payment-method-label">{t(option.labelKey)}</span>
                           </span>
                           <span className="payment-method-radio-indicator" aria-hidden="true" />
                         </label>
@@ -479,74 +498,74 @@ export function CheckoutStepperModal({
                   </fieldset>
                   {paymentMethodType === 'CARD' && (
                     <>
-                  <label className="checkout-field checkout-field-full">
-                    <span>Cardholder name</span>
-                    <input
-                      type="text"
-                      value={paymentForm.cardholder}
-                      disabled={isSubmitting}
-                      onChange={handlePaymentChange('cardholder')}
-                    />
-                    {paymentErrors.cardholder && (
-                      <small className="checkout-error">{paymentErrors.cardholder}</small>
-                    )}
-                  </label>
-                  <label className="checkout-field checkout-field-full">
-                    <span>Card number</span>
-                    <div className="card-input-shell">
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        maxLength={19}
-                        value={paymentForm.cardNumber}
-                        disabled={isSubmitting}
-                        onChange={handlePaymentChange('cardNumber')}
-                      />
-                      {detectedBrandMeta ? (
-                        <img
-                          className="card-brand-input-logo"
-                          src={detectedBrandMeta.logo}
-                          alt={`${detectedBrandMeta.label} logo`}
+                      <label className="checkout-field checkout-field-full">
+                        <span>{t('checkout.fields.cardholderName')}</span>
+                        <input
+                          type="text"
+                          value={paymentForm.cardholder}
+                          disabled={isSubmitting}
+                          onChange={handlePaymentChange('cardholder')}
                         />
-                      ) : null}
-                    </div>
-                    {paymentErrors.cardNumber && (
-                      <small className="checkout-error">{paymentErrors.cardNumber}</small>
-                    )}
-                  </label>
-                  <label className="checkout-field">
-                    <span>Expiry (MM/YY)</span>
-                    <input
-                      type="text"
-                      maxLength={5}
-                      placeholder="12/25"
-                      value={paymentForm.expiry}
-                      disabled={isSubmitting}
-                      onChange={handlePaymentChange('expiry')}
-                    />
-                    {paymentErrors.expiry && (
-                      <small className="checkout-error">{paymentErrors.expiry}</small>
-                    )}
-                  </label>
-                  <label className="checkout-field">
-                    <span>CVV</span>
-                    <input
-                      type="password"
-                      inputMode="numeric"
-                      maxLength={4}
-                      value={paymentForm.cvv}
-                      disabled={isSubmitting}
-                      onChange={handlePaymentChange('cvv')}
-                    />
-                    {paymentErrors.cvv && (
-                      <small className="checkout-error">{paymentErrors.cvv}</small>
-                    )}
-                  </label>
+                        {paymentErrors.cardholder && (
+                          <small className="checkout-error">{paymentErrors.cardholder}</small>
+                        )}
+                      </label>
+                      <label className="checkout-field checkout-field-full">
+                        <span>{t('checkout.fields.cardNumber')}</span>
+                        <div className="card-input-shell">
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            maxLength={19}
+                            value={paymentForm.cardNumber}
+                            disabled={isSubmitting}
+                            onChange={handlePaymentChange('cardNumber')}
+                          />
+                          {detectedBrandMeta ? (
+                            <img
+                              className="card-brand-input-logo"
+                              src={detectedBrandMeta.logo}
+                              alt={`${detectedBrandMeta.label} logo`}
+                            />
+                          ) : null}
+                        </div>
+                        {paymentErrors.cardNumber && (
+                          <small className="checkout-error">{paymentErrors.cardNumber}</small>
+                        )}
+                      </label>
+                      <label className="checkout-field">
+                        <span>{t('checkout.fields.expiry')}</span>
+                        <input
+                          type="text"
+                          maxLength={5}
+                          placeholder={t('checkout.placeholders.expiry')}
+                          value={paymentForm.expiry}
+                          disabled={isSubmitting}
+                          onChange={handlePaymentChange('expiry')}
+                        />
+                        {paymentErrors.expiry && (
+                          <small className="checkout-error">{paymentErrors.expiry}</small>
+                        )}
+                      </label>
+                      <label className="checkout-field">
+                        <span>{t('checkout.fields.cvv')}</span>
+                        <input
+                          type="password"
+                          inputMode="numeric"
+                          maxLength={4}
+                          value={paymentForm.cvv}
+                          disabled={isSubmitting}
+                          onChange={handlePaymentChange('cvv')}
+                        />
+                        {paymentErrors.cvv && (
+                          <small className="checkout-error">{paymentErrors.cvv}</small>
+                        )}
+                      </label>
                     </>
                   )}
                   {paymentMethodType === 'NEQUI' && (
                     <label className="checkout-field checkout-field-full">
-                      <span>Nequi phone number</span>
+                      <span>{t('checkout.fields.nequiPhoneNumber')}</span>
                       <input
                         type="text"
                         inputMode="numeric"
@@ -563,18 +582,18 @@ export function CheckoutStepperModal({
                   {paymentMethodType === 'PSE' && (
                     <>
                       <label className="checkout-field">
-                        <span>User type</span>
+                        <span>{t('checkout.fields.userType')}</span>
                         <select
                           value={paymentMethodDataForm.pseUserType}
                           disabled={isSubmitting}
                           onChange={handlePaymentMethodDataChange('pseUserType')}
                         >
-                          <option value="0">Natural person</option>
-                          <option value="1">Legal entity</option>
+                          <option value="0">{t('checkout.options.naturalPerson')}</option>
+                          <option value="1">{t('checkout.options.legalEntity')}</option>
                         </select>
                       </label>
                       <label className="checkout-field">
-                        <span>Document type</span>
+                        <span>{t('checkout.fields.documentType')}</span>
                         <select
                           value={paymentMethodDataForm.pseUserLegalIdType}
                           disabled={isSubmitting}
@@ -585,7 +604,7 @@ export function CheckoutStepperModal({
                         </select>
                       </label>
                       <label className="checkout-field checkout-field-full">
-                        <span>Document number</span>
+                        <span>{t('checkout.fields.documentNumber')}</span>
                         <input
                           type="text"
                           value={paymentMethodDataForm.pseUserLegalId}
@@ -597,18 +616,18 @@ export function CheckoutStepperModal({
                         )}
                       </label>
                       <label className="checkout-field">
-                        <span>Sandbox bank</span>
+                        <span>{t('checkout.fields.sandboxBank')}</span>
                         <select
                           value={paymentMethodDataForm.pseFinancialInstitutionCode}
                           disabled={isSubmitting}
                           onChange={handlePaymentMethodDataChange('pseFinancialInstitutionCode')}
                         >
-                          <option value="1">Banco que aprueba</option>
-                          <option value="2">Banco que rechaza</option>
+                          <option value="1">{t('checkout.options.approvedBank')}</option>
+                          <option value="2">{t('checkout.options.declinedBank')}</option>
                         </select>
                       </label>
                       <label className="checkout-field checkout-field-full">
-                        <span>Payment description</span>
+                        <span>{t('checkout.fields.paymentDescription')}</span>
                         <input
                           type="text"
                           maxLength={30}
@@ -627,7 +646,7 @@ export function CheckoutStepperModal({
                   {paymentMethodType === 'BANCOLOMBIA_TRANSFER' && (
                     <>
                       <label className="checkout-field checkout-field-full">
-                        <span>Payment description</span>
+                        <span>{t('checkout.fields.paymentDescription')}</span>
                         <input
                           type="text"
                           maxLength={64}
@@ -642,14 +661,14 @@ export function CheckoutStepperModal({
                         )}
                       </label>
                       <label className="checkout-field checkout-field-full">
-                        <span>Sandbox result</span>
+                        <span>{t('checkout.fields.sandboxResult')}</span>
                         <select
                           value={paymentMethodDataForm.bancolombiaSandboxStatus}
                           disabled={isSubmitting}
                           onChange={handlePaymentMethodDataChange('bancolombiaSandboxStatus')}
                         >
-                          <option value="APPROVED">Approved</option>
-                          <option value="DECLINED">Declined</option>
+                          <option value="APPROVED">{t('checkout.options.approved')}</option>
+                          <option value="DECLINED">{t('checkout.options.declined')}</option>
                         </select>
                       </label>
                     </>
@@ -667,7 +686,7 @@ export function CheckoutStepperModal({
                     <span className="material-symbols-outlined" aria-hidden="true">
                       local_shipping
                     </span>
-                    Shipping
+                    {t('checkout.sections.shipping')}
                   </h3>
                   <p className="checkout-strong">{shippingForm.fullName}</p>
                   <p>{shippingForm.address1}</p>
@@ -681,7 +700,7 @@ export function CheckoutStepperModal({
                     <span className="material-symbols-outlined" aria-hidden="true">
                       credit_card
                     </span>
-                    Payment
+                    {t('checkout.sections.payment')}
                   </h3>
                   <p className="checkout-strong">
                     {paymentMethodType === 'CARD' && detectedBrandMeta ? (
@@ -691,9 +710,17 @@ export function CheckoutStepperModal({
                         className="card-brand-inline-logo"
                       />
                     ) : null}
-                    {describePaymentMethod(paymentMethodType, paymentForm, paymentMethodDataForm, detectedBrand)}
+                    {describePaymentMethod(
+                      paymentMethodType,
+                      paymentForm,
+                      paymentMethodDataForm,
+                      detectedBrand,
+                      t,
+                    )}
                   </p>
-                  {paymentMethodType === 'CARD' && <p>Exp: {paymentForm.expiry}</p>}
+                  {paymentMethodType === 'CARD' && (
+                    <p>{t('checkout.summary.exp', { value: paymentForm.expiry })}</p>
+                  )}
                 </article>
               </div>
 
@@ -702,7 +729,7 @@ export function CheckoutStepperModal({
                   <span className="material-symbols-outlined" aria-hidden="true">
                     shopping_bag
                   </span>
-                  Payment Summary
+                  {t('checkout.sections.paymentSummary')}
                 </h3>
                 <div className="checkout-cart-list">
                   <div className="checkout-cart-item">
@@ -710,20 +737,22 @@ export function CheckoutStepperModal({
                       <p className="checkout-strong">{product.name}</p>
                       <p>{product.description}</p>
                     </div>
-                    <p className="checkout-strong">{formatMoney(productAmountInCents, currency)}</p>
+                    <p className="checkout-strong">
+                      {formatMoney(productAmountInCents, currency, language)}
+                    </p>
                   </div>
                   <div className="checkout-cart-item">
-                    <p>Base fee</p>
-                    <p>{formatMoney(baseFeeInCents, currency)}</p>
+                    <p>{t('checkout.summary.baseFee')}</p>
+                    <p>{formatMoney(baseFeeInCents, currency, language)}</p>
                   </div>
                   <div className="checkout-cart-item">
-                    <p>Delivery fee</p>
-                    <p>{formatMoney(deliveryFeeInCents, currency)}</p>
+                    <p>{t('checkout.summary.deliveryFee')}</p>
+                    <p>{formatMoney(deliveryFeeInCents, currency, language)}</p>
                   </div>
                 </div>
                 <div className="checkout-total">
-                  <p>Total to pay</p>
-                  <p>{formatMoney(totalInCents, currency)}</p>
+                  <p>{t('checkout.summary.totalToPay')}</p>
+                  <p>{formatMoney(totalInCents, currency, language)}</p>
                 </div>
               </article>
             </section>
@@ -735,7 +764,7 @@ export function CheckoutStepperModal({
             <span className="material-symbols-outlined" aria-hidden="true">
               lock
             </span>
-            <span>Secure encrypted transaction</span>
+            <span>{t('checkout.secureTransaction')}</span>
           </div>
           <div className="checkout-actions">
             <button
@@ -744,7 +773,7 @@ export function CheckoutStepperModal({
               onClick={handleBack}
               disabled={activeStepIndex === 0 || isSubmitting}
             >
-              Back
+              {t('checkout.buttons.back')}
             </button>
             <button
               type="button"
@@ -752,7 +781,11 @@ export function CheckoutStepperModal({
               onClick={handleNext}
               disabled={isSubmitting}
             >
-              {isLastStep ? (isSubmitting ? 'Processing payment...' : 'Pay with credit card') : 'Continue'}
+              {isLastStep
+                ? isSubmitting
+                  ? t('checkout.buttons.processingPayment')
+                  : t('checkout.buttons.payWithCreditCard')
+                : t('checkout.buttons.continue')}
               {!isLastStep && (
                 <span className="material-symbols-outlined" aria-hidden="true">
                   arrow_forward
@@ -764,11 +797,9 @@ export function CheckoutStepperModal({
         {isSubmitting && (
           <div className="checkout-loading-overlay" role="status" aria-live="polite">
             <span className="checkout-loading-spinner" aria-hidden="true" />
-            <p className="checkout-loading-title">{loadingMessage}</p>
+            <p className="checkout-loading-title">{resolvedLoadingMessage}</p>
             {isPendingProlonged && (
-              <p className="checkout-loading-note">
-                Payment is still pending. We will keep checking for confirmation.
-              </p>
+              <p className="checkout-loading-note">{t('checkout.loading.pendingNote')}</p>
             )}
           </div>
         )}

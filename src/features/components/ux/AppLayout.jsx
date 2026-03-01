@@ -1,5 +1,7 @@
 import '../styles/ux/layout.css'
 
+import { useTranslation } from 'react-i18next'
+
 import { Footer } from './Footer.jsx'
 import { Navbar } from './Navbar.jsx'
 
@@ -15,6 +17,8 @@ export function AppLayout({
   onStoreFabClick,
   storeFabCount = 0,
 }) {
+  const { t } = useTranslation()
+
   return (
     <div className="app-shell">
       <Navbar
@@ -29,7 +33,7 @@ export function AppLayout({
         <button
           type="button"
           className="store-fab"
-          aria-label={`Open cart with ${storeFabCount} items`}
+          aria-label={t('layout.openCartWithItems', { count: storeFabCount })}
           onClick={onStoreFabClick}
         >
           <span className="material-symbols-outlined" aria-hidden="true">

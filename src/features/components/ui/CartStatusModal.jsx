@@ -1,9 +1,12 @@
 import '../styles/ui/cart-status-modal.css'
 
+import { useTranslation } from 'react-i18next'
+
 import { useEscapeKey } from '../../../app/hooks/index.js'
 
-function formatMoney(amountInCents, currency = 'COP') {
-  return new Intl.NumberFormat('es-CO', {
+function formatMoney(amountInCents, currency = 'COP', language = 'es') {
+  const locale = language === 'es' ? 'es-CO' : 'en-US'
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
     maximumFractionDigits: 0,
@@ -20,6 +23,9 @@ export function CartStatusModal({
   onClearCart,
   onProceedToPayment,
 }) {
+  const { t, i18n } = useTranslation()
+  const language = i18n.resolvedLanguage ?? 'es'
+
   useEscapeKey(onClose, isOpen)
 
   if (!isOpen) {
@@ -31,13 +37,13 @@ export function CartStatusModal({
       className="cart-modal"
       role="dialog"
       aria-modal="true"
-      aria-label="Shopping cart"
+      aria-label={t('cart.ariaLabel')}
       onClick={onClose}
     >
       <div className="cart-modal-backdrop" />
       <div className="cart-modal-panel" onClick={(event) => event.stopPropagation()}>
         <header className="cart-modal-header">
-          <h2>Cart status</h2>
+          <h2>{t('cart.title')}</h2>
           <button type="button" className="cart-modal-close" onClick={onClose}>
             <span className="material-symbols-outlined" aria-hidden="true">
               close
@@ -48,7 +54,7 @@ export function CartStatusModal({
         <div className="cart-modal-body">
           {items.length === 0 ? (
             <div className="cart-modal-empty">
-              <p>Your cart is empty.</p>
+              <p>{t('cart.empty')}</p>
             </div>
           ) : (
             <>
@@ -58,18 +64,25 @@ export function CartStatusModal({
                     <div className="cart-modal-item-main">
                       <p className="cart-modal-item-title">{item.product.name}</p>
                       <p className="cart-modal-item-meta">
-                        Qty: {item.quantity} | Stock: {item.product.stock}
+                        {t('cart.qtyStock', {
+                          quantity: item.quantity,
+                          stock: item.product.stock,
+                        })}
                       </p>
                     </div>
                     <p className="cart-modal-item-total">
-                      {formatMoney(item.totalInCents, item.product.currency)}
+                      {formatMoney(item.totalInCents, item.product.currency, language)}
                     </p>
                   </li>
                 ))}
               </ul>
               <div className="cart-modal-summary">
-                <p>Items: {totalQuantity}</p>
-                <p>Total: {formatMoney(totalInCents, currency)}</p>
+                <p>{t('cart.items', { count: totalQuantity })}</p>
+                <p>
+                  {t('cart.total', {
+                    total: formatMoney(totalInCents, currency, language),
+                  })}
+                </p>
               </div>
             </>
           )}
@@ -82,7 +95,7 @@ export function CartStatusModal({
             onClick={onClearCart}
             disabled={items.length === 0}
           >
-            Vaciar carrito
+            {t('cart.clear')}
           </button>
           <button
             type="button"
@@ -90,7 +103,7 @@ export function CartStatusModal({
             onClick={onProceedToPayment}
             disabled={items.length === 0}
           >
-            Proceder al pago
+            {t('cart.proceed')}
           </button>
         </footer>
       </div>

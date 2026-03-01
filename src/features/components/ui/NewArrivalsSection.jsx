@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { ProductCard } from './ProductCard.jsx'
 
 export function NewArrivalsSection({
@@ -5,17 +7,24 @@ export function NewArrivalsSection({
   favoriteIds = [],
   status = 'idle',
   error = null,
-  title = 'New Arrivals',
-  viewAllLabel = 'View all products ->',
+  title,
+  viewAllLabel,
   viewAllHref = '#',
   onRetry,
   onToggleFavorite,
   onAddToCart,
-  retryLabel = 'Retry',
-  emptyMessage = 'No products available yet.',
-  defaultErrorMessage = 'Could not load products from backend',
+  retryLabel,
+  emptyMessage,
+  defaultErrorMessage,
   skeletonCount = 3,
 }) {
+  const { t } = useTranslation()
+  const resolvedTitle = title ?? t('newArrivals.title')
+  const resolvedViewAllLabel = viewAllLabel ?? t('newArrivals.viewAll')
+  const resolvedRetryLabel = retryLabel ?? t('newArrivals.retry')
+  const resolvedEmptyMessage = emptyMessage ?? t('newArrivals.empty')
+  const resolvedErrorMessage = defaultErrorMessage ?? t('newArrivals.errorDefault')
+
   const isLoading = status === 'loading' || status === 'idle'
   const hasError = status === 'failed'
   const isEmpty = status === 'succeeded' && products.length === 0
@@ -25,9 +34,9 @@ export function NewArrivalsSection({
     <section className="new-arrivals-section">
       <div className="container">
         <div className="section-heading">
-          <h2>{title}</h2>
+          <h2>{resolvedTitle}</h2>
           <a href={viewAllHref} className="view-all-link">
-            {viewAllLabel}
+            {resolvedViewAllLabel}
           </a>
         </div>
 
@@ -41,16 +50,16 @@ export function NewArrivalsSection({
 
         {hasError && (
           <div className="products-state-card" role="status" aria-live="polite">
-            <p>{error ?? defaultErrorMessage}</p>
+            <p>{error ?? resolvedErrorMessage}</p>
             <button type="button" onClick={onRetry}>
-              {retryLabel}
+              {resolvedRetryLabel}
             </button>
           </div>
         )}
 
         {isEmpty && (
           <div className="products-state-card" role="status" aria-live="polite">
-            <p>{emptyMessage}</p>
+            <p>{resolvedEmptyMessage}</p>
           </div>
         )}
 

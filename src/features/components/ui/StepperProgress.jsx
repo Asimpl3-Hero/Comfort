@@ -1,6 +1,7 @@
 import '../styles/ui/stepper-progress.css'
 
 import { Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
 
 function getStepStatus(index, currentStep) {
   if (index < currentStep) return 'completed'
@@ -8,8 +9,11 @@ function getStepStatus(index, currentStep) {
   return 'pending'
 }
 
-export function StepperProgress({ steps = [], currentStep = 0, ariaLabel = 'Progress' }) {
-  const safeSteps = steps.length > 0 ? steps : [{ id: 'step-1', label: 'Step 1' }]
+export function StepperProgress({ steps = [], currentStep = 0, ariaLabel }) {
+  const { t } = useTranslation()
+  const resolvedAriaLabel = ariaLabel ?? t('checkout.progressAria')
+  const safeSteps =
+    steps.length > 0 ? steps : [{ id: 'step-1', label: t('checkout.steps.shipping') }]
   const lastStepIndex = safeSteps.length - 1
   const clampedStep = Math.max(0, Math.min(currentStep, lastStepIndex))
   const gridTemplateColumns = safeSteps
@@ -19,7 +23,7 @@ export function StepperProgress({ steps = [], currentStep = 0, ariaLabel = 'Prog
     .join(' ')
 
   return (
-    <nav className="stepper-progress" aria-label={ariaLabel}>
+    <nav className="stepper-progress" aria-label={resolvedAriaLabel}>
       <ol className="stepper-progress-row" style={{ gridTemplateColumns }}>
         {safeSteps.map((step, index) => {
           const status = getStepStatus(index, clampedStep)
