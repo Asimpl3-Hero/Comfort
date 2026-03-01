@@ -13,6 +13,7 @@ export function AppLayout({
   showStoreFab = true,
   onThemeToggle,
   onStoreFabClick,
+  storeFabCount = 0,
 }) {
   return (
     <div className="app-shell">
@@ -28,12 +29,13 @@ export function AppLayout({
         <button
           type="button"
           className="store-fab"
-          aria-label="Open store"
+          aria-label={`Open cart with ${storeFabCount} items`}
           onClick={onStoreFabClick}
         >
           <span className="material-symbols-outlined" aria-hidden="true">
             shopping_bag
           </span>
+          {storeFabCount > 0 && <span className="store-fab-count">{storeFabCount}</span>}
         </button>
       )}
     </div>

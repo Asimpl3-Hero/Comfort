@@ -10,7 +10,7 @@ export function NewArrivalsSection({
   viewAllHref = '#',
   onRetry,
   onToggleFavorite,
-  onBuyWithCard,
+  onAddToCart,
   retryLabel = 'Retry',
   emptyMessage = 'No products available yet.',
   defaultErrorMessage = 'Could not load products from backend',
@@ -62,7 +62,7 @@ export function NewArrivalsSection({
                 product={product}
                 isFavorite={favoriteIds.includes(product.id)}
                 onToggleFavorite={onToggleFavorite}
-                onBuyWithCard={onBuyWithCard}
+                onAddToCart={onAddToCart}
               />
             ))}
           </div>

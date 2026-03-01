@@ -21,7 +21,7 @@ export function ProductCard({
   product = fallbackProduct,
   isFavorite = false,
   onToggleFavorite,
-  onBuyWithCard,
+  onAddToCart,
   formatPrice = defaultFormatPrice,
 }) {
   const safeProduct = { ...fallbackProduct, ...product }
@@ -48,8 +48,8 @@ export function ProductCard({
         </button>
       </div>
       <div className="product-card-meta">
-        <div>
-          <h3>{safeProduct.name}</h3>
+        <div className="product-card-copy">
+          <h3 className="product-card-title">{safeProduct.name}</h3>
           <p className="product-card-description">{safeProduct.description}</p>
           <p className="product-card-stock">Stock: {safeProduct.stock} units</p>
         </div>
@@ -58,10 +58,10 @@ export function ProductCard({
       <button
         type="button"
         className="pay-with-card-btn"
-        onClick={() => onBuyWithCard?.(safeProduct)}
+        onClick={() => onAddToCart?.(safeProduct)}
         disabled={safeProduct.stock <= 0}
       >
-        {safeProduct.stock > 0 ? 'Pay with credit card' : 'Out of stock'}
+        {safeProduct.stock > 0 ? 'Add to cart' : 'Out of stock'}
       </button>
     </article>
   )

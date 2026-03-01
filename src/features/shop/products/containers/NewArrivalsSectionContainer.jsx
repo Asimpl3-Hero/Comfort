@@ -1,16 +1,17 @@
 import { useEffect } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks/index.js'
-import { NewArrivalsSection } from '../../components/ui/NewArrivalsSection.jsx'
-import { fetchProducts, toggleFavorite } from '../model/productsSlice.js'
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks/index.js'
+import { NewArrivalsSection } from '../../../components/ui/NewArrivalsSection.jsx'
 import {
+  fetchProducts,
   selectFavoriteIds,
   selectProducts,
   selectProductsError,
   selectProductsStatus,
-} from '../model/selectors.js'
+  toggleFavorite,
+} from '../state/index.js'
 
-export function NewArrivalsSectionContainer({ onBuyWithCard }) {
+export function NewArrivalsSectionContainer({ onAddToCart }) {
   const dispatch = useAppDispatch()
   const products = useAppSelector(selectProducts)
   const favoriteIds = useAppSelector(selectFavoriteIds)
@@ -31,8 +32,8 @@ export function NewArrivalsSectionContainer({ onBuyWithCard }) {
     dispatch(toggleFavorite(productId))
   }
 
-  const handleBuyWithCard = (product) => {
-    onBuyWithCard?.(product)
+  const handleAddToCart = (product) => {
+    onAddToCart?.(product)
   }
 
   return (
@@ -43,7 +44,7 @@ export function NewArrivalsSectionContainer({ onBuyWithCard }) {
       error={error}
       onRetry={handleRetry}
       onToggleFavorite={handleToggleFavorite}
-      onBuyWithCard={handleBuyWithCard}
+      onAddToCart={handleAddToCart}
     />
   )
 }

@@ -1,0 +1,9 @@
+export const selectCheckoutState = (state) => state.checkout
+export const selectIsCartOpen = (state) => state.checkout.isCartOpen
+export const selectIsCheckoutOpen = (state) => state.checkout.isCheckoutOpen
+export const selectSelectedProductId = (state) => state.checkout.selectedProductId
+export const selectIsSubmittingOrder = (state) => state.checkout.isSubmittingOrder
+export const selectSubmitError = (state) => state.checkout.submitError
+export const selectSubmitPhase = (state) => state.checkout.submitPhase
+export const selectIsLongPending = (state) => state.checkout.isLongPending
+export const selectTransactionMessage = (state) => state.checkout.transactionMessage

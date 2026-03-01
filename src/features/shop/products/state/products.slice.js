@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { getProducts } from '../../../shared/api/productsApi.js'
+import { getProducts } from '../../../../shared/api/productsApi.js'
 
 const initialState = {
   items: [],
