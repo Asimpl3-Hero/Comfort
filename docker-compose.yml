@@ -10,7 +10,7 @@ services:
         VITE_WOMPI_PUBLIC_KEY: ${VITE_WOMPI_PUBLIC_KEY}
     restart: unless-stopped
     ports:
-      - '5173:80'
+      - '5173:5173'
     networks:
       - dokploy-network
 

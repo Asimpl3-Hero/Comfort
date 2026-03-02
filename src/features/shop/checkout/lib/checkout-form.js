@@ -69,8 +69,14 @@ export function describePaymentMethod(paymentMethodType, cardData, data, detecte
 
 export function validateShipping(shippingForm, t) {
   const errors = {}
+  const email = (shippingForm.email ?? '').trim()
 
   if (!shippingForm.fullName.trim()) errors.fullName = t('checkout.validation.fullNameRequired')
+  if (!email) {
+    errors.email = t('checkout.validation.emailRequired')
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.email = t('checkout.validation.emailInvalid')
+  }
   if (!shippingForm.address1.trim()) errors.address1 = t('checkout.validation.addressRequired')
   if (!shippingForm.city.trim()) errors.city = t('checkout.validation.cityRequired')
   if (!shippingForm.state.trim()) errors.state = t('checkout.validation.stateRequired')

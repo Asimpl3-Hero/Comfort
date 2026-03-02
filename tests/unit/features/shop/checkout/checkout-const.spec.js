@@ -14,12 +14,14 @@ import {
 describe('checkout constants', () => {
   it('exports clean default forms', () => {
     expect(defaultShipping.fullName).toBe('')
+    expect(defaultShipping.email).toBe('')
     expect(defaultPayment.cardNumber).toBe('')
     expect(defaultPaymentMethodData.nequiPhoneNumber).toBe('')
   })
 
   it('exports mock form presets', () => {
     expect(checkoutMockShipping.fullName).toBeTruthy()
+    expect(checkoutMockShipping.email).toContain('@')
     expect(checkoutMockPayment.cardNumber).toBeTruthy()
     expect(checkoutMockPaymentMethodData.nequiPhoneNumber).toHaveLength(10)
   })

@@ -26,6 +26,16 @@ export function CheckoutShippingStep({
             {shippingErrors.fullName && <small className="checkout-error">{shippingErrors.fullName}</small>}
           </label>
           <label className="checkout-field checkout-field-full">
+            <span>{t('checkout.fields.email')}</span>
+            <input
+              type="email"
+              value={shippingForm.email}
+              disabled={isSubmitting}
+              onChange={onShippingChange('email')}
+            />
+            {shippingErrors.email && <small className="checkout-error">{shippingErrors.email}</small>}
+          </label>
+          <label className="checkout-field checkout-field-full">
             <span>{t('checkout.fields.address1')}</span>
             <input
               type="text"

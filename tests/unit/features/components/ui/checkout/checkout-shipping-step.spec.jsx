@@ -12,6 +12,7 @@ describe('CheckoutShippingStep', () => {
         isSubmitting={false}
         shippingForm={{
           fullName: 'John',
+          email: 'john@example.com',
           address1: 'Street',
           address2: '',
           city: 'City',

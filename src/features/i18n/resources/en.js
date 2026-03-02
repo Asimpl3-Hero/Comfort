@@ -119,6 +119,7 @@ export const en = {
     },
     fields: {
       fullName: 'Full name',
+      email: 'Email',
       address1: 'Address line 1',
       address2: 'Address line 2',
       city: 'City',
@@ -177,6 +178,8 @@ export const en = {
     },
     validation: {
       fullNameRequired: 'Full name is required',
+      emailRequired: 'Email is required',
+      emailInvalid: 'Email is invalid',
       addressRequired: 'Address is required',
       cityRequired: 'City is required',
       stateRequired: 'State is required',

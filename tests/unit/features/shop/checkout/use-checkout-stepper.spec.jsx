@@ -35,7 +35,7 @@ describe('useCheckoutStepper', () => {
   it('validates and does not advance with invalid shipping', async () => {
     const { result } = renderHook(() =>
       useCheckoutStepper({
-        initialShipping: { fullName: '', address1: '', city: '', state: '', zip: '' },
+        initialShipping: { fullName: '', email: '', address1: '', city: '', state: '', zip: '' },
         initialPayment: defaultPayment,
         product: productFixture,
         baseFeeInCents: 100,

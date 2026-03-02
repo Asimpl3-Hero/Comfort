@@ -1,5 +1,6 @@
 export const defaultShipping = {
   fullName: '',
+  email: '',
   address1: '',
   address2: '',
   city: '',
@@ -27,6 +28,7 @@ export const defaultPaymentMethodData = {
 
 export const checkoutMockShipping = {
   fullName: 'John Doe',
+  email: 'john.doe@example.com',
   address1: '123 Minimalist St.',
   address2: 'Apt 4B',
   city: 'New York',

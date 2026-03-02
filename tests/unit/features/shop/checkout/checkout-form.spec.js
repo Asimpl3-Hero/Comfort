@@ -97,10 +97,11 @@ describe('checkout-form utils', () => {
 
   it('validates shipping form', () => {
     const errors = validateShipping(
-      { fullName: '', address1: '', city: '', state: '', zip: '' },
+      { fullName: '', email: '', address1: '', city: '', state: '', zip: '' },
       t,
     )
-    expect(Object.keys(errors)).toHaveLength(5)
+    expect(Object.keys(errors)).toHaveLength(6)
+    expect(errors.email).toBeTruthy()
   })
 
   it('validates payment form by method', () => {

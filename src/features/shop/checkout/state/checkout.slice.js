@@ -58,6 +58,7 @@ export const submitOrder = createAsyncThunk(
 
       const paymentMethodType = checkoutData?.paymentMethodType ?? 'CARD'
       let paymentMethodData = checkoutData?.paymentMethodData
+      const customerEmail = checkoutData?.shipping?.email?.trim()
 
       if (paymentMethodType === 'CARD') {
         const cardToken = await createWompiCardToken(paymentMethodData, { signal })
@@ -67,6 +68,7 @@ export const submitOrder = createAsyncThunk(
       const createdOrder = await createOrder(
         {
           productId,
+          customerEmail,
           paymentMethodType,
           paymentMethodData,
         },

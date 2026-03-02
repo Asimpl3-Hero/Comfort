@@ -53,6 +53,9 @@ describe('checkoutSlice', () => {
     cardExpYear: '30',
     cardHolder: 'Jane Doe',
   }
+  const shippingData = {
+    email: 'buyer@example.com',
+  }
 
   const baseCheckoutState = {
     isCartOpen: false,
@@ -171,7 +174,13 @@ describe('checkoutSlice', () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
     const store = makeStore()
 
-    await store.dispatch(submitOrder({ paymentMethodType: 'CARD', paymentMethodData: cardPaymentData }))
+    await store.dispatch(
+      submitOrder({
+        shipping: shippingData,
+        paymentMethodType: 'CARD',
+        paymentMethodData: cardPaymentData,
+      }),
+    )
     const state = store.getState().checkout
     expect(state.isSubmittingOrder).toBe(false)
     expect(state.isCheckoutOpen).toBe(false)
@@ -182,6 +191,7 @@ describe('checkoutSlice', () => {
     expect(createOrder).toHaveBeenCalledWith(
       {
         productId: 'p-1',
+        customerEmail: 'buyer@example.com',
         paymentMethodType: 'CARD',
         paymentMethodData: { cardToken: 'tok_test_123' },
       },
@@ -196,7 +206,9 @@ describe('checkoutSlice', () => {
     getOrderById.mockResolvedValue({ id: 'o-2', status: 'DECLINED' })
     const store = makeStore()
 
-    const action = await store.dispatch(submitOrder({ paymentMethodType: 'PSE' }))
+    const action = await store.dispatch(
+      submitOrder({ shipping: shippingData, paymentMethodType: 'PSE' }),
+    )
     const state = store.getState().checkout
 
     expect(action.type).toBe('checkout/submitOrder/fulfilled')
@@ -213,7 +225,11 @@ describe('checkoutSlice', () => {
     const store = makeStore()
 
     const dispatchPromise = store.dispatch(
-      submitOrder({ paymentMethodType: 'CARD', paymentMethodData: cardPaymentData }),
+      submitOrder({
+        shipping: shippingData,
+        paymentMethodType: 'CARD',
+        paymentMethodData: cardPaymentData,
+      }),
     )
     await vi.advanceTimersByTimeAsync(25_000)
     expect(store.getState().checkout.isLongPending).toBe(true)
@@ -233,7 +249,11 @@ describe('checkoutSlice', () => {
     const store = makeStore()
 
     const action = await store.dispatch(
-      submitOrder({ paymentMethodType: 'CARD', paymentMethodData: cardPaymentData }),
+      submitOrder({
+        shipping: shippingData,
+        paymentMethodType: 'CARD',
+        paymentMethodData: cardPaymentData,
+      }),
     )
     const state = store.getState().checkout
 
@@ -246,7 +266,11 @@ describe('checkoutSlice', () => {
     const store = makeStore()
 
     const action = await store.dispatch(
-      submitOrder({ paymentMethodType: 'CARD', paymentMethodData: cardPaymentData }),
+      submitOrder({
+        shipping: shippingData,
+        paymentMethodType: 'CARD',
+        paymentMethodData: cardPaymentData,
+      }),
     )
     const state = store.getState().checkout
 

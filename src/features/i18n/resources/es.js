@@ -119,6 +119,7 @@ export const es = {
     },
     fields: {
       fullName: 'Nombre completo',
+      email: 'Correo electronico',
       address1: 'Direccion linea 1',
       address2: 'Direccion linea 2',
       city: 'Ciudad',
@@ -177,6 +178,8 @@ export const es = {
     },
     validation: {
       fullNameRequired: 'El nombre completo es obligatorio',
+      emailRequired: 'El correo electronico es obligatorio',
+      emailInvalid: 'El correo electronico no es valido',
       addressRequired: 'La direccion es obligatoria',
       cityRequired: 'La ciudad es obligatoria',
       stateRequired: 'El departamento es obligatorio',
