@@ -16,9 +16,17 @@ export function getMaskedCard(cardNumber) {
   return `**** ${last4}`
 }
 
-export function mapPaymentMethodData(paymentMethodType, data) {
+export function mapPaymentMethodData(paymentMethodType, data, paymentForm = {}) {
   if (paymentMethodType === 'CARD') {
-    return undefined
+    const [expMonthRaw = '', expYearRaw = ''] = (paymentForm.expiry ?? '').split('/')
+
+    return {
+      cardNumber: getCardDigits(paymentForm.cardNumber ?? ''),
+      cardCvc: (paymentForm.cvv ?? '').trim(),
+      cardExpMonth: expMonthRaw.trim(),
+      cardExpYear: expYearRaw.trim(),
+      cardHolder: (paymentForm.cardholder ?? '').trim(),
+    }
   }
 
   if (paymentMethodType === 'NEQUI') {

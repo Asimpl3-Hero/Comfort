@@ -64,7 +64,7 @@ export function useCheckoutStepper({
         shipping: shippingForm,
         payment: paymentForm,
         paymentMethodType,
-        paymentMethodData: mapPaymentMethodData(paymentMethodType, paymentMethodDataForm),
+        paymentMethodData: mapPaymentMethodData(paymentMethodType, paymentMethodDataForm, paymentForm),
         product,
         summary: {
           productAmountInCents,
@@ -132,3 +132,4 @@ export function useCheckoutStepper({
     totalInCents,
   }
 }
+

@@ -135,6 +135,12 @@
 .checkout-card p {
   font-size: 0.9rem;
   color: var(--color-muted);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.checkout-card > p + p {
+  margin-top: 0.2rem;
 }
 
 .checkout-strong {
@@ -344,9 +350,18 @@
 
 .checkout-cart-item {
   display: grid;
-  grid-template-columns: 2.25rem 1fr auto;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: 0.6rem;
+}
+
+.checkout-cart-item > :first-child {
+  min-width: 0;
+}
+
+.checkout-cart-item > :last-child {
+  white-space: nowrap;
+  justify-self: end;
 }
 
 .checkout-cart-item img {
