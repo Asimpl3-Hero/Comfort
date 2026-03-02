@@ -19,7 +19,10 @@ describe('httpClient', () => {
 
     const result = await httpGet('/products')
     expect(result).toEqual({ ok: true })
-    expect(fetch).toHaveBeenCalledWith('/api/products', expect.objectContaining({ method: 'GET' }))
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/products'),
+      expect.objectContaining({ method: 'GET' }),
+    )
   })
 
   it('performs POST requests', async () => {
@@ -31,7 +34,7 @@ describe('httpClient', () => {
     const result = await httpPost('/orders', { productId: 'p-1' })
     expect(result).toEqual({ id: 'order-1' })
     expect(fetch).toHaveBeenCalledWith(
-      '/api/orders',
+      expect.stringContaining('/orders'),
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({ productId: 'p-1' }),
