@@ -221,4 +221,15 @@ export const en = {
       couldNotCreateOrder: 'Could not create the order.',
     },
   },
+  transactionResult: {
+    ariaLabel: 'Transaction result',
+    approvedTitle: 'Payment approved',
+    approvedMessage: 'Your transaction was approved successfully.',
+    declinedTitle: 'Payment declined',
+    declinedMessage: 'The transaction was declined. Please try again.',
+    transactionIdLabel: 'Transaction ID',
+    orderIdLabel: 'Order ID',
+    unavailable: 'Not available',
+    close: 'Close',
+  },
 }

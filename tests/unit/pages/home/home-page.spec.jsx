@@ -30,6 +30,12 @@ const mockState = {
     submitPhase: '',
     isLongPending: false,
     transactionMessage: '',
+    transactionResult: {
+      isOpen: false,
+      status: null,
+      orderId: '',
+      transactionId: '',
+    },
   },
   theme: {
     mode: 'light',
@@ -99,6 +105,16 @@ vi.mock('../../../../src/features/components/ui/CheckoutStepperModal.jsx', () =>
       </div>
     ) : null,
 }))
+vi.mock('../../../../src/features/components/ui/TransactionResultModal.jsx', () => ({
+  TransactionResultModal: ({ isOpen, onClose }) =>
+    isOpen ? (
+      <div>
+        <button type="button" onClick={onClose}>
+          TransactionResultClose
+        </button>
+      </div>
+    ) : null,
+}))
 vi.mock('../../../../src/features/shop/products/containers/NewArrivalsSectionContainer.jsx', () => ({
   NewArrivalsSectionContainer: ({ onAddToCart, onOpenDetails }) => (
     <div>
@@ -131,6 +147,7 @@ vi.mock('../../../../src/features/shop/checkout/state/index.js', async () => {
     closeCartModal: vi.fn(() => ({ type: 'checkout/closeCart' })),
     closeCheckoutModal: vi.fn(() => ({ type: 'checkout/closeCheckout' })),
     dismissTransactionMessage: vi.fn(() => ({ type: 'checkout/dismiss' })),
+    dismissTransactionResult: vi.fn(() => ({ type: 'checkout/dismissResult' })),
     openCartModal: vi.fn(() => ({ type: 'checkout/openCart' })),
     proceedToCheckoutFromCart: vi.fn(() => ({ type: 'checkout/proceed' })),
     setTransactionMessage: vi.fn((payload) => ({ type: 'checkout/message', payload })),
@@ -143,6 +160,7 @@ import {
   closeCartModal,
   closeCheckoutModal,
   dismissTransactionMessage,
+  dismissTransactionResult,
   proceedToCheckoutFromCart,
   setTransactionMessage,
   submitOrder,
@@ -163,6 +181,12 @@ describe('HomePage', () => {
       submitPhase: '',
       isLongPending: false,
       transactionMessage: '',
+      transactionResult: {
+        isOpen: false,
+        status: null,
+        orderId: '',
+        transactionId: '',
+      },
     }
   })
 
@@ -240,5 +264,18 @@ describe('HomePage', () => {
 
     expect(addItemToCart).toHaveBeenCalledWith({ productId: 'p-1' })
     expect(setTransactionMessage).toHaveBeenCalled()
+  })
+
+  it('renders and closes transaction result modal', () => {
+    mockState.checkout.transactionResult = {
+      isOpen: true,
+      status: 'APPROVED',
+      orderId: 'o-1',
+      transactionId: 'tx-1',
+    }
+    render(<HomePage />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'TransactionResultClose' }))
+    expect(dismissTransactionResult).toHaveBeenCalled()
   })
 })

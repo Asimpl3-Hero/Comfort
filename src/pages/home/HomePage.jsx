@@ -16,6 +16,7 @@ import { FeaturesSection } from '../../features/components/ui/FeaturesSection.js
 import { HeroSection } from '../../features/components/ui/HeroSection.jsx'
 import { NewsletterSection } from '../../features/components/ui/NewsletterSection.jsx'
 import { ProductDetailsModal } from '../../features/components/ui/ProductDetailsModal.jsx'
+import { TransactionResultModal } from '../../features/components/ui/TransactionResultModal.jsx'
 import { AppLayout } from '../../features/components/ux/AppLayout.jsx'
 import {
   addItemToCart,
@@ -29,6 +30,7 @@ import {
   closeCartModal,
   closeCheckoutModal,
   dismissTransactionMessage,
+  dismissTransactionResult,
   openCartModal,
   proceedToCheckoutFromCart,
   selectIsCartOpen,
@@ -39,6 +41,7 @@ import {
   selectSubmitError,
   selectSubmitPhase,
   selectTransactionMessage,
+  selectTransactionResult,
   setTransactionMessage,
   submitOrder,
 } from '../../features/shop/checkout/state/index.js'
@@ -65,6 +68,7 @@ export function HomePage() {
   const submitPhase = useAppSelector(selectSubmitPhase)
   const isLongPending = useAppSelector(selectIsLongPending)
   const transactionMessage = useAppSelector(selectTransactionMessage)
+  const transactionResult = useAppSelector(selectTransactionResult)
 
   const localizedTopNavigationLinks = useMemo(
     () =>
@@ -210,6 +214,14 @@ export function HomePage() {
           isPendingProlonged={isLongPending}
         />
       )}
+
+      <TransactionResultModal
+        isOpen={transactionResult?.isOpen}
+        status={transactionResult?.status}
+        transactionId={transactionResult?.transactionId}
+        orderId={transactionResult?.orderId}
+        onClose={() => dispatch(dismissTransactionResult())}
+      />
     </AppLayout>
   )
 }

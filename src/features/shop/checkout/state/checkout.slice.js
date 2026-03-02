@@ -21,6 +21,12 @@ const initialState = {
   submitPhase: '',
   isLongPending: false,
   transactionMessage: '',
+  transactionResult: {
+    isOpen: false,
+    status: null,
+    orderId: '',
+    transactionId: '',
+  },
 }
 
 export const proceedToCheckoutFromCart = createAsyncThunk(
@@ -111,20 +117,22 @@ export const submitOrder = createAsyncThunk(
         )
       } else if (finalOrder.status === 'APPROVED') {
         dispatch(
-          setTransactionMessage(
-            i18n.t('checkout.async.paymentApproved', {
-              orderId: createdOrder.orderId,
-            }),
-          ),
+          setTransactionResult({
+            status: 'APPROVED',
+            orderId: createdOrder.orderId,
+            transactionId:
+              finalOrder.wompi_transaction_id ?? finalOrder.wompiTransactionId ?? '',
+          }),
         )
         dispatch(decrementItemFromCart({ productId }))
       } else {
         dispatch(
-          setTransactionMessage(
-            i18n.t('checkout.async.paymentDeclined', {
-              orderId: createdOrder.orderId,
-            }),
-          ),
+          setTransactionResult({
+            status: 'DECLINED',
+            orderId: createdOrder.orderId,
+            transactionId:
+              finalOrder.wompi_transaction_id ?? finalOrder.wompiTransactionId ?? '',
+          }),
         )
       }
 
@@ -159,6 +167,22 @@ const checkoutSlice = createSlice({
     dismissTransactionMessage(state) {
       state.transactionMessage = ''
     },
+    setTransactionResult(state, action) {
+      state.transactionResult = {
+        isOpen: true,
+        status: action.payload?.status ?? null,
+        orderId: action.payload?.orderId ?? '',
+        transactionId: action.payload?.transactionId ?? '',
+      }
+    },
+    dismissTransactionResult(state) {
+      state.transactionResult = {
+        isOpen: false,
+        status: null,
+        orderId: '',
+        transactionId: '',
+      }
+    },
     setSubmitPhase(state, action) {
       state.submitPhase = action.payload ?? ''
     },
@@ -181,6 +205,12 @@ const checkoutSlice = createSlice({
         state.submitError = ''
         state.submitPhase = ''
         state.isLongPending = false
+        state.transactionResult = {
+          isOpen: false,
+          status: null,
+          orderId: '',
+          transactionId: '',
+        }
       })
       .addCase(submitOrder.fulfilled, (state) => {
         state.isSubmittingOrder = false
@@ -204,6 +234,8 @@ export const {
   closeCheckoutModal,
   setTransactionMessage,
   dismissTransactionMessage,
+  setTransactionResult,
+  dismissTransactionResult,
   setSubmitPhase,
   setPendingProlonged,
 } = checkoutSlice.actions

@@ -10,6 +10,7 @@ import {
   selectSubmitError,
   selectSubmitPhase,
   selectTransactionMessage,
+  selectTransactionResult,
 } from '../../../../../src/features/shop/checkout/state/checkout.selectors.js'
 
 describe('checkout selectors', () => {
@@ -23,6 +24,12 @@ describe('checkout selectors', () => {
       submitPhase: 'creating-order',
       isLongPending: true,
       transactionMessage: 'ok',
+      transactionResult: {
+        isOpen: true,
+        status: 'APPROVED',
+        orderId: 'o-1',
+        transactionId: 'tx-1',
+      },
     },
   }
 
@@ -36,5 +43,11 @@ describe('checkout selectors', () => {
     expect(selectSubmitPhase(state)).toBe('creating-order')
     expect(selectIsLongPending(state)).toBe(true)
     expect(selectTransactionMessage(state)).toBe('ok')
+    expect(selectTransactionResult(state)).toEqual({
+      isOpen: true,
+      status: 'APPROVED',
+      orderId: 'o-1',
+      transactionId: 'tx-1',
+    })
   })
 })

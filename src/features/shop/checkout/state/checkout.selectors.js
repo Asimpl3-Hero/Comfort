@@ -7,3 +7,4 @@ export const selectSubmitError = (state) => state.checkout.submitError
 export const selectSubmitPhase = (state) => state.checkout.submitPhase
 export const selectIsLongPending = (state) => state.checkout.isLongPending
 export const selectTransactionMessage = (state) => state.checkout.transactionMessage
+export const selectTransactionResult = (state) => state.checkout.transactionResult

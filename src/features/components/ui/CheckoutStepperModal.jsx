@@ -84,6 +84,7 @@ export function CheckoutStepperModal({
     onPlaceOrder,
     t,
   })
+  const isShippingStep = activeStepIndex === 0
 
   if (!isOpen || !product) {
     return null
@@ -99,7 +100,7 @@ export function CheckoutStepperModal({
     >
       <div className="checkout-modal-backdrop" />
       <div
-        className="checkout-modal-panel"
+        className={`checkout-modal-panel${isShippingStep ? ' is-shipping-step' : ''}`}
         aria-busy={isSubmitting}
         onClick={(event) => event.stopPropagation()}
       >
@@ -124,7 +125,7 @@ export function CheckoutStepperModal({
           />
         </header>
 
-        <div className="checkout-modal-body">
+        <div className={`checkout-modal-body${isShippingStep ? ' is-shipping-step' : ''}`}>
           {activeStepIndex < 2 && (
             <div className="checkout-fill-action">
               <button

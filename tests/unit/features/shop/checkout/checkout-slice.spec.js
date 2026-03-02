@@ -35,10 +35,12 @@ import checkoutReducer, {
   closeCartModal,
   closeCheckoutModal,
   dismissTransactionMessage,
+  dismissTransactionResult,
   openCartModal,
   proceedToCheckoutFromCart,
   setPendingProlonged,
   setSubmitPhase,
+  setTransactionResult,
   setTransactionMessage,
   submitOrder,
 } from '../../../../../src/features/shop/checkout/state/checkout.slice.js'
@@ -66,6 +68,12 @@ describe('checkoutSlice', () => {
     submitPhase: '',
     isLongPending: false,
     transactionMessage: '',
+    transactionResult: {
+      isOpen: false,
+      status: null,
+      orderId: '',
+      transactionId: '',
+    },
   }
 
   const baseProductsState = {
@@ -105,6 +113,29 @@ describe('checkoutSlice', () => {
 
     state = checkoutReducer(state, dismissTransactionMessage())
     expect(state.transactionMessage).toBe('')
+
+    state = checkoutReducer(
+      state,
+      setTransactionResult({
+        status: 'APPROVED',
+        orderId: 'o-1',
+        transactionId: 'tx-1',
+      }),
+    )
+    expect(state.transactionResult).toEqual({
+      isOpen: true,
+      status: 'APPROVED',
+      orderId: 'o-1',
+      transactionId: 'tx-1',
+    })
+
+    state = checkoutReducer(state, dismissTransactionResult())
+    expect(state.transactionResult).toEqual({
+      isOpen: false,
+      status: null,
+      orderId: '',
+      transactionId: '',
+    })
 
     state = checkoutReducer(state, setSubmitPhase('creating-order'))
     expect(state.submitPhase).toBe('creating-order')
@@ -170,7 +201,11 @@ describe('checkoutSlice', () => {
 
   it('submitOrder approves, opens checkout URL and closes modal', async () => {
     createOrder.mockResolvedValue({ orderId: 'o-1', checkoutUrl: 'https://wompi.test/checkout' })
-    getOrderById.mockResolvedValue({ id: 'o-1', status: 'APPROVED' })
+    getOrderById.mockResolvedValue({
+      id: 'o-1',
+      status: 'APPROVED',
+      wompi_transaction_id: 'tx-1',
+    })
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
     const store = makeStore()
 
@@ -185,7 +220,12 @@ describe('checkoutSlice', () => {
     expect(state.isSubmittingOrder).toBe(false)
     expect(state.isCheckoutOpen).toBe(false)
     expect(state.selectedProductId).toBeNull()
-    expect(state.transactionMessage).toContain('checkout.async.paymentApproved')
+    expect(state.transactionResult).toEqual({
+      isOpen: true,
+      status: 'APPROVED',
+      orderId: 'o-1',
+      transactionId: 'tx-1',
+    })
     expect(openSpy).toHaveBeenCalledTimes(1)
     expect(createWompiCardToken).toHaveBeenCalledTimes(1)
     expect(createOrder).toHaveBeenCalledWith(
@@ -203,7 +243,11 @@ describe('checkoutSlice', () => {
 
   it('submitOrder handles declined transactions', async () => {
     createOrder.mockResolvedValue({ orderId: 'o-2', checkoutUrl: null })
-    getOrderById.mockResolvedValue({ id: 'o-2', status: 'DECLINED' })
+    getOrderById.mockResolvedValue({
+      id: 'o-2',
+      status: 'DECLINED',
+      wompi_transaction_id: 'tx-2',
+    })
     const store = makeStore()
 
     const action = await store.dispatch(
@@ -213,7 +257,12 @@ describe('checkoutSlice', () => {
 
     expect(action.type).toBe('checkout/submitOrder/fulfilled')
     expect(action.payload.status).toBe('DECLINED')
-    expect(state.transactionMessage).toContain('checkout.async.paymentDeclined')
+    expect(state.transactionResult).toEqual({
+      isOpen: true,
+      status: 'DECLINED',
+      orderId: 'o-2',
+      transactionId: 'tx-2',
+    })
     expect(createWompiCardToken).not.toHaveBeenCalled()
     expect(decrementItemFromCart).not.toHaveBeenCalled()
   })
