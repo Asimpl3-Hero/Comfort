@@ -17,10 +17,10 @@
 .checkout-modal-panel {
   position: relative;
   width: min(100%, 900px);
-  max-height: 90vh;
+  max-height: calc(100dvh - 2rem);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
   border-radius: 1rem;
   border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
   background: var(--color-surface);
@@ -102,13 +102,9 @@
 }
 
 .checkout-modal-body {
-  overflow-y: auto;
+  overflow: visible;
   padding: 1.25rem 1.5rem;
   background: color-mix(in srgb, var(--color-surface) 88%, #f8faf7);
-}
-
-.checkout-modal-body.is-shipping-step {
-  overflow-y: visible;
 }
 
 .checkout-fill-action {
