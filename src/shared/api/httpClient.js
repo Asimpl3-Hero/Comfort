@@ -1,9 +1,14 @@
-const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? '/api'
-).replace(/\/$/, '')
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL?.trim() ?? '').replace(
+  /\/$/,
+  '',
+)
 
 function buildUrl(path) {
   if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path
+  }
+
+  if (!API_BASE_URL) {
     return path
   }
 

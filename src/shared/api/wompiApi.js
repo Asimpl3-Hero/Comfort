@@ -1,8 +1,5 @@
-const DEFAULT_WOMPI_BASE_URL = 'https://api-sandbox.co.uat.wompi.dev/v1'
-
 function getWompiBaseUrl() {
-  const envValue = import.meta.env.VITE_WOMPI_BASE_URL
-  return (envValue?.replace(/\/$/, '') ?? DEFAULT_WOMPI_BASE_URL).replace(/\/$/, '')
+  return (import.meta.env.VITE_WOMPI_BASE_URL?.trim() ?? '').replace(/\/$/, '')
 }
 
 function getWompiPublicKey() {
@@ -30,12 +27,17 @@ function resolveWompiErrorMessage(payload, status) {
 }
 
 export async function createWompiCardToken(cardData, { signal } = {}) {
+  const wompiBaseUrl = getWompiBaseUrl()
+  if (!wompiBaseUrl) {
+    throw new Error('Wompi base URL is not configured.')
+  }
+
   const publicKey = getWompiPublicKey()
   if (!publicKey) {
     throw new Error('Wompi public key is not configured.')
   }
 
-  const response = await fetch(`${getWompiBaseUrl()}/tokens/cards`, {
+  const response = await fetch(`${wompiBaseUrl}/tokens/cards`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

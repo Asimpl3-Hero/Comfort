@@ -14,6 +14,9 @@ Default backend URL in local dev:
 
 ```env
 VITE_API_BASE_URL="http://localhost:3000"
+VITE_COP_TO_USD_RATE="4000"
+VITE_WOMPI_BASE_URL="https://api-sandbox.co.uat.wompi.dev/v1"
+VITE_WOMPI_PUBLIC_KEY="pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7"
 ```
 
 ## Run locally
