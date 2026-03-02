@@ -10,8 +10,8 @@ services:
     ports:
       - '5173:80'
     networks:
-      - comfort-api_default
+      - dokploy-network
 
 networks:
-  comfort-api_default:
+  dokploy-network:
     external: true

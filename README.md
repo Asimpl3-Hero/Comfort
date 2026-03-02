@@ -25,7 +25,7 @@ npm run dev
 
 ## Run with Docker
 
-This frontend container expects the backend container `comfort-api` running on the Docker network `comfort-api_default` (created by backend compose).
+This frontend container expects the backend container `comfort-api` reachable on the Docker network `dokploy-network`.
 
 1. Ensure backend is up first:
 
@@ -34,14 +34,20 @@ cd C:\Programacion\Nest.js\Comfort-Api
 docker compose up -d
 ```
 
-2. Start frontend container:
+2. Ensure the shared network exists (only needed in local environments):
+
+```bash
+docker network create dokploy-network
+```
+
+3. Start frontend container:
 
 ```bash
 cd C:\Programacion\React\Comfort
 docker compose up --build -d
 ```
 
-3. Open:
+4. Open:
 
 - Frontend: `http://localhost:5173`
 - Backend proxied through frontend container at `/api/*`
