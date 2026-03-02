@@ -105,4 +105,59 @@ describe('useCheckoutStepper', () => {
     })
     expect(result.current.activeStepIndex).toBe(0)
   })
+
+  it('updates shipping and payment method specific fields', () => {
+    const { result } = renderHook(() =>
+      useCheckoutStepper({
+        initialShipping: defaultShipping,
+        initialPayment: defaultPayment,
+        product: productFixture,
+        baseFeeInCents: 100,
+        deliveryFeeInCents: 200,
+        resolvedSteps: checkoutStepsFixture,
+        onPlaceOrder: vi.fn(),
+        t,
+      }),
+    )
+
+    act(() => {
+      result.current.handleShippingChange('city')({ target: { value: 'Bogota' } })
+      result.current.handlePaymentMethodTypeChange({ target: { value: 'NEQUI' } })
+      result.current.handlePaymentMethodDataChange('nequiPhoneNumber')({
+        target: { value: '3991111111' },
+      })
+    })
+
+    expect(result.current.shippingForm.city).toBe('Bogota')
+    expect(result.current.paymentMethodType).toBe('NEQUI')
+    expect(result.current.paymentMethodDataForm.nequiPhoneNumber).toBe('3991111111')
+  })
+
+  it('stops on payment validation errors at step 2', async () => {
+    const onPlaceOrder = vi.fn()
+    const { result } = renderHook(() =>
+      useCheckoutStepper({
+        initialShipping: defaultShipping,
+        initialPayment: { cardholder: '', cardNumber: '123', expiry: '00/00', cvv: '1' },
+        product: productFixture,
+        baseFeeInCents: 100,
+        deliveryFeeInCents: 200,
+        resolvedSteps: checkoutStepsFixture,
+        onPlaceOrder,
+        t,
+      }),
+    )
+
+    await act(async () => {
+      await result.current.handleNext()
+    })
+    expect(result.current.activeStepIndex).toBe(1)
+
+    await act(async () => {
+      await result.current.handleNext()
+    })
+    expect(result.current.activeStepIndex).toBe(1)
+    expect(result.current.paymentErrors.cardNumber).toBeTruthy()
+    expect(onPlaceOrder).not.toHaveBeenCalled()
+  })
 })

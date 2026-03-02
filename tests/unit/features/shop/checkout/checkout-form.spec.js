@@ -46,6 +46,15 @@ describe('checkout-form utils', () => {
       financialInstitutionCode: '1',
       paymentDescription: 'Pago',
     })
+    expect(
+      mapPaymentMethodData('BANCOLOMBIA_TRANSFER', {
+        bancolombiaPaymentDescription: 'Pago banco',
+        bancolombiaSandboxStatus: 'APPROVED',
+      }),
+    ).toEqual({
+      paymentDescription: 'Pago banco',
+      sandboxStatus: 'APPROVED',
+    })
   })
 
   it('describes payment methods', () => {
@@ -55,6 +64,18 @@ describe('checkout-form utils', () => {
     expect(
       describePaymentMethod('NEQUI', {}, { nequiPhoneNumber: '3991111111' }, 'CARD', t),
     ).toBe('NEQUI 3991111111')
+    expect(
+      describePaymentMethod(
+        'PSE',
+        {},
+        { pseUserLegalIdType: 'CC', pseUserLegalId: '123' },
+        'CARD',
+        t,
+      ),
+    ).toBe('PSE CC 123')
+    expect(describePaymentMethod('BANCOLOMBIA_TRANSFER', {}, {}, 'CARD', t)).toBe(
+      'checkout.paymentDescription.bancolombiaTransfer',
+    )
   })
 
   it('validates shipping form', () => {
@@ -98,5 +119,46 @@ describe('checkout-form utils', () => {
       t,
     )
     expect(bancoErrors.bancolombiaPaymentDescription).toBeTruthy()
+  })
+
+  it('validates max length for PSE and Bancolombia descriptions', () => {
+    const pseErrors = validatePayment(
+      'PSE',
+      {},
+      { pseUserLegalId: '123', psePaymentDescription: 'x'.repeat(31) },
+      t,
+    )
+    expect(pseErrors.psePaymentDescription).toBe('checkout.validation.descriptionMax30')
+
+    const bancoErrors = validatePayment(
+      'BANCOLOMBIA_TRANSFER',
+      {},
+      { bancolombiaPaymentDescription: 'x'.repeat(65) },
+      t,
+    )
+    expect(bancoErrors.bancolombiaPaymentDescription).toBe('checkout.validation.descriptionMax64')
+  })
+
+  it('returns no errors for valid payment forms', () => {
+    const cardErrors = validatePayment(
+      'CARD',
+      {
+        cardholder: 'Jane Doe',
+        cardNumber: '4111111111111111',
+        expiry: '12/30',
+        cvv: '123',
+      },
+      {},
+      t,
+    )
+    expect(cardErrors).toEqual({})
+
+    const nequiErrors = validatePayment(
+      'NEQUI',
+      {},
+      { nequiPhoneNumber: '3991111111' },
+      t,
+    )
+    expect(nequiErrors).toEqual({})
   })
 })
