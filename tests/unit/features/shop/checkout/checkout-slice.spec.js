@@ -232,6 +232,9 @@ describe('checkoutSlice', () => {
       {
         productId: 'p-1',
         customerEmail: 'buyer@example.com',
+        shippingData: {
+          email: 'buyer@example.com',
+        },
         paymentMethodType: 'CARD',
         paymentMethodData: { cardToken: 'tok_test_123' },
       },

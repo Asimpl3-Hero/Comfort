@@ -1,7 +1,7 @@
 import { httpGet, httpPost } from './httpClient.js'
 
 export async function createOrder(
-  { productId, customerEmail, paymentMethodType, paymentMethodData },
+  { productId, customerEmail, shippingData, paymentMethodType, paymentMethodData },
   { signal } = {},
 ) {
   return httpPost(
@@ -9,6 +9,7 @@ export async function createOrder(
     {
       productId,
       customerEmail,
+      shippingData,
       paymentMethodType,
       paymentMethodData,
     },
