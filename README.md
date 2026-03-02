@@ -9,7 +9,7 @@
 Frontend de **Comfort** construido con React + Vite.  
 Incluye catálogo de productos, carrito, checkout y conexión con backend + pasarela de pago.
 
-[Preview.gif](public/videos/Preview.gif)
+[Preview.gif](public/videos/Preview.gif) ![Preview](public/videos/Preview.gif)
 
 ## ✨ Funcionalidades
 
