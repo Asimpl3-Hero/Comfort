@@ -56,20 +56,39 @@ export function CartStatusModal({
                     <div className="cart-modal-item-main">
                       <p className="cart-modal-item-title">{item.product.name}</p>
                       <p className="cart-modal-item-meta">
-                        {t('cart.qtyStock', {
-                          quantity: item.quantity,
-                          stock: item.product.stock,
+                        {t('cart.itemQuantity', {
+                          count: item.quantity,
+                        })}
+                      </p>
+                      <p className="cart-modal-item-meta">
+                        {t('cart.itemStock', {
+                          count: item.product.stock,
+                        })}
+                      </p>
+                      <p className="cart-modal-item-meta">
+                        {t('cart.unitPrice', {
+                          price: formatCurrencyFromCents(
+                            item.product.priceInCents,
+                            item.product.currency,
+                            language,
+                          ),
                         })}
                       </p>
                     </div>
                     <p className="cart-modal-item-total">
-                      {formatCurrencyFromCents(item.totalInCents, item.product.currency, language)}
+                      {t('cart.itemSubtotal', {
+                        total: formatCurrencyFromCents(
+                          item.totalInCents,
+                          item.product.currency,
+                          language,
+                        ),
+                      })}
                     </p>
                   </li>
                 ))}
               </ul>
               <div className="cart-modal-summary">
-                <p>{t('cart.items', { count: totalQuantity })}</p>
+                <p>{t('cart.totalItems', { count: totalQuantity })}</p>
                 <p>
                   {t('cart.total', {
                     total: formatCurrencyFromCents(totalInCents, currency, language),

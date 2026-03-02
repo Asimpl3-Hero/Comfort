@@ -5,12 +5,15 @@ export function CheckoutReviewStep({
   t,
   language,
   product,
+  productQuantity = 1,
+  cartTotalQuantity = 1,
   shippingForm,
   paymentForm,
   paymentMethodType,
   paymentMethodDataForm,
   detectedBrand,
   detectedBrandMeta,
+  unitPriceInCents,
   productAmountInCents,
   baseFeeInCents,
   deliveryFeeInCents,
@@ -67,10 +70,26 @@ export function CheckoutReviewStep({
             <div>
               <p className="checkout-strong">{product.name}</p>
               <p>{product.description}</p>
+              <p className="checkout-muted-line">
+                {t('checkout.summary.productQuantity', { count: productQuantity })}
+              </p>
+              <p className="checkout-muted-line">
+                {t('checkout.summary.unitPrice', {
+                  price: formatCurrencyFromCents(unitPriceInCents, currency, language),
+                })}
+              </p>
             </div>
             <p className="checkout-strong">
               {formatCurrencyFromCents(productAmountInCents, currency, language)}
             </p>
+          </div>
+          <div className="checkout-cart-item">
+            <p>{t('checkout.summary.cartItems')}</p>
+            <p>{cartTotalQuantity}</p>
+          </div>
+          <div className="checkout-cart-item">
+            <p>{t('checkout.summary.productSubtotal')}</p>
+            <p>{formatCurrencyFromCents(productAmountInCents, currency, language)}</p>
           </div>
           <div className="checkout-cart-item">
             <p>{t('checkout.summary.baseFee')}</p>

@@ -24,6 +24,8 @@ export function CheckoutStepperModal({
   shipping = defaultShipping,
   payment = defaultPayment,
   product = null,
+  productQuantity = 1,
+  cartTotalQuantity = 1,
   baseFeeInCents = 1900,
   deliveryFeeInCents = 3500,
   isSubmitting = false,
@@ -65,6 +67,8 @@ export function CheckoutStepperModal({
     paymentMethodDataForm,
     paymentMethodType,
     primaryButtonClassName,
+    productQuantity: normalizedProductQuantity,
+    unitPriceInCents,
     productAmountInCents,
     shippingErrors,
     shippingForm,
@@ -73,6 +77,7 @@ export function CheckoutStepperModal({
     initialShipping: { ...defaultShipping, ...shipping },
     initialPayment: { ...defaultPayment, ...payment },
     product,
+    productQuantity,
     baseFeeInCents,
     deliveryFeeInCents,
     resolvedSteps,
@@ -164,12 +169,15 @@ export function CheckoutStepperModal({
               t={t}
               language={language}
               product={product}
+              cartTotalQuantity={cartTotalQuantity}
               shippingForm={shippingForm}
               paymentForm={paymentForm}
               paymentMethodType={paymentMethodType}
               paymentMethodDataForm={paymentMethodDataForm}
               detectedBrand={detectedBrand}
               detectedBrandMeta={detectedBrandMeta}
+              productQuantity={normalizedProductQuantity}
+              unitPriceInCents={unitPriceInCents}
               productAmountInCents={productAmountInCents}
               baseFeeInCents={baseFeeInCents}
               deliveryFeeInCents={deliveryFeeInCents}

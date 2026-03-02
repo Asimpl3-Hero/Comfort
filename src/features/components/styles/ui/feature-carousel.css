@@ -60,11 +60,17 @@
 }
 
 .feature-carousel-card {
+  appearance: none;
+  padding: 0;
   width: clamp(180px, 22vw, 255px);
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--color-border);
   border-radius: 0.85rem;
   background: var(--color-surface);
   color: var(--color-text);
+  font: inherit;
+  line-height: inherit;
   text-align: left;
   overflow: hidden;
   cursor: pointer;
@@ -75,6 +81,8 @@
 }
 
 .feature-carousel-card-image {
+  width: 100%;
+  display: block;
   aspect-ratio: 16 / 9;
   background-color: #e7e5e4;
   background-size: cover;

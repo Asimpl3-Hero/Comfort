@@ -169,6 +169,10 @@
   margin-top: 0.2rem;
 }
 
+.checkout-muted-line {
+  margin-top: 0.2rem !important;
+}
+
 .checkout-strong {
   color: var(--color-text) !important;
   font-weight: 700;

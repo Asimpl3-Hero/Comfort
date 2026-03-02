@@ -19,6 +19,7 @@ export function useCheckoutStepper({
   initialShipping,
   initialPayment,
   product,
+  productQuantity = 1,
   baseFeeInCents,
   deliveryFeeInCents,
   resolvedSteps,
@@ -35,7 +36,11 @@ export function useCheckoutStepper({
 
   const maxStep = resolvedSteps.length - 1
   const isLastStep = activeStepIndex === maxStep
-  const productAmountInCents = Number(product?.priceInCents ?? 0)
+  const normalizedProductQuantity = Number.isFinite(Number(productQuantity))
+    ? Math.max(1, Math.floor(Number(productQuantity)))
+    : 1
+  const unitPriceInCents = Number(product?.priceInCents ?? 0)
+  const productAmountInCents = unitPriceInCents * normalizedProductQuantity
   const currency = product?.currency ?? 'COP'
   const detectedBrand = getCardBrand(paymentForm.cardNumber)
   const detectedBrandMeta = CARD_BRANDS[detectedBrand] ?? null
@@ -73,6 +78,8 @@ export function useCheckoutStepper({
         paymentMethodData: mapPaymentMethodData(paymentMethodType, paymentMethodDataForm, paymentForm),
         product,
         summary: {
+          productQuantity: normalizedProductQuantity,
+          unitPriceInCents,
           productAmountInCents,
           baseFeeInCents,
           deliveryFeeInCents,
@@ -141,6 +148,8 @@ export function useCheckoutStepper({
     paymentMethodDataForm,
     paymentMethodType,
     primaryButtonClassName,
+    productQuantity: normalizedProductQuantity,
+    unitPriceInCents,
     productAmountInCents,
     shippingErrors,
     shippingForm,

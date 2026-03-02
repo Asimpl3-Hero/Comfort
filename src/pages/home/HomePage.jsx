@@ -101,6 +101,9 @@ export function HomePage() {
   }
 
   const selectedProduct = products.find((item) => item.id === selectedProductId) ?? null
+  const selectedProductQuantity = selectedProductId
+    ? Number(cartItemsByProductId[selectedProductId] ?? 1)
+    : 1
 
   const handleAddToCart = (product) => {
     if (!product?.id) {
@@ -196,6 +199,8 @@ export function HomePage() {
           isOpen={isCheckoutOpen}
           onClose={handleCloseCheckout}
           product={selectedProduct}
+          productQuantity={selectedProductQuantity}
+          cartTotalQuantity={cartTotalQuantity}
           onPlaceOrder={handlePlaceOrder}
           isSubmitting={isSubmittingOrder}
           submitError={submitError}
