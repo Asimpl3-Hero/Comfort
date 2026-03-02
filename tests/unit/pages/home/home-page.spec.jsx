@@ -146,11 +146,9 @@ vi.mock('../../../../src/features/shop/checkout/state/index.js', async () => {
     ...actual,
     closeCartModal: vi.fn(() => ({ type: 'checkout/closeCart' })),
     closeCheckoutModal: vi.fn(() => ({ type: 'checkout/closeCheckout' })),
-    dismissTransactionMessage: vi.fn(() => ({ type: 'checkout/dismiss' })),
     dismissTransactionResult: vi.fn(() => ({ type: 'checkout/dismissResult' })),
     openCartModal: vi.fn(() => ({ type: 'checkout/openCart' })),
     proceedToCheckoutFromCart: vi.fn(() => ({ type: 'checkout/proceed' })),
-    setTransactionMessage: vi.fn((payload) => ({ type: 'checkout/message', payload })),
     submitOrder: vi.fn((payload) => ({ type: 'checkout/submit', payload })),
   }
 })
@@ -159,10 +157,8 @@ import { addItemToCart, clearCart } from '../../../../src/features/shop/cart/sta
 import {
   closeCartModal,
   closeCheckoutModal,
-  dismissTransactionMessage,
   dismissTransactionResult,
   proceedToCheckoutFromCart,
-  setTransactionMessage,
   submitOrder,
 } from '../../../../src/features/shop/checkout/state/index.js'
 import { HomePage } from '../../../../src/pages/home/HomePage.jsx'
@@ -202,7 +198,6 @@ describe('HomePage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'AddMock' }))
 
     expect(addItemToCart).toHaveBeenCalledWith({ productId: 'p-1' })
-    expect(setTransactionMessage).toHaveBeenCalled()
   })
 
   it('does not add product without id and blocks when max stock is reached', () => {
@@ -213,15 +208,6 @@ describe('HomePage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'AddMock' }))
 
     expect(addItemToCart).not.toHaveBeenCalled()
-    expect(setTransactionMessage).toHaveBeenCalled()
-  })
-
-  it('renders and handles transaction message dismissal', () => {
-    mockState.checkout.transactionMessage = 'Payment status message'
-    render(<HomePage />)
-
-    fireEvent.click(screen.getByRole('button', { name: /dismiss/i }))
-    expect(dismissTransactionMessage).toHaveBeenCalled()
   })
 
   it('renders cart modal actions when cart is open', () => {
@@ -263,7 +249,6 @@ describe('HomePage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'DetailsAdd' }))
 
     expect(addItemToCart).toHaveBeenCalledWith({ productId: 'p-1' })
-    expect(setTransactionMessage).toHaveBeenCalled()
   })
 
   it('renders and closes transaction result modal', () => {

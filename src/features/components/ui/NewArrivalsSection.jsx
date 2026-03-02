@@ -16,6 +16,7 @@ export function NewArrivalsSection({
   onToggleFavorite,
   onOpenDetails,
   onAddToCart,
+  recentlyAddedByProductId = {},
   retryLabel,
   emptyMessage,
   defaultErrorMessage,
@@ -86,6 +87,7 @@ export function NewArrivalsSection({
                 key={product.id}
                 product={product}
                 isFavorite={favoriteIds.includes(product.id)}
+                isRecentlyAdded={Boolean(recentlyAddedByProductId[product.id])}
                 onToggleFavorite={onToggleFavorite}
                 onOpenDetails={onOpenDetails}
                 onAddToCart={onAddToCart}

@@ -52,7 +52,6 @@ export function CheckoutStepperModal({
   const {
     activeStepIndex,
     currency,
-    detectedBrand,
     detectedBrandMeta,
     handleBack,
     handleNext,
@@ -175,7 +174,6 @@ export function CheckoutStepperModal({
               paymentForm={paymentForm}
               paymentMethodType={paymentMethodType}
               paymentMethodDataForm={paymentMethodDataForm}
-              detectedBrand={detectedBrand}
               detectedBrandMeta={detectedBrandMeta}
               productQuantity={normalizedProductQuantity}
               unitPriceInCents={unitPriceInCents}

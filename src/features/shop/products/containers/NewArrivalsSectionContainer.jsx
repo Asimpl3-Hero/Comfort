@@ -11,7 +11,11 @@ import {
   toggleFavorite,
 } from '../state/index.js'
 
-export function NewArrivalsSectionContainer({ onAddToCart, onOpenDetails }) {
+export function NewArrivalsSectionContainer({
+  onAddToCart,
+  onOpenDetails,
+  recentlyAddedByProductId,
+}) {
   const dispatch = useAppDispatch()
   const products = useAppSelector(selectProducts)
   const favoriteIds = useAppSelector(selectFavoriteIds)
@@ -50,6 +54,7 @@ export function NewArrivalsSectionContainer({ onAddToCart, onOpenDetails }) {
       onToggleFavorite={handleToggleFavorite}
       onOpenDetails={handleOpenDetails}
       onAddToCart={handleAddToCart}
+      recentlyAddedByProductId={recentlyAddedByProductId}
     />
   )
 }

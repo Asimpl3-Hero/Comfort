@@ -37,7 +37,7 @@ describe('CheckoutStepperModal', () => {
   it('fills checkout form with mock data from helper button', () => {
     render(<CheckoutStepperModal isOpen product={productFixture} onClose={() => {}} />)
     fireEvent.click(screen.getByRole('button', { name: 'checkout.buttons.fillTestData' }))
-    expect(screen.getByDisplayValue('John Doe')).toBeInTheDocument()
-    expect(screen.getByDisplayValue('123 Minimalist St.')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Juan Perez')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Cra 7 #45-12')).toBeInTheDocument()
   })
 })

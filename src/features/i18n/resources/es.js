@@ -50,12 +50,17 @@ export const es = {
     viewDetails: 'Ver detalle de {{name}}',
     stock: 'Stock: {{count}} unidades',
     addToCart: 'Agregar al carrito',
+    addedToCart: 'Agregado',
     outOfStock: 'Sin stock',
   },
   productModal: {
     ariaLabel: 'Detalle del producto',
     title: 'Detalle del producto',
     close: 'Cerrar',
+    quantity: 'Cantidad',
+    increaseQuantity: 'Aumentar cantidad',
+    decreaseQuantity: 'Disminuir cantidad',
+    remainingStock: 'Disponibles para agregar: {{count}}',
   },
   features: {
     title: 'Por que elegir Comfort?',
@@ -104,6 +109,11 @@ export const es = {
   home: {
     maxStockReached: 'Ya agregaste el stock maximo para {{name}}.',
     productAdded: '{{name}} agregado al carrito.',
+    productAddedMany: 'Se agregaron {{count}} unidades de {{name}} al carrito.',
+    notifications: {
+      cartUpdated: 'Carrito actualizado',
+      stockLimitTitle: 'Stock maximo alcanzado',
+    },
     loading: {
       creatingOrder: 'Creando tu orden...',
       openingCheckout: 'Abriendo checkout seguro...',
@@ -149,7 +159,7 @@ export const es = {
       sandboxResult: 'Resultado sandbox',
     },
     placeholders: {
-      expiry: '12/25',
+      expiry: '12/30',
     },
     paymentMethods: {
       creditCard: 'Tarjeta de Credito',
@@ -201,6 +211,7 @@ export const es = {
       cardholderRequired: 'El nombre del titular es obligatorio',
       cardNumberInvalid: 'El numero de tarjeta no es valido',
       expiryFormat: 'Usa formato MM/YY',
+      expiryFuture: 'La fecha de vencimiento debe ser futura',
       cvvInvalid: 'El CVV no es valido',
       nequiPhoneInvalid: 'El numero de Nequi debe tener 10 digitos',
       documentRequired: 'El numero de documento es obligatorio',

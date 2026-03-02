@@ -1,6 +1,6 @@
 import '../../features/components/styles/ui/home-sections.css'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -16,6 +16,7 @@ import { FeaturesSection } from '../../features/components/ui/FeaturesSection.js
 import { HeroSection } from '../../features/components/ui/HeroSection.jsx'
 import { NewsletterSection } from '../../features/components/ui/NewsletterSection.jsx'
 import { ProductDetailsModal } from '../../features/components/ui/ProductDetailsModal.jsx'
+import { PushNotificationToast } from '../../features/components/ui/PushNotificationToast.jsx'
 import { TransactionResultModal } from '../../features/components/ui/TransactionResultModal.jsx'
 import { AppLayout } from '../../features/components/ux/AppLayout.jsx'
 import {
@@ -29,7 +30,6 @@ import {
 import {
   closeCartModal,
   closeCheckoutModal,
-  dismissTransactionMessage,
   dismissTransactionResult,
   openCartModal,
   proceedToCheckoutFromCart,
@@ -40,9 +40,7 @@ import {
   selectSelectedProductId,
   selectSubmitError,
   selectSubmitPhase,
-  selectTransactionMessage,
   selectTransactionResult,
-  setTransactionMessage,
   submitOrder,
 } from '../../features/shop/checkout/state/index.js'
 import { NewArrivalsSectionContainer } from '../../features/shop/products/containers/NewArrivalsSectionContainer.jsx'
@@ -53,6 +51,10 @@ export function HomePage() {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const [selectedDetailsProduct, setSelectedDetailsProduct] = useState(null)
+  const [recentlyAddedByProductId, setRecentlyAddedByProductId] = useState({})
+  const [pushNotification, setPushNotification] = useState(null)
+  const addFeedbackTimersRef = useRef({})
+  const notificationTimerRef = useRef(null)
 
   const products = useAppSelector(selectProducts)
   const cartItems = useAppSelector(selectCartProducts)
@@ -67,7 +69,6 @@ export function HomePage() {
   const submitError = useAppSelector(selectSubmitError)
   const submitPhase = useAppSelector(selectSubmitPhase)
   const isLongPending = useAppSelector(selectIsLongPending)
-  const transactionMessage = useAppSelector(selectTransactionMessage)
   const transactionResult = useAppSelector(selectTransactionResult)
 
   const localizedTopNavigationLinks = useMemo(
@@ -108,21 +109,94 @@ export function HomePage() {
   const selectedProductQuantity = selectedProductId
     ? Number(cartItemsByProductId[selectedProductId] ?? 1)
     : 1
+  const selectedDetailsProductIsRecentlyAdded = Boolean(
+    selectedDetailsProduct?.id && recentlyAddedByProductId[selectedDetailsProduct.id],
+  )
 
-  const handleAddToCart = (product) => {
+  useEffect(
+    () => () => {
+      Object.values(addFeedbackTimersRef.current).forEach((timerId) => {
+        clearTimeout(timerId)
+      })
+      if (notificationTimerRef.current) {
+        clearTimeout(notificationTimerRef.current)
+      }
+    },
+    [],
+  )
+
+  const markProductAsRecentlyAdded = (productId) => {
+    if (!productId) {
+      return
+    }
+
+    setRecentlyAddedByProductId((current) => ({
+      ...current,
+      [productId]: true,
+    }))
+
+    const existingTimer = addFeedbackTimersRef.current[productId]
+    if (existingTimer) {
+      clearTimeout(existingTimer)
+    }
+
+    addFeedbackTimersRef.current[productId] = setTimeout(() => {
+      setRecentlyAddedByProductId((current) => {
+        const next = { ...current }
+        delete next[productId]
+        return next
+      })
+      delete addFeedbackTimersRef.current[productId]
+    }, 1500)
+  }
+
+  const showPushNotification = (kind, message, title) => {
+    if (notificationTimerRef.current) {
+      clearTimeout(notificationTimerRef.current)
+    }
+
+    setPushNotification({
+      kind,
+      title,
+      message,
+    })
+
+    notificationTimerRef.current = setTimeout(() => {
+      setPushNotification(null)
+    }, 2800)
+  }
+
+  const handleAddToCart = (product, quantity = 1) => {
     if (!product?.id) {
       return
     }
 
     const selectedQty = Number(cartItemsByProductId[product.id] ?? 0)
     const availableStock = Number(product.stock ?? 0)
-    if (selectedQty >= availableStock) {
-      dispatch(setTransactionMessage(t('home.maxStockReached', { name: product.name })))
+    const remainingStock = Math.max(0, availableStock - selectedQty)
+    const requestedQty = Math.max(1, Math.floor(Number(quantity) || 1))
+    const qtyToAdd = Math.min(requestedQty, remainingStock)
+
+    if (qtyToAdd <= 0) {
+      showPushNotification(
+        'warning',
+        t('home.maxStockReached', { name: product.name }),
+        t('home.notifications.stockLimitTitle'),
+      )
       return
     }
 
-    dispatch(addItemToCart({ productId: product.id }))
-    dispatch(setTransactionMessage(t('home.productAdded', { name: product.name })))
+    for (let index = 0; index < qtyToAdd; index += 1) {
+      dispatch(addItemToCart({ productId: product.id }))
+    }
+    markProductAsRecentlyAdded(product.id)
+    showPushNotification(
+      'success',
+      qtyToAdd === 1
+        ? t('home.productAdded', { name: product.name })
+        : t('home.productAddedMany', { name: product.name, count: qtyToAdd }),
+      t('home.notifications.cartUpdated'),
+    )
   }
 
   const handleCloseCheckout = () => {
@@ -160,6 +234,7 @@ export function HomePage() {
       <NewArrivalsSectionContainer
         onAddToCart={handleAddToCart}
         onOpenDetails={handleOpenProductDetails}
+        recentlyAddedByProductId={recentlyAddedByProductId}
       />
       <FeaturesSection items={localizedBenefits} />
       <NewsletterSection />
@@ -167,23 +242,18 @@ export function HomePage() {
       <ProductDetailsModal
         isOpen={Boolean(selectedDetailsProduct)}
         product={selectedDetailsProduct}
+        isRecentlyAdded={selectedDetailsProductIsRecentlyAdded}
+        currentCartQuantity={
+          selectedDetailsProduct?.id
+            ? Number(cartItemsByProductId[selectedDetailsProduct.id] ?? 0)
+            : 0
+        }
         onClose={handleCloseProductDetails}
-        onAddToCart={(product) => {
-          handleAddToCart(product)
+        onAddToCart={(product, quantity) => {
+          handleAddToCart(product, quantity)
           handleCloseProductDetails()
         }}
       />
-
-      {transactionMessage && (
-        <section className="container" style={{ marginBottom: '1.5rem' }}>
-          <div className="products-state-card" role="status" aria-live="polite">
-            <p>{transactionMessage}</p>
-            <button type="button" onClick={() => dispatch(dismissTransactionMessage())}>
-              {t('home.dismiss')}
-            </button>
-          </div>
-        </section>
-      )}
 
       {isCartOpen && (
         <CartStatusModal
@@ -221,6 +291,11 @@ export function HomePage() {
         transactionId={transactionResult?.transactionId}
         orderId={transactionResult?.orderId}
         onClose={() => dispatch(dismissTransactionResult())}
+      />
+
+      <PushNotificationToast
+        notification={pushNotification}
+        onClose={() => setPushNotification(null)}
       />
     </AppLayout>
   )

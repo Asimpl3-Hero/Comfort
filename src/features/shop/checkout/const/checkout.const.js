@@ -27,19 +27,19 @@ export const defaultPaymentMethodData = {
 }
 
 export const checkoutMockShipping = {
-  fullName: 'John Doe',
-  email: 'john.doe@example.com',
-  address1: '123 Minimalist St.',
-  address2: 'Apt 4B',
-  city: 'New York',
-  state: 'NY',
-  zip: '10001',
+  fullName: 'Juan Perez',
+  email: 'juan.perez@correo.co',
+  address1: 'Cra 7 #45-12',
+  address2: 'Apto 302',
+  city: 'Bogota',
+  state: 'Cundinamarca',
+  zip: '110111',
 }
 
 export const checkoutMockPayment = {
-  cardholder: 'John Doe',
+  cardholder: 'JUAN PEREZ',
   cardNumber: '4242424242424242',
-  expiry: '12/25',
+  expiry: '12/30',
   cvv: '123',
 }
 

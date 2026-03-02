@@ -75,22 +75,21 @@ describe('checkout-form utils', () => {
   })
 
   it('describes payment methods', () => {
+    const cardDescription = describePaymentMethod('CARD', { cardNumber: '4111111111111234' }, {}, t)
+    expect(cardDescription).toBe('**** 1234')
+    expect(cardDescription).not.toContain('VISA')
     expect(
-      describePaymentMethod('CARD', { cardNumber: '4111111111111234' }, {}, 'VISA', t),
-    ).toContain('**** 1234')
-    expect(
-      describePaymentMethod('NEQUI', {}, { nequiPhoneNumber: '3991111111' }, 'CARD', t),
+      describePaymentMethod('NEQUI', {}, { nequiPhoneNumber: '3991111111' }, t),
     ).toBe('NEQUI 3991111111')
     expect(
       describePaymentMethod(
         'PSE',
         {},
         { pseUserLegalIdType: 'CC', pseUserLegalId: '123' },
-        'CARD',
         t,
       ),
     ).toBe('PSE CC 123')
-    expect(describePaymentMethod('BANCOLOMBIA_TRANSFER', {}, {}, 'CARD', t)).toBe(
+    expect(describePaymentMethod('BANCOLOMBIA_TRANSFER', {}, {}, t)).toBe(
       'checkout.paymentDescription.bancolombiaTransfer',
     )
   })
@@ -137,6 +136,29 @@ describe('checkout-form utils', () => {
       t,
     )
     expect(bancoErrors.bancolombiaPaymentDescription).toBeTruthy()
+  })
+
+  it('requires card expiry to be a future month', () => {
+    const now = new Date()
+    const currentMonth = now.getMonth() + 1
+    const currentYear = now.getFullYear() % 100
+    const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1
+    const previousYear = currentMonth === 1 ? (currentYear + 99) % 100 : currentYear
+    const pastExpiry = `${String(previousMonth).padStart(2, '0')}/${String(previousYear).padStart(2, '0')}`
+
+    const errors = validatePayment(
+      'CARD',
+      {
+        cardholder: 'Jane Doe',
+        cardNumber: '4111111111111111',
+        expiry: pastExpiry,
+        cvv: '123',
+      },
+      {},
+      t,
+    )
+
+    expect(errors.expiry).toBe('checkout.validation.expiryFuture')
   })
 
   it('validates max length for PSE and Bancolombia descriptions', () => {

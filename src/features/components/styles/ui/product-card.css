@@ -121,7 +121,26 @@
   transition: opacity 0.2s ease;
 }
 
+.pay-with-card-btn.is-added {
+  background: linear-gradient(135deg, #6ee619, #56c410);
+  color: #132a04;
+  box-shadow: 0 10px 24px rgb(110 230 25 / 0.35);
+  animation: add-feedback-pulse 0.5s ease;
+}
+
 .pay-with-card-btn:disabled {
   cursor: not-allowed;
   opacity: 0.55;
+}
+
+@keyframes add-feedback-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

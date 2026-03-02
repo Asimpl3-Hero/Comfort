@@ -50,12 +50,17 @@ export const en = {
     viewDetails: 'View details for {{name}}',
     stock: 'Stock: {{count}} units',
     addToCart: 'Add to cart',
+    addedToCart: 'Added',
     outOfStock: 'Out of stock',
   },
   productModal: {
     ariaLabel: 'Product details',
     title: 'Product details',
     close: 'Close',
+    quantity: 'Quantity',
+    increaseQuantity: 'Increase quantity',
+    decreaseQuantity: 'Decrease quantity',
+    remainingStock: 'Available to add: {{count}}',
   },
   features: {
     title: 'Why Choose Comfort?',
@@ -104,6 +109,11 @@ export const en = {
   home: {
     maxStockReached: 'You already added the maximum stock for {{name}}.',
     productAdded: '{{name}} added to cart.',
+    productAddedMany: '{{count}} units of {{name}} were added to cart.',
+    notifications: {
+      cartUpdated: 'Cart updated',
+      stockLimitTitle: 'Stock limit reached',
+    },
     loading: {
       creatingOrder: 'Creating your order...',
       openingCheckout: 'Opening secure checkout...',
@@ -149,7 +159,7 @@ export const en = {
       sandboxResult: 'Sandbox result',
     },
     placeholders: {
-      expiry: '12/25',
+      expiry: '12/30',
     },
     paymentMethods: {
       creditCard: 'Credit Card',
@@ -201,6 +211,7 @@ export const en = {
       cardholderRequired: 'Cardholder name is required',
       cardNumberInvalid: 'Card number is invalid',
       expiryFormat: 'Use MM/YY format',
+      expiryFuture: 'Expiry date must be in the future',
       cvvInvalid: 'CVV is invalid',
       nequiPhoneInvalid: 'Nequi number must be 10 digits',
       documentRequired: 'Document number is required',

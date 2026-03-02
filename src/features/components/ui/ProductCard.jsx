@@ -7,6 +7,7 @@ import { formatCurrencyFromCents } from '../../../shared/utils/currency.js'
 export function ProductCard({
   product = {},
   isFavorite = false,
+  isRecentlyAdded = false,
   onToggleFavorite,
   onOpenDetails,
   onAddToCart,
@@ -85,14 +86,18 @@ export function ProductCard({
       </div>
       <button
         type="button"
-        className="pay-with-card-btn"
+        className={`pay-with-card-btn${isRecentlyAdded ? ' is-added' : ''}`}
         onClick={(event) => {
           event.stopPropagation()
           onAddToCart?.(safeProduct)
         }}
         disabled={safeProduct.stock <= 0}
       >
-        {safeProduct.stock > 0 ? t('product.addToCart') : t('product.outOfStock')}
+        {safeProduct.stock > 0
+          ? isRecentlyAdded
+            ? t('product.addedToCart')
+            : t('product.addToCart')
+          : t('product.outOfStock')}
       </button>
     </article>
   )

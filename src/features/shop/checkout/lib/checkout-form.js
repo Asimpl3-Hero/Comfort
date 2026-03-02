@@ -51,9 +51,9 @@ export function mapPaymentMethodData(paymentMethodType, data, paymentForm = {}) 
   }
 }
 
-export function describePaymentMethod(paymentMethodType, cardData, data, detectedBrand, t) {
+export function describePaymentMethod(paymentMethodType, cardData, data, t) {
   if (paymentMethodType === 'CARD') {
-    return `${detectedBrand} ${getMaskedCard(cardData.cardNumber)}`
+    return getMaskedCard(cardData.cardNumber)
   }
 
   if (paymentMethodType === 'NEQUI') {
@@ -89,6 +89,7 @@ export function validatePayment(paymentMethodType, paymentForm, paymentMethodDat
   const errors = {}
 
   if (paymentMethodType === 'CARD') {
+    const expiry = (paymentForm.expiry ?? '').trim()
     const digits = getCardDigits(paymentForm.cardNumber)
     if (!paymentForm.cardholder.trim()) {
       errors.cardholder = t('checkout.validation.cardholderRequired')
@@ -96,8 +97,10 @@ export function validatePayment(paymentMethodType, paymentForm, paymentMethodDat
     if (digits.length < 13) {
       errors.cardNumber = t('checkout.validation.cardNumberInvalid')
     }
-    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(paymentForm.expiry)) {
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
       errors.expiry = t('checkout.validation.expiryFormat')
+    } else if (!isFutureExpiry(expiry)) {
+      errors.expiry = t('checkout.validation.expiryFuture')
     }
     if (!/^\d{3,4}$/.test(paymentForm.cvv)) {
       errors.cvv = t('checkout.validation.cvvInvalid')
@@ -130,4 +133,23 @@ export function validatePayment(paymentMethodType, paymentForm, paymentMethodDat
   }
 
   return errors
+}
+
+function isFutureExpiry(expiry) {
+  const [monthRaw, yearRaw] = expiry.split('/')
+  const month = Number(monthRaw)
+  const year = Number(yearRaw)
+  const now = new Date()
+  const currentYear = now.getFullYear() % 100
+  const currentMonth = now.getMonth() + 1
+
+  if (year > currentYear) {
+    return true
+  }
+
+  if (year < currentYear) {
+    return false
+  }
+
+  return month > currentMonth
 }

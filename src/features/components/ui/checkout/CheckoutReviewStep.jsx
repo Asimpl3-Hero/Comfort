@@ -11,7 +11,6 @@ export function CheckoutReviewStep({
   paymentForm,
   paymentMethodType,
   paymentMethodDataForm,
-  detectedBrand,
   detectedBrandMeta,
   unitPriceInCents,
   productAmountInCents,
@@ -52,7 +51,7 @@ export function CheckoutReviewStep({
                 className="card-brand-inline-logo"
               />
             ) : null}
-            {describePaymentMethod(paymentMethodType, paymentForm, paymentMethodDataForm, detectedBrand, t)}
+            {describePaymentMethod(paymentMethodType, paymentForm, paymentMethodDataForm, t)}
           </p>
           {paymentMethodType === 'CARD' && <p>{t('checkout.summary.exp', { value: paymentForm.expiry })}</p>}
         </article>
@@ -69,14 +68,8 @@ export function CheckoutReviewStep({
           <div className="checkout-cart-item">
             <div>
               <p className="checkout-strong">{product.name}</p>
-              <p>{product.description}</p>
               <p className="checkout-muted-line">
                 {t('checkout.summary.productQuantity', { count: productQuantity })}
-              </p>
-              <p className="checkout-muted-line">
-                {t('checkout.summary.unitPrice', {
-                  price: formatCurrencyFromCents(unitPriceInCents, currency, language),
-                })}
               </p>
             </div>
             <p className="checkout-strong">
