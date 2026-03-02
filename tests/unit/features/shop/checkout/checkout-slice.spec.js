@@ -6,6 +6,10 @@ vi.mock('../../../../../src/shared/api/ordersApi.js', () => ({
   getOrderById: vi.fn(),
 }))
 
+vi.mock('../../../../../src/shared/api/wompiApi.js', () => ({
+  createWompiCardToken: vi.fn(),
+}))
+
 vi.mock('../../../../../src/features/i18n/index.js', () => ({
   default: {
     t: vi.fn((key, options) => (options?.orderId ? `${key}:${options.orderId}` : key)),
@@ -25,6 +29,7 @@ vi.mock('../../../../../src/features/shop/cart/state/index.js', async () => {
 })
 
 import { createOrder, getOrderById } from '../../../../../src/shared/api/ordersApi.js'
+import { createWompiCardToken } from '../../../../../src/shared/api/wompiApi.js'
 import { decrementItemFromCart } from '../../../../../src/features/shop/cart/state/index.js'
 import checkoutReducer, {
   closeCartModal,
@@ -41,6 +46,14 @@ import cartReducer from '../../../../../src/features/shop/cart/state/cart.slice.
 import productsReducer from '../../../../../src/features/shop/products/state/products.slice.js'
 
 describe('checkoutSlice', () => {
+  const cardPaymentData = {
+    cardNumber: '4111111111111111',
+    cardCvc: '123',
+    cardExpMonth: '12',
+    cardExpYear: '30',
+    cardHolder: 'Jane Doe',
+  }
+
   const baseCheckoutState = {
     isCartOpen: false,
     isCheckoutOpen: true,
@@ -74,6 +87,7 @@ describe('checkoutSlice', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.useRealTimers()
+    createWompiCardToken.mockResolvedValue('tok_test_123')
   })
 
   it('handles modal and message reducers', () => {
@@ -157,13 +171,22 @@ describe('checkoutSlice', () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
     const store = makeStore()
 
-    await store.dispatch(submitOrder({ paymentMethodType: 'CARD' }))
+    await store.dispatch(submitOrder({ paymentMethodType: 'CARD', paymentMethodData: cardPaymentData }))
     const state = store.getState().checkout
     expect(state.isSubmittingOrder).toBe(false)
     expect(state.isCheckoutOpen).toBe(false)
     expect(state.selectedProductId).toBeNull()
     expect(state.transactionMessage).toContain('checkout.async.paymentApproved')
     expect(openSpy).toHaveBeenCalledTimes(1)
+    expect(createWompiCardToken).toHaveBeenCalledTimes(1)
+    expect(createOrder).toHaveBeenCalledWith(
+      {
+        productId: 'p-1',
+        paymentMethodType: 'CARD',
+        paymentMethodData: { cardToken: 'tok_test_123' },
+      },
+      { signal: expect.anything() },
+    )
     expect(decrementItemFromCart).toHaveBeenCalledWith({ productId: 'p-1' })
     openSpy.mockRestore()
   })
@@ -179,6 +202,7 @@ describe('checkoutSlice', () => {
     expect(action.type).toBe('checkout/submitOrder/fulfilled')
     expect(action.payload.status).toBe('DECLINED')
     expect(state.transactionMessage).toContain('checkout.async.paymentDeclined')
+    expect(createWompiCardToken).not.toHaveBeenCalled()
     expect(decrementItemFromCart).not.toHaveBeenCalled()
   })
 
@@ -188,7 +212,9 @@ describe('checkoutSlice', () => {
     getOrderById.mockResolvedValue({ id: 'o-3', status: 'PENDING' })
     const store = makeStore()
 
-    const dispatchPromise = store.dispatch(submitOrder({ paymentMethodType: 'CARD' }))
+    const dispatchPromise = store.dispatch(
+      submitOrder({ paymentMethodType: 'CARD', paymentMethodData: cardPaymentData }),
+    )
     await vi.advanceTimersByTimeAsync(25_000)
     expect(store.getState().checkout.isLongPending).toBe(true)
 
@@ -206,10 +232,26 @@ describe('checkoutSlice', () => {
     createOrder.mockRejectedValue({})
     const store = makeStore()
 
-    const action = await store.dispatch(submitOrder({ paymentMethodType: 'CARD' }))
+    const action = await store.dispatch(
+      submitOrder({ paymentMethodType: 'CARD', paymentMethodData: cardPaymentData }),
+    )
     const state = store.getState().checkout
 
     expect(action.type).toBe('checkout/submitOrder/rejected')
     expect(state.submitError).toBe('checkout.async.couldNotCreateOrder')
+  })
+
+  it('submitOrder rejects when card tokenization fails', async () => {
+    createWompiCardToken.mockRejectedValue(new Error('Tokenization failed'))
+    const store = makeStore()
+
+    const action = await store.dispatch(
+      submitOrder({ paymentMethodType: 'CARD', paymentMethodData: cardPaymentData }),
+    )
+    const state = store.getState().checkout
+
+    expect(action.type).toBe('checkout/submitOrder/rejected')
+    expect(state.submitError).toBe('Tokenization failed')
+    expect(createOrder).not.toHaveBeenCalled()
   })
 })

@@ -168,6 +168,7 @@ export const en = {
     buttons: {
       back: 'Back',
       continue: 'Continue',
+      fillTestData: 'Fill test data',
       payWithCreditCard: 'Pay with credit card',
       processingPayment: 'Processing payment...',
     },

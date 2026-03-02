@@ -27,7 +27,24 @@ describe('checkout-form utils', () => {
   })
 
   it('maps payment method data by type', () => {
-    expect(mapPaymentMethodData('CARD', {})).toBeUndefined()
+    expect(
+      mapPaymentMethodData(
+        'CARD',
+        {},
+        {
+          cardNumber: '4111 1111 1111 1111',
+          cvv: '123',
+          expiry: '12/30',
+          cardholder: 'Jane Doe',
+        },
+      ),
+    ).toEqual({
+      cardNumber: '4111111111111111',
+      cardCvc: '123',
+      cardExpMonth: '12',
+      cardExpYear: '30',
+      cardHolder: 'Jane Doe',
+    })
     expect(mapPaymentMethodData('NEQUI', { nequiPhoneNumber: '3991111111' })).toEqual({
       phoneNumber: '3991111111',
     })

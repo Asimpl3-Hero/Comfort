@@ -1,7 +1,12 @@
 import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { defaultPayment, defaultShipping } from '../../../../../src/features/shop/checkout/const/index.js'
+import {
+  checkoutMockPayment,
+  checkoutMockShipping,
+  defaultPayment,
+  defaultShipping,
+} from '../../../../../src/features/shop/checkout/const/index.js'
 import { useCheckoutStepper } from '../../../../../src/features/shop/checkout/hooks/useCheckoutStepper.js'
 import { checkoutStepsFixture, productFixture } from '../../../../helpers/fixtures.js'
 
@@ -53,8 +58,8 @@ describe('useCheckoutStepper', () => {
     const onPlaceOrder = vi.fn()
     const { result } = renderHook(() =>
       useCheckoutStepper({
-        initialShipping: defaultShipping,
-        initialPayment: defaultPayment,
+        initialShipping: checkoutMockShipping,
+        initialPayment: checkoutMockPayment,
         product: productFixture,
         baseFeeInCents: 100,
         deliveryFeeInCents: 200,
@@ -137,7 +142,7 @@ describe('useCheckoutStepper', () => {
     const onPlaceOrder = vi.fn()
     const { result } = renderHook(() =>
       useCheckoutStepper({
-        initialShipping: defaultShipping,
+        initialShipping: checkoutMockShipping,
         initialPayment: { cardholder: '', cardNumber: '123', expiry: '00/00', cvv: '1' },
         product: productFixture,
         baseFeeInCents: 100,
@@ -159,5 +164,28 @@ describe('useCheckoutStepper', () => {
     expect(result.current.activeStepIndex).toBe(1)
     expect(result.current.paymentErrors.cardNumber).toBeTruthy()
     expect(onPlaceOrder).not.toHaveBeenCalled()
+  })
+
+  it('fills forms with mock data', () => {
+    const { result } = renderHook(() =>
+      useCheckoutStepper({
+        initialShipping: defaultShipping,
+        initialPayment: defaultPayment,
+        product: productFixture,
+        baseFeeInCents: 100,
+        deliveryFeeInCents: 200,
+        resolvedSteps: checkoutStepsFixture,
+        onPlaceOrder: vi.fn(),
+        t,
+      }),
+    )
+
+    act(() => {
+      result.current.handleFillWithMockData()
+    })
+
+    expect(result.current.shippingForm).toMatchObject(checkoutMockShipping)
+    expect(result.current.paymentForm).toMatchObject(checkoutMockPayment)
+    expect(result.current.paymentMethodDataForm.nequiPhoneNumber).toBe('3991111111')
   })
 })

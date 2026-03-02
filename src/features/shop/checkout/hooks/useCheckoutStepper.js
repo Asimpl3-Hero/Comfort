@@ -1,6 +1,12 @@
 import { useMemo, useState } from 'react'
 
-import { CARD_BRANDS, defaultPaymentMethodData } from '../const/index.js'
+import {
+  CARD_BRANDS,
+  checkoutMockPayment,
+  checkoutMockPaymentMethodData,
+  checkoutMockShipping,
+  defaultPaymentMethodData,
+} from '../const/index.js'
 import {
   getCardBrand,
   getCardDigits,
@@ -109,6 +115,14 @@ export function useCheckoutStepper({
     }))
   }
 
+  const handleFillWithMockData = () => {
+    setShippingForm({ ...checkoutMockShipping })
+    setPaymentForm({ ...checkoutMockPayment })
+    setPaymentMethodDataForm({ ...checkoutMockPaymentMethodData })
+    setShippingErrors({})
+    setPaymentErrors({})
+  }
+
   return {
     activeStepIndex,
     currency,
@@ -120,6 +134,7 @@ export function useCheckoutStepper({
     handlePaymentMethodDataChange,
     handlePaymentMethodTypeChange,
     handleShippingChange,
+    handleFillWithMockData,
     isLastStep,
     paymentErrors,
     paymentForm,

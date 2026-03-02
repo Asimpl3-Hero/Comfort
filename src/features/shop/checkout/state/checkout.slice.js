@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { createOrder, getOrderById } from '../../../../shared/api/ordersApi.js'
+import { createWompiCardToken } from '../../../../shared/api/wompiApi.js'
 import i18n from '../../../i18n/index.js'
 import { decrementItemFromCart } from '../../cart/state/index.js'
 import { fetchProducts } from '../../products/state/index.js'
@@ -55,11 +56,19 @@ export const submitOrder = createAsyncThunk(
       dispatch(setSubmitPhase('creating-order'))
       dispatch(setPendingProlonged(false))
 
+      const paymentMethodType = checkoutData?.paymentMethodType ?? 'CARD'
+      let paymentMethodData = checkoutData?.paymentMethodData
+
+      if (paymentMethodType === 'CARD') {
+        const cardToken = await createWompiCardToken(paymentMethodData, { signal })
+        paymentMethodData = { cardToken }
+      }
+
       const createdOrder = await createOrder(
         {
           productId,
-          paymentMethodType: checkoutData?.paymentMethodType ?? 'CARD',
-          paymentMethodData: checkoutData?.paymentMethodData,
+          paymentMethodType,
+          paymentMethodData,
         },
         { signal },
       )

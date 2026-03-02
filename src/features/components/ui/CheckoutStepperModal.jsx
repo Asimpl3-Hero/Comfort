@@ -58,6 +58,7 @@ export function CheckoutStepperModal({
     handlePaymentMethodDataChange,
     handlePaymentMethodTypeChange,
     handleShippingChange,
+    handleFillWithMockData,
     isLastStep,
     paymentErrors,
     paymentForm,
@@ -119,6 +120,19 @@ export function CheckoutStepperModal({
         </header>
 
         <div className="checkout-modal-body">
+          {activeStepIndex < 2 && (
+            <div className="checkout-fill-action">
+              <button
+                type="button"
+                className="checkout-fill-btn"
+                onClick={handleFillWithMockData}
+                disabled={isSubmitting}
+              >
+                {t('checkout.buttons.fillTestData')}
+              </button>
+            </div>
+          )}
+
           {activeStepIndex === 0 && (
             <CheckoutShippingStep
               t={t}

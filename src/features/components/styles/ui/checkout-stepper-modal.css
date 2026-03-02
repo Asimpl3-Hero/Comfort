@@ -102,6 +102,32 @@
   background: color-mix(in srgb, var(--color-surface) 88%, #f8faf7);
 }
 
+.checkout-fill-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.8rem;
+}
+
+.checkout-fill-btn {
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-border) 30%, var(--color-surface));
+  cursor: pointer;
+}
+
+.checkout-fill-btn:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+}
+
+.checkout-fill-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .checkout-stage {
   display: grid;
   grid-template-columns: 1fr;

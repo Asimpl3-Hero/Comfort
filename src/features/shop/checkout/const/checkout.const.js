@@ -1,4 +1,31 @@
 export const defaultShipping = {
+  fullName: '',
+  address1: '',
+  address2: '',
+  city: '',
+  state: '',
+  zip: '',
+}
+
+export const defaultPayment = {
+  cardholder: '',
+  cardNumber: '',
+  expiry: '',
+  cvv: '',
+}
+
+export const defaultPaymentMethodData = {
+  nequiPhoneNumber: '',
+  pseUserType: '0',
+  pseUserLegalIdType: 'CC',
+  pseUserLegalId: '',
+  pseFinancialInstitutionCode: '1',
+  psePaymentDescription: '',
+  bancolombiaPaymentDescription: '',
+  bancolombiaSandboxStatus: 'APPROVED',
+}
+
+export const checkoutMockShipping = {
   fullName: 'John Doe',
   address1: '123 Minimalist St.',
   address2: 'Apt 4B',
@@ -7,14 +34,14 @@ export const defaultShipping = {
   zip: '10001',
 }
 
-export const defaultPayment = {
+export const checkoutMockPayment = {
   cardholder: 'John Doe',
   cardNumber: '4242424242424242',
   expiry: '12/25',
   cvv: '123',
 }
 
-export const defaultPaymentMethodData = {
+export const checkoutMockPaymentMethodData = {
   nequiPhoneNumber: '3991111111',
   pseUserType: '0',
   pseUserLegalIdType: 'CC',
