@@ -31,6 +31,11 @@ export const es = {
     ctaLabel: 'Ver Coleccion',
     imageAlt: 'Mujer relajandose con ropa comoda de lino',
   },
+  carousel: {
+    ariaLabel: 'Carrusel de productos destacados',
+    title: 'Destacados para ti',
+    subtitle: 'Seleccion aleatoria que se desplaza automaticamente',
+  },
   newArrivals: {
     title: 'Nuevos Productos',
     viewAll: 'Ver todos los productos ->',

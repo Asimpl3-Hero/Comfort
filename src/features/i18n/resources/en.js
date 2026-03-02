@@ -31,6 +31,11 @@ export const en = {
     ctaLabel: 'Shop Collection',
     imageAlt: 'Woman relaxing in soft linen loungewear',
   },
+  carousel: {
+    ariaLabel: 'Featured products carousel',
+    title: 'Picked for you',
+    subtitle: 'Random selection moving automatically',
+  },
   newArrivals: {
     title: 'New Arrivals',
     viewAll: 'View all products ->',

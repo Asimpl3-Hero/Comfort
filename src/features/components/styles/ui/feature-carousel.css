@@ -1,0 +1,123 @@
+.feature-carousel-section {
+  padding: 0 0 2.75rem;
+}
+
+.feature-carousel-header {
+  margin-bottom: 1rem;
+}
+
+.feature-carousel-header h2 {
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.feature-carousel-header p {
+  margin-top: 0.35rem;
+  color: var(--color-muted);
+}
+
+.feature-carousel-mask {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.feature-carousel-mask::before,
+.feature-carousel-mask::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: clamp(2.25rem, 6vw, 5.25rem);
+  pointer-events: none;
+}
+
+.feature-carousel-mask::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--color-bg) 0%, transparent 100%);
+}
+
+.feature-carousel-mask::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--color-bg) 0%, transparent 100%);
+}
+
+.feature-carousel-track {
+  --feature-carousel-gap: 1rem;
+  display: flex;
+  gap: var(--feature-carousel-gap);
+  width: max-content;
+  animation: feature-carousel-loop var(--feature-carousel-duration, 28s) linear infinite;
+  will-change: transform;
+}
+
+.feature-carousel-group {
+  display: flex;
+  align-items: stretch;
+  gap: var(--feature-carousel-gap);
+}
+
+.feature-carousel-card {
+  width: clamp(180px, 22vw, 255px);
+  border: 1px solid var(--color-border);
+  border-radius: 0.85rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-align: left;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.feature-carousel-card:disabled {
+  cursor: default;
+}
+
+.feature-carousel-card-image {
+  aspect-ratio: 16 / 9;
+  background-color: #e7e5e4;
+  background-size: cover;
+  background-position: center;
+}
+
+.feature-carousel-card-meta {
+  padding: 0.75rem;
+}
+
+.feature-carousel-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.feature-carousel-card-price {
+  margin-top: 0.3rem;
+  font-weight: 700;
+}
+
+.feature-carousel-card-stock {
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+@keyframes feature-carousel-loop {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-carousel-track {
+    animation: none;
+  }
+}

@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+        VITE_API_BASE_URL: /api
         VITE_COP_TO_USD_RATE: ${VITE_COP_TO_USD_RATE}
         VITE_WOMPI_BASE_URL: ${VITE_WOMPI_BASE_URL}
         VITE_WOMPI_PUBLIC_KEY: ${VITE_WOMPI_PUBLIC_KEY}

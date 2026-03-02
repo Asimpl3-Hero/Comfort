@@ -87,10 +87,14 @@
 }
 
 .view-all-link {
-  display: none;
+  display: inline-flex;
+  border: 0;
+  padding: 0;
+  background: transparent;
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--color-muted);
+  cursor: pointer;
 }
 
 .view-all-link:hover {
@@ -291,10 +295,6 @@
 @media (width >= 640px) {
   .products-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .view-all-link {
-    display: inline-block;
   }
 
   .newsletter-form {

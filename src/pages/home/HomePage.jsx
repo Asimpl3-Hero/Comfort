@@ -11,6 +11,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../app/hooks/index.js'
 import { CartStatusModal } from '../../features/components/ui/CartStatusModal.jsx'
 import { CheckoutStepperModal } from '../../features/components/ui/CheckoutStepperModal.jsx'
+import { FeatureCarousel } from '../../features/components/ui/FeatureCarousel.jsx'
 import { FeaturesSection } from '../../features/components/ui/FeaturesSection.jsx'
 import { HeroSection } from '../../features/components/ui/HeroSection.jsx'
 import { NewsletterSection } from '../../features/components/ui/NewsletterSection.jsx'
@@ -148,6 +149,7 @@ export function HomePage() {
       storeFabCount={cartTotalQuantity}
     >
       <HeroSection />
+      <FeatureCarousel products={products} onProductClick={handleOpenProductDetails} />
       <NewArrivalsSectionContainer
         onAddToCart={handleAddToCart}
         onOpenDetails={handleOpenProductDetails}

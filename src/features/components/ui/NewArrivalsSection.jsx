@@ -1,6 +1,9 @@
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ProductCard } from './ProductCard.jsx'
+
+const INITIAL_VISIBLE_PRODUCTS = 3
 
 export function NewArrivalsSection({
   products = [],
@@ -9,7 +12,6 @@ export function NewArrivalsSection({
   error = null,
   title,
   viewAllLabel,
-  viewAllHref = '#',
   onRetry,
   onToggleFavorite,
   onOpenDetails,
@@ -20,6 +22,8 @@ export function NewArrivalsSection({
   skeletonCount = 3,
 }) {
   const { t } = useTranslation()
+  const [showAllProducts, setShowAllProducts] = useState(false)
+
   const resolvedTitle = title ?? t('newArrivals.title')
   const resolvedViewAllLabel = viewAllLabel ?? t('newArrivals.viewAll')
   const resolvedRetryLabel = retryLabel ?? t('newArrivals.retry')
@@ -30,15 +34,26 @@ export function NewArrivalsSection({
   const hasError = status === 'failed'
   const isEmpty = status === 'succeeded' && products.length === 0
   const isReady = status === 'succeeded' && products.length > 0
+  const shouldShowViewAllButton = isReady && products.length > INITIAL_VISIBLE_PRODUCTS && !showAllProducts
+  const visibleProducts = useMemo(
+    () => (showAllProducts ? products : products.slice(0, INITIAL_VISIBLE_PRODUCTS)),
+    [products, showAllProducts],
+  )
+
+  useEffect(() => {
+    setShowAllProducts(false)
+  }, [products])
 
   return (
     <section className="new-arrivals-section">
       <div className="container">
         <div className="section-heading">
           <h2>{resolvedTitle}</h2>
-          <a href={viewAllHref} className="view-all-link">
-            {resolvedViewAllLabel}
-          </a>
+          {shouldShowViewAllButton ? (
+            <button type="button" className="view-all-link" onClick={() => setShowAllProducts(true)}>
+              {resolvedViewAllLabel}
+            </button>
+          ) : null}
         </div>
 
         {isLoading && (
@@ -66,7 +81,7 @@ export function NewArrivalsSection({
 
         {isReady && (
           <div className="products-grid">
-            {products.map((product) => (
+            {visibleProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}

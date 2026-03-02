@@ -32,4 +32,24 @@ describe('NewArrivalsSection', () => {
     )
     expect(screen.getByText('Yoga Mat Pro')).toBeInTheDocument()
   })
+
+  it('shows first 3 products and expands all on view all click', () => {
+    const products = Array.from({ length: 5 }, (_, index) => ({
+      ...productFixture,
+      id: `p-${index + 1}`,
+      name: `Product ${index + 1}`,
+    }))
+
+    render(<NewArrivalsSection status="succeeded" products={products} favoriteIds={[]} />)
+
+    expect(screen.getByText('Product 1')).toBeInTheDocument()
+    expect(screen.getByText('Product 2')).toBeInTheDocument()
+    expect(screen.getByText('Product 3')).toBeInTheDocument()
+    expect(screen.queryByText('Product 4')).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'newArrivals.viewAll' }))
+
+    expect(screen.getByText('Product 4')).toBeInTheDocument()
+    expect(screen.getByText('Product 5')).toBeInTheDocument()
+  })
 })
