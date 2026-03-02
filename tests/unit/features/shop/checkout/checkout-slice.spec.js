@@ -231,6 +231,7 @@ describe('checkoutSlice', () => {
     expect(createOrder).toHaveBeenCalledWith(
       {
         productId: 'p-1',
+        quantity: 2,
         customerEmail: 'buyer@example.com',
         shippingData: {
           email: 'buyer@example.com',
@@ -240,7 +241,7 @@ describe('checkoutSlice', () => {
       },
       { signal: expect.anything() },
     )
-    expect(decrementItemFromCart).toHaveBeenCalledWith({ productId: 'p-1' })
+    expect(decrementItemFromCart).toHaveBeenCalledWith({ productId: 'p-1', units: 2 })
     openSpy.mockRestore()
   })
 

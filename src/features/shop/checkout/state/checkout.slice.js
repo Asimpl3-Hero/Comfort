@@ -48,6 +48,7 @@ export const submitOrder = createAsyncThunk(
   async (checkoutData, { dispatch, getState, rejectWithValue, signal }) => {
     const state = getState()
     const productId = state.checkout.selectedProductId
+    const quantityFromCart = Number(state.cart.itemsByProductId?.[productId] ?? 1)
 
     if (!productId) {
       return rejectWithValue(i18n.t('checkout.async.noProductSelected'))
@@ -66,6 +67,10 @@ export const submitOrder = createAsyncThunk(
       let paymentMethodData = checkoutData?.paymentMethodData
       const shippingData = checkoutData?.shipping
       const customerEmail = shippingData?.email?.trim()
+      const requestedQuantity = Number(checkoutData?.summary?.productQuantity ?? quantityFromCart)
+      const quantity = Number.isFinite(requestedQuantity)
+        ? Math.max(1, Math.floor(requestedQuantity))
+        : 1
 
       if (paymentMethodType === 'CARD') {
         const cardToken = await createWompiCardToken(paymentMethodData, { signal })
@@ -75,6 +80,7 @@ export const submitOrder = createAsyncThunk(
       const createdOrder = await createOrder(
         {
           productId,
+          quantity,
           customerEmail,
           shippingData,
           paymentMethodType,
@@ -126,7 +132,7 @@ export const submitOrder = createAsyncThunk(
               finalOrder.wompi_transaction_id ?? finalOrder.wompiTransactionId ?? '',
           }),
         )
-        dispatch(decrementItemFromCart({ productId }))
+        dispatch(decrementItemFromCart({ productId, units: quantity }))
       } else {
         dispatch(
           setTransactionResult({

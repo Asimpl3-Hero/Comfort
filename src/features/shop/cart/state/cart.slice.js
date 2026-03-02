@@ -15,13 +15,14 @@ const cartSlice = createSlice({
     },
     decrementItemFromCart(state, action) {
       const productId = action.payload.productId
+      const units = Math.max(1, Math.floor(Number(action.payload.units ?? 1)))
       const currentQty = state.itemsByProductId[productId] ?? 0
-      if (currentQty <= 1) {
+      if (currentQty <= units) {
         delete state.itemsByProductId[productId]
         return
       }
 
-      state.itemsByProductId[productId] = currentQty - 1
+      state.itemsByProductId[productId] = currentQty - units
     },
     removeItemFromCart(state, action) {
       const productId = action.payload.productId

@@ -24,6 +24,14 @@ describe('cartSlice', () => {
     expect(state.itemsByProductId['p-1']).toBeUndefined()
   })
 
+  it('decrements multiple units when units payload is provided', () => {
+    const state = reducer(
+      { itemsByProductId: { 'p-1': 5 } },
+      decrementItemFromCart({ productId: 'p-1', units: 3 }),
+    )
+    expect(state.itemsByProductId['p-1']).toBe(2)
+  })
+
   it('removes specific item', () => {
     const state = reducer({ itemsByProductId: { 'p-1': 3, 'p-2': 1 } }, removeItemFromCart({ productId: 'p-1' }))
     expect(state.itemsByProductId).toEqual({ 'p-2': 1 })

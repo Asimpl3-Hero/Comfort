@@ -61,6 +61,11 @@
   font-size: 0.86rem;
 }
 
+:root.dark .checkout-loading-title,
+:root.dark .checkout-loading-note {
+  color: #111;
+}
+
 .checkout-modal-header {
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--color-border);

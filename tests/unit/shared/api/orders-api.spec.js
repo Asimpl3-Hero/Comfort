@@ -18,6 +18,7 @@ describe('ordersApi', () => {
 
     const payload = {
       productId: 'p-1',
+      quantity: undefined,
       customerEmail: 'buyer@example.com',
       shippingData: undefined,
       paymentMethodType: 'CARD',
